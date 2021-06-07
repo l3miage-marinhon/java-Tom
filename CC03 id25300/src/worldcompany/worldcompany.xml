@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<worldCompany>
+	<personnel>
+		<vendeur chiffreAffaire="4465.50">
+			<nom>Epan</nom>
+			<prenom>Ahmed</prenom>
+			<anneeEmbauche>2004</anneeEmbauche>
+		</vendeur>
+		<technicien unites="236">
+			<nom>Tomie</nom>
+			<prenom>Anna</prenom>
+			<anneeEmbauche>2017</anneeEmbauche>
+		</technicien>
+		<manutentionnaire heure="25">
+			<nom>Versaire</nom>
+			<prenom>Annie</prenom>
+			<anneeEmbauche>1998</anneeEmbauche>
+		</manutentionnaire>
+		<representant chiffreAffaire="5430.0">
+			<nom>Labrosse</nom>
+			<prenom>Adam</prenom>
+			<anneeEmbauche>2015</anneeEmbauche>
+		</representant>
+		<technicien unites="337">
+			<nom>Zeblouse</nom>
+			<prenom>Agathe</prenom>
+			<anneeEmbauche>2003</anneeEmbauche>
+		</technicien>
+		<manutentionnaire heure="38">
+			<nom>Tuission</nom>
+			<prenom>Alain</prenom>
+			<anneeEmbauche>2012</anneeEmbauche>
+		</manutentionnaire>
+		<vendeur chiffreAffaire="3335.0">
+			<nom>Gator</nom>
+			<prenom>Ali</prenom>
+			<anneeEmbauche>2005</anneeEmbauche>
+		</vendeur>
+		<representant chiffreAffaire="4382">
+			<nom>Verse</nom>
+			<prenom>Alain</prenom>
+			<anneeEmbauche>2016</anneeEmbauche>
+		</representant>
+		<technicien unites="412">
+			<nom>Orak</nom>
+			<prenom>Anne</prenom>
+			<anneeEmbauche>1997</anneeEmbauche>
+		</technicien>
+		<representant chiffreAffaire="5312.25">
+			<nom>Desartistes</nom>
+			<prenom>Andre</prenom>
+			<anneeEmbauche>2012</anneeEmbauche>
+		</representant>
+	</personnel>
+</worldCompany>
