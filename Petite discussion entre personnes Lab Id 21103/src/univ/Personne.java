@@ -41,6 +41,7 @@ public class Personne {
      */
     protected String presentation(boolean soutenue) {
     // TODO 1.04. La présentation soutenue ou familière (lire la javadoc)
+    	return "jean michel niel";
     }
 
     /**
