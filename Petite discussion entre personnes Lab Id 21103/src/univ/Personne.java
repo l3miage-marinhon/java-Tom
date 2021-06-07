@@ -6,7 +6,10 @@ package univ;
 public class Personne {
     // TODO 1.01. Déclarer nom, prenom et homme (lettre pour lettre)
     // 
-
+	public String nom = "" ;
+	public String prenom = "" ;
+	public boolean homme = true ;
+	
     /**
      * TODO 1.02
      * Créer une personne en définissant son nom, son prenom et s'il est
@@ -17,8 +20,22 @@ public class Personne {
      */
     // TODO 1.02. Le constructeur
     // 
+	public Personne(String nom, String prenom, boolean homme) {
+		this.nom = nom ;
+		this.prenom = prenom ;
+		this.homme = homme ;
+	}
     // TODO 1.03. Ne pas oublier les getters des attributs
     // 
+	public String getNom() {
+		return this.nom ;
+	}
+	public String getPrenom() {
+		return this.prenom ;
+	}
+	public boolean getHomme() {
+		return this.homme ;
+	}
     /**
      * TODO 1.04
      * Retourne une chaîne de caractères qui constitue la présentation soutenue
@@ -39,6 +56,19 @@ public class Personne {
      */
     protected String presentation(boolean soutenue) {
     // TODO 1.04. La présentation soutenue ou familière (lire la javadoc)
+    	String pres = "" ;
+    	if (soutenue == true) {
+    		if (this.getHomme() == true) {
+    			pres = pres + "M. " + this.getNom() + " " + this.getPrenom() ;
+    		}
+    		else {
+    			pres = pres + "Mme " + this.getNom() + " " + this.getPrenom() ;
+    		}
+    	}
+    	else {
+    		pres = pres + this.getNom() + " " + this.getPrenom() ;
+    	}
+    	return pres ;
     }
 
     /**
@@ -47,6 +77,14 @@ public class Personne {
      */
     protected String presentation() {
     // TODO 1.05. Par défaut, la présentation est soutenue
+    	String pres = "" ;
+    	if (this.getHomme() == true) {
+			pres = pres + "M. " + this.getNom() + " " + this.getPrenom() ;
+		}
+		else {
+			pres = pres + "Mme " + this.getNom() + " " + this.getPrenom() ;
+		}
+    	return pres ;
     }
 
     /**
@@ -55,6 +93,8 @@ public class Personne {
      */
     protected String bonjour() {
     // TODO 1.06. Lire la javadoc
+    	String pres = "Bonjour, je suis " + this.presentation() ;
+    	return pres ;
     }
 
     /**
@@ -71,6 +111,9 @@ public class Personne {
      */
     protected String reponseAuBonjourDe(Personne personne) {
     // TODO 1.07. Lire la javadoc
+    	String rep = "Bonjour " + personne.presentation() + "\n" ;
+    	rep = rep + "Moi c'est " + this.presentation() ;
+    	return rep ;
     }
 
     /**
@@ -80,6 +123,8 @@ public class Personne {
      */
     protected String caVa(Personne personne) {
     // TODO 1.08. Comment allez-vous
+    	String cava = "Comment allez-vous ?" ;
+    	return cava ;
     }
 
     /**
@@ -89,6 +134,8 @@ public class Personne {
      */
     protected String etVous(Personne personne) {
     // TODO 1.09. Ca va bien. Merci.
+    	String merci = "Ca va bien. Merci. " ;
+    	return merci ;
     }
 
     /**
