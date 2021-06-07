@@ -17,8 +17,6 @@ public class Personne {
      */
     // TODO 1.02. Le constructeur
     // 
-	public Personne(String nom,String prenom,boolean homme) {
-	}
     // TODO 1.03. Ne pas oublier les getters des attributs
     // 
     /**
@@ -41,7 +39,6 @@ public class Personne {
      */
     protected String presentation(boolean soutenue) {
     // TODO 1.04. La présentation soutenue ou familière (lire la javadoc)
-    	return "jean michel nielle";
     }
 
     /**
@@ -73,7 +70,6 @@ public class Personne {
      *                    Moi c'est Mme Dalton Ma"
      */
     protected String reponseAuBonjourDe(Personne personne) {
-        return "Bonjour "+personne.presentation()+".\nMoi c'est "+this.presentation();
     // TODO 1.07. Lire la javadoc
     }
 
@@ -83,7 +79,6 @@ public class Personne {
      * @return "Comment allez-vous ?"
      */
     protected String caVa(Personne personne) {
-        return "Comment allez-vous ?";
     // TODO 1.08. Comment allez-vous
     }
 
@@ -93,7 +88,6 @@ public class Personne {
      * @return "Ca va bien. Merci."
      */
     protected String etVous(Personne personne) {
-        return "Ca va bien. Merci.";
     // TODO 1.09. Ca va bien. Merci.
     }
 
