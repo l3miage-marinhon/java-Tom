@@ -6,9 +6,9 @@ package univ;
 public class Personne {
     // TODO 1.01. Déclarer nom, prenom et homme (lettre pour lettre)
     // 
-	public String nom = "" ;
-	public String prenom = "" ;
-	public boolean homme = true ;
+	public String nom ;
+	public String prenom;
+	public boolean homme;
 	
     /**
      * TODO 1.02
@@ -58,15 +58,10 @@ public class Personne {
     // TODO 1.04. La présentation soutenue ou familière (lire la javadoc)
     	String pres = "" ;
     	if (soutenue == true) {
-    		if (this.getHomme() == true) {
-    			pres = pres + "M. " + this.getNom() + " " + this.getPrenom() ;
-    		}
-    		else {
-    			pres = pres + "Mme " + this.getNom() + " " + this.getPrenom() ;
-    		}
+    		pres += presentation();
     	}
     	else {
-    		pres = pres + this.getNom() + " " + this.getPrenom() ;
+    		pres += getNom() + " " + this.getPrenom() ;
     	}
     	return pres ;
     }
@@ -93,8 +88,8 @@ public class Personne {
      */
     protected String bonjour() {
     // TODO 1.06. Lire la javadoc
-    	String pres = "Bonjour, je suis " + this.presentation() ;
-    	return pres ;
+    	return "Bonjour, je suis " + presentation() ;    
+    	
     }
 
     /**
@@ -111,9 +106,7 @@ public class Personne {
      */
     protected String reponseAuBonjourDe(Personne personne) {
     // TODO 1.07. Lire la javadoc
-    	String rep = "Bonjour " + personne.presentation() + "\n" ;
-    	rep = rep + "Moi c'est " + this.presentation() ;
-    	return rep ;
+    	return  "Bonjour " + personne.presentation() + "\nMoi c'est " + this.presentation();
     }
 
     /**
@@ -123,8 +116,7 @@ public class Personne {
      */
     protected String caVa(Personne personne) {
     // TODO 1.08. Comment allez-vous
-    	String cava = "Comment allez-vous ?" ;
-    	return cava ;
+    	return  "Comment allez-vous ?" ;
     }
 
     /**
@@ -134,8 +126,7 @@ public class Personne {
      */
     protected String etVous(Personne personne) {
     // TODO 1.09. Ca va bien. Merci.
-    	String merci = "Ca va bien. Merci. " ;
-    	return merci ;
+    	return  "Ca va bien. Merci. " ;
     }
 
     /**
