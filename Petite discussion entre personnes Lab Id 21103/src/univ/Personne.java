@@ -26,15 +26,6 @@ public class Personne {
 	}
     // TODO 1.03. Ne pas oublier les getters des attributs
     // 
-	public String getNom() {
-		return nom;
-	}
-	public String getPrenom() {
-		return prenom;
-		}
-	public boolean isHomme() {
-		return homme;
-		}
 	
     /**
      * TODO 1.04
