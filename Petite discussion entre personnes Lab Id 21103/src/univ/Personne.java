@@ -6,9 +6,7 @@ package univ;
 public class Personne {
     // TODO 1.01. Déclarer nom, prenom et homme (lettre pour lettre)
     // 
-	private String nom;
-	private String prenom;
-	private boolean homme;
+
     /**
      * TODO 1.02
      * Créer une personne en définissant son nom, son prenom et s'il est
@@ -20,13 +18,9 @@ public class Personne {
     // TODO 1.02. Le constructeur
     // 
 	public Personne(String nom,String prenom,boolean homme) {
-		this.nom=nom;
-		this.prenom=prenom;
-		this.homme=homme;
 	}
     // TODO 1.03. Ne pas oublier les getters des attributs
     // 
-	
     /**
      * TODO 1.04
      * Retourne une chaîne de caractères qui constitue la présentation soutenue
@@ -46,15 +40,6 @@ public class Personne {
      * @return la chaîne de présentation
      */
     protected String presentation(boolean soutenue) {
-        if(!soutenue) {
-        	return getPrenom()+" "+getNom();
-        }else {
-        	if(isHomme()) {
-        		return "M. "+getNom()+" "+getPrenom();
-        	}else {
-        		return "Mme "+getNom()+" "+getPrenom();
-        	}
-        }
     // TODO 1.04. La présentation soutenue ou familière (lire la javadoc)
     }
 
@@ -63,7 +48,6 @@ public class Personne {
      * @return la présentation soutenue
      */
     protected String presentation() {
-        return presentation(true);
     // TODO 1.05. Par défaut, la présentation est soutenue
     }
 
@@ -72,7 +56,6 @@ public class Personne {
      * @return "Bonjour, je suis " suivi de la présentation soutenue de cette personne
      */
     protected String bonjour() {
-        return "Bonjour, je suis "+presentation();
     // TODO 1.06. Lire la javadoc
     }
 
