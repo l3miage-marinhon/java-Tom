@@ -45,10 +45,6 @@ public class Horaire {
      */
     public Horaire(boolean h24, int h, int m, int s) {
     // TODO 1.02. Écrire ce constructeur
-    	setH24(h24);
-    	setHeures(h);
-    	setMinutes(m);
-    	setSecondes(s);
 
     }
 
@@ -66,7 +62,6 @@ public class Horaire {
      */
     public Horaire(boolean h24, int h, int m) {
     // TODO 1.03. Écrire ce constructeur
-    	this(h24,h,m,0);
     }
 
     /**
@@ -80,7 +75,6 @@ public class Horaire {
      */
     public Horaire(boolean h24, int h) {
     // TODO 1.04. Écrire ce constructeur
-    	this(h24,h,0,0);
     }
 
     /**
@@ -90,7 +84,6 @@ public class Horaire {
      */
     public Horaire(boolean h24) {
     // TODO 1.05. Écrire ce constructeur
-    	this(h24,0,0,0);
     }
 
     /**
@@ -107,7 +100,6 @@ public class Horaire {
      */
     public Horaire(int h, int m, int s) {
     // TODO 1.06. Écrire ce constructeur
-    	this(true,h,m,s);
     }
 
     /**
@@ -122,7 +114,6 @@ public class Horaire {
      */
     public Horaire(int h, int m) {
     // TODO 1.07. Écrire ce constructeur
-    	this(true,h,m,0);
     }
     /**
      * Construit un nouvel horaire au format 24h à partir des arguments (les
@@ -133,7 +124,7 @@ public class Horaire {
      */
     public Horaire(int h) {
     // TODO 1.08. Écrire ce constructeur
-    	this(true,h,0,0);
+
     }
 
     /**
@@ -141,14 +132,13 @@ public class Horaire {
      */
     public Horaire() {
     // TODO 1.09. Écrire ce constructeur
-    	this(true,0,0,0);
+
     }
 
     /**
      * @return les heures de cet horaire
      */
     public int getHeures() {
-        return h;
     // TODO 1.10. Écrire ce getter
     }
 
@@ -156,7 +146,6 @@ public class Horaire {
      * @return les minutes de cet horaire
      */
     public int getMinutes() {
-        return m;
     // TODO 1.11. Écrire ce getter
     }
 
@@ -164,7 +153,6 @@ public class Horaire {
      * @return les secondes de cet horaire
      */
     public int getSecondes() {
-        return s;
     // TODO 1.12. Écrire ce getter
     }
 
@@ -172,7 +160,6 @@ public class Horaire {
      * @return vrai si format 24h, faux sinon.
      */
     public boolean isH24() {
-        return h24;
     // TODO 1.13. Écrire ce getter
     }
 
@@ -182,19 +169,6 @@ public class Horaire {
      */
     public void setHeures(int heures) {
     // TODO 1.14. Écrire ce setter
-    	if(!h24) {
-    		if(heures>=0 && heures<=11) {
-    				h=heures;
-    			}else {
-    				this.h=0;
-    			}
-    	}else {
-    		if(heures>=0 && heures<=23) {
-    			h=heures;
-    		}else {
-    			this.h=0;
-    		}
-    	}
     }
 
     /**
@@ -203,11 +177,6 @@ public class Horaire {
      */
     public void setMinutes(int minutes) {
     // TODO 1.15. Écrire ce setter
-    	if(minutes>=0 && minutes<=59) {
-    		this.m=minutes;
-    	}else {
-    		this.m=0;
-    	}
     }
 
     /**
@@ -216,11 +185,6 @@ public class Horaire {
      */
     public void setSecondes(int secondes) {
     // TODO 1.16. Écrire ce setter
-    	if(secondes>=0 && secondes<=59) {
-    		this.s=secondes;
-    	}else {
-    		this.s=0;
-    	}
     }
 
     /**
@@ -230,14 +194,6 @@ public class Horaire {
      */
     public void setH24(boolean h24) {
     // TODO 1.17. Écrire ce setter
-    		if(h24) {
-    			if(!this.h24)setHeures(h%12);
-    			this.h24=h24;
-    		}else{
-    			if(this.h24)setHeures(h+12);
-    			this.h24=h24;
- 
-    		}
     }
 
     /**
@@ -254,7 +210,6 @@ public class Horaire {
      */
     @Override
     public String toString() {
-        return String.format("%02d:%02d:%02d",h,m,s);
     // TODO 1.18. Écrire toString()
     }
 
@@ -263,7 +218,6 @@ public class Horaire {
      */
     public void uneHeureDePlus() {
     // TODO 1.19. Écrire uneHeureDePlus()
-    		setHeures(h+1);
     }
 
     /**
@@ -271,12 +225,6 @@ public class Horaire {
      */
     public void uneMinuteDePlus() {
     // TODO 1.20. Écrire uneMinuteDePlus()
-    	if(m==59) {
-    		setHeures(h+1);
-    		setMinutes(m+1);
-    	}else {
-    		setMinutes(m+1);
-    	}
     }
 
     /**
@@ -284,18 +232,6 @@ public class Horaire {
      */
     public void uneSecondeDePlus() {
     // TODO 1.21. Écrire uneSecondeDePlus()
-    	if(s==59) {
-    		if(m==59) {
-    			setHeures(h+1);
-    			setMinutes(m+1);
-    			setSecondes(s+1);
-    		}else {
-    			setMinutes(m+1);
-    			setSecondes(s+1);
-    		}
-    	}else {
-    		setSecondes(s+1);
-    		}
     }
     // TODO 1.01. Déclarer les attributs utiles à votre classe.
     // 
