@@ -28,6 +28,7 @@ public class QuelquesExpressionsBooleennes {
 		Pour simplifier l'exercice, les caractères accentués
 		ne sont pas considérés comme minuscule
 	*/
+		return (c >= 'a' && c <= 'z') ;
     }
 
     /**
@@ -42,9 +43,10 @@ public class QuelquesExpressionsBooleennes {
     public static boolean nEstPasUnChiffreDecimal(char c) {
     /* TODO 2
 		Écrire nEstPasUnChiffreDecimal qui retourne vrai
-		si c n'est pas un chiffre décimal
+		si c n'est pas un chiffre décimal (compris entre 0 et 9)
 		et faux sinon.
 	*/
+    	return (c > '9') ;
     }
 
     /**
@@ -57,13 +59,13 @@ public class QuelquesExpressionsBooleennes {
      * @return vrai si c une lettre de l'alphabet latin sans accent, faux sinon.
      */
     public static boolean estUneLettreLatineSansAccent(char c) {
-    }
     /* TODO 3
 		Écrire estUneLettreLatineSansAccent qui retourne vrai
 		si c est une lettre de l'alphabet latin
 		en majuscule ou en minuscule mais sans les 
 		mais sans les caractères accentués.
 	*/
+    	return (estMinuscule(c) || (c >= 'A' && c <= 'Z')) ;
     }
 
     /**
@@ -81,6 +83,7 @@ public class QuelquesExpressionsBooleennes {
 		qui retourne vrai si son paramètre i
 		est un entier naturel impair, tel que i < 5
 	*/
+    	return (i > 0 && estUnEntierImpair(i) && i < 5) ;
     }
 
     /**
@@ -98,6 +101,7 @@ public class QuelquesExpressionsBooleennes {
 		qui retourne vrai si son paramètre i
 		est un entier impair, tel que i < 54
 	*/
+    	return (estUnEntierImpair(i) && i < 54) ;
     }
 
     /**
@@ -114,5 +118,6 @@ public class QuelquesExpressionsBooleennes {
 		qui retourne vrai si son paramètre i
 		est un entier impair
 	*/
+    	return (i % 2 == 1) ;
     }
 }

@@ -45,7 +45,10 @@ public class Horaire {
      */
     public Horaire(boolean h24, int h, int m, int s) {
     // TODO 1.02. Écrire ce constructeur
-
+    	setH24(h24) ;
+    	setHeures(h) ;
+    	setMinutes(m) ;
+    	setSecondes(s) ;
     }
 
     /**
@@ -62,6 +65,7 @@ public class Horaire {
      */
     public Horaire(boolean h24, int h, int m) {
     // TODO 1.03. Écrire ce constructeur
+    	this(h24, h, m, 0) ;
     }
 
     /**
@@ -75,6 +79,7 @@ public class Horaire {
      */
     public Horaire(boolean h24, int h) {
     // TODO 1.04. Écrire ce constructeur
+    	this(h24, h, 0, 0) ;
     }
 
     /**
@@ -84,6 +89,7 @@ public class Horaire {
      */
     public Horaire(boolean h24) {
     // TODO 1.05. Écrire ce constructeur
+    	this(h24, 0, 0, 0) ;
     }
 
     /**
@@ -100,6 +106,7 @@ public class Horaire {
      */
     public Horaire(int h, int m, int s) {
     // TODO 1.06. Écrire ce constructeur
+    	this(true, h, m, s) ;
     }
 
     /**
@@ -114,6 +121,7 @@ public class Horaire {
      */
     public Horaire(int h, int m) {
     // TODO 1.07. Écrire ce constructeur
+    	this(true, h, m, 0) ;
     }
     /**
      * Construit un nouvel horaire au format 24h à partir des arguments (les
@@ -124,7 +132,7 @@ public class Horaire {
      */
     public Horaire(int h) {
     // TODO 1.08. Écrire ce constructeur
-
+    	this(true, h, 0, 0) ;
     }
 
     /**
@@ -132,7 +140,7 @@ public class Horaire {
      */
     public Horaire() {
     // TODO 1.09. Écrire ce constructeur
-
+    	this(true, 0, 0, 0) ;
     }
 
     /**
@@ -140,6 +148,7 @@ public class Horaire {
      */
     public int getHeures() {
     // TODO 1.10. Écrire ce getter
+    	return this.h ;
     }
 
     /**
@@ -147,6 +156,7 @@ public class Horaire {
      */
     public int getMinutes() {
     // TODO 1.11. Écrire ce getter
+    	return this.m ;
     }
 
     /**
@@ -154,6 +164,7 @@ public class Horaire {
      */
     public int getSecondes() {
     // TODO 1.12. Écrire ce getter
+    	return this.s ;
     }
 
     /**
@@ -161,6 +172,7 @@ public class Horaire {
      */
     public boolean isH24() {
     // TODO 1.13. Écrire ce getter
+    	return this.h24 ;
     }
 
     /**
@@ -169,6 +181,7 @@ public class Horaire {
      */
     public void setHeures(int heures) {
     // TODO 1.14. Écrire ce setter
+    	this.h = (heures >= 0 && heures <= (h24 ? 23 : 11 )) ? heures : 0 ;
     }
 
     /**
@@ -177,6 +190,7 @@ public class Horaire {
      */
     public void setMinutes(int minutes) {
     // TODO 1.15. Écrire ce setter
+    	this.m = (minutes >= 0 && minutes <= 59) ? minutes : 0 ;
     }
 
     /**
@@ -185,6 +199,7 @@ public class Horaire {
      */
     public void setSecondes(int secondes) {
     // TODO 1.16. Écrire ce setter
+    	this.s = (secondes >= 0 && secondes <= 59) ? secondes : 0 ;
     }
 
     /**
@@ -194,6 +209,7 @@ public class Horaire {
      */
     public void setH24(boolean h24) {
     // TODO 1.17. Écrire ce setter
+    	this.h24 = h24 ;
     }
 
     /**
@@ -211,6 +227,7 @@ public class Horaire {
     @Override
     public String toString() {
     // TODO 1.18. Écrire toString()
+    	return String.format("%02d:%02d:%02d", h, m, s) ;
     }
 
     /**
@@ -218,6 +235,7 @@ public class Horaire {
      */
     public void uneHeureDePlus() {
     // TODO 1.19. Écrire uneHeureDePlus()
+    	setHeures( (getHeures() == (h24 ? 23 : 11)) ? 0 : h + 1) ;
     }
 
     /**
@@ -225,6 +243,12 @@ public class Horaire {
      */
     public void uneMinuteDePlus() {
     // TODO 1.20. Écrire uneMinuteDePlus()
+    	if (getMinutes() == 59) {
+    		setMinutes(0) ;
+    		uneHeureDePlus() ;
+    	} else {
+    		setMinutes(m+1) ;
+    	}
     }
 
     /**
@@ -232,6 +256,12 @@ public class Horaire {
      */
     public void uneSecondeDePlus() {
     // TODO 1.21. Écrire uneSecondeDePlus()
+    	if (getSecondes() == 59) {
+    		setSecondes(0) ;
+    		uneMinuteDePlus() ;
+    	} else {
+    		setSecondes(s+1) ;
+    	}
     }
     // TODO 1.01. Déclarer les attributs utiles à votre classe.
     // 
