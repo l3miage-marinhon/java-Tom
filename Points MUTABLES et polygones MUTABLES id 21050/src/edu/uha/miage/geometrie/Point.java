@@ -44,77 +44,16 @@ import static java.lang.Math.*;
  * @author yvan
  */
 public class Point {
-	private double x;
-	private double y;
 	
-	private double rho;
-	private double theta;
-    
-	public Point(double rho ,double theta,boolean polaire){
-		if(polaire) {
-			setRho(rho);
-			setTheta(theta);
-			cfromp();
-		}else {
-			setX(rho);
-			setY(theta);
-			pfromc();
-		}
-		
-	}
-	
-	public Point(){
-		this(0,0,false);
-	}
-	public Point(double x,double y){
-		this(x,y,false);
-	}
-	
-	
-	
-	 public double getX() {
-		return this.x;
-	}
-	
-	public double getY(){
-		return this.y;
-	}
-	
-	public double getRho() {
-		return rho;
-	}
-	
-	public double getTheta() {
-		return theta;
-	}
-
-	public void setX(double x) {
-		this.x=x;
-		pfromc();
-	}
-	
-	public void setY(double y) {
-		this.y=y;
-		pfromc();
-	}
-	
-	public void setRho(double rho) {
-		if(rho>0){
-			this.rho=rho;
-			cfromp();
-		}else {
-			this.rho=-rho;
-			setTheta(theta+PI);
-			cfromp();
-		}
-	}
-	public void setTheta(double theta) {
-		if(theta<0) {
-			this.theta=theta*(-1);
-		}else {
-			this.theta=theta;		
-		}
-	}
+	/* TODO 1.01. Déclarer les coordonnées cartésiennes x et y du point, de type double.
+	Veiller à choisir des modificateurs adaptés.
+	Respecter les noms x et y
+	*/
+    // 
+    /* TODO 1.02. Déclarer les coordonnées polaires rho et theta du point, de type double.
+	Veiller à choisir des modificateurs adaptés.
+	Respecter les noms rho et theta
+	*/
 	
 	/**
      * Cadeau : une méthode d'instance privée pfromc qui calcule les coordonnées
@@ -136,12 +75,6 @@ public class Point {
     private void pfromc() {
     /* TODO 1.03. Coller ici le code ci-dessus quand les attributs de
 	cette classe seront correctement déclarés.*/
-			 rho = sqrt(x*x+y*y);
-             theta = atan2(y, x);
-             theta %= (2*PI);
-             if (theta < 0)
-                 theta += 2*PI;
-
     }
 
     /**
@@ -171,77 +104,7 @@ public class Point {
     /* TODO 1.04. Coller ici le code ci-dessus quand les attributs de
 	cette classe seront correctement déclarés.
 	*/
-    	if (rho < 0) {
-    	                 rho = -rho;
-    	                 theta += PI;
-    	            }
-    	             theta %= (2*PI);
-    	             if (theta < 0)
-    	                 theta += 2*PI;
-    	             x = rho*cos(theta);
-    	             y = rho*sin(theta);
     }
-
-    
-    public void translation(double dx, double dy) {
-    /* TODO 1.09. Écrire une méthode translation(double dx, double dy) qui applique
-	à ce point la translation de dx en x et dy en y donnés en paramètres.
-
-	Attention aux pièges.
-	*/
-    	x=+dx;
-    	y=+dy;
-    	pfromc();
-    	
-    }
-
-    public void rotation(double dtheta) {
-    /* TODO 1.10. Écrire une méthode rotation(double dtheta) qui applique
-	à ce point la rotation de dtheta donnée en paramètres.
-	Attention aux pièges.
-	*/
-    	theta+=dtheta;
-    	theta%=(2*PI);
-    	if(rho<0) {
-    		theta=+PI;
-    		theta%=(2*PI);
-    	}
-    	cfromp();
-    		
-    }
-
-    public void afficher(boolean polaire) {
-    /* TODO 1.11. Écrire une méthode afficher(boolean polaire) qui affiche
-	sur la sortie standard les coordonnées de ce point 
-	soit polaires soit cartésiennes selon l'état du paramètre polaire
-	en respectant les formats suivants :
-		 polaire => [<rho>:<theta>]
-		 !polaire => (<x>, <y>)
-	*/
-    	if(polaire) {
-    		System.out.print("["+getRho()+":"+getTheta()+"]");
-    	}else {
-    		System.out.print("("+getX()+","+getY()+")");
-    	}
-    }
-
-    public void afficher() {
-    /* TODO 1.12. Écrire une méthode afficher() qui, par défaut, affiche
-	sur la sortie standard les coordonnées cartésiennes de
-	ce point en respectant le format décrit précédemment.
-	*/
-    	afficher(false);
-    }
-    /* TODO 1.01. Déclarer les coordonnées cartésiennes x et y du point, de type double.
-	Veiller à choisir des modificateurs adaptés.
-	Respecter les noms x et y
-	*/
-    // 
-    /* TODO 1.02. Déclarer les coordonnées polaires rho et theta du point, de type double.
-	Veiller à choisir des modificateurs adaptés.
-	Respecter les noms rho et theta
-	*/
-    // 
     /* TODO 1.05. Écrire le constructeur à trois paramètres 
 	Point(double roux, double touy, boolean polaire)
 	qui permet de construire un point à partir des deux paramètres 
@@ -267,5 +130,29 @@ public class Point {
 	
 	Attention aux pièges.
 	*/
+    
+    /* TODO 1.09. Écrire une méthode translation(double dx, double dy) qui applique
+	à ce point la translation de dx en x et dy en y donnés en paramètres.
+
+	Attention aux pièges.
+	*/	
+    /* TODO 1.10. Écrire une méthode rotation(double dtheta) qui applique
+	à ce point la rotation de dtheta donnée en paramètres.
+	Attention aux pièges.
+	*/
+    /* TODO 1.11. Écrire une méthode afficher(boolean polaire) qui affiche
+	sur la sortie standard les coordonnées de ce point 
+	soit polaires soit cartésiennes selon l'état du paramètre polaire
+	en respectant les formats suivants :
+		 polaire => [<rho>:<theta>]
+		 !polaire => (<x>, <y>)
+	*/
+    /* TODO 1.12. Écrire une méthode afficher() qui, par défaut, affiche
+	sur la sortie standard les coordonnées cartésiennes de
+	ce point en respectant le format décrit précédemment.
+	*/
+    
+    // 
+    
     // 
 }
