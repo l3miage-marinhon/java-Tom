@@ -209,7 +209,14 @@ public class Horaire {
      */
     public void setH24(boolean h24) {
     // TODO 1.17. Écrire ce setter
-    	this.h24 = h24 ;
+		if(h24) {
+			if(!this.h24)setHeures(h%12);
+			this.h24=h24;
+		}else{
+			if(this.h24)setHeures(h+12);
+			this.h24=h24;
+
+		}
     }
 
     /**
@@ -235,13 +242,13 @@ public class Horaire {
      */
     public void uneHeureDePlus() {
     // TODO 1.19. Écrire uneHeureDePlus()
-    	setHeures( (getHeures() == (h24 ? 23 : 11)) ? 0 : h + 1) ;
+    	setHeures(h+1);
     }
 
     /**
      * Augmente cet horaire d'une minute.
      */
-    public void uneMinuteDePlus() {
+    public void uneMinuteDePlus() { // peut etre ecrit plus vite 
     // TODO 1.20. Écrire uneMinuteDePlus()
     	if (getMinutes() == 59) {
     		setMinutes(0) ;
@@ -249,6 +256,9 @@ public class Horaire {
     	} else {
     		setMinutes(m+1) ;
     	}
+    	/*if(getMinutes()==59)uneHeureDePlus();
+    	setMinutes(m+1);*/
+    	
     }
 
     /**
@@ -262,6 +272,8 @@ public class Horaire {
     	} else {
     		setSecondes(s+1) ;
     	}
+    	/*if(getSecondes()==59)uneHeureDePlus();
+    	setSecondes(s+1);*/
     }
     // TODO 1.01. Déclarer les attributs utiles à votre classe.
     // 

@@ -46,7 +46,7 @@ public class QuelquesExpressionsBooleennes {
 		si c n'est pas un chiffre décimal (compris entre 0 et 9)
 		et faux sinon.
 	*/
-    	return (c > '9') ;
+    	return (c > '9') ;//ici encore une fois ça peut marcher mais pas explicite
     }
 
     /**
