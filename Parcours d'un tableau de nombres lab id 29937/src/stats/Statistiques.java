@@ -17,7 +17,7 @@ class Statistiques {
 	public Statistiques(int i) {
 		tab = new double[i];
 		for(int n=0; n<i; n++) {
-			tab[n] = Math.random()*max; //remplis le tableau avec des doubles entre 0.0 et 1000.0
+			tab[n] = Math.random()*200-100; //remplis le tableau avec des doubles entre 0.0 et 1000.
 		}
 	}
 	
@@ -60,6 +60,7 @@ class Statistiques {
     }
 
     double moyenne() {
+    	double moyenne= 0;
     	if(tab.length>0){
 	    	double mean = 0.0;
 	    	for(int i=0; i<tab.length; i++){
@@ -79,7 +80,8 @@ class Statistiques {
 	    	for(double n : tab){
 	    		var += Math.pow(n-mean, 2);
 	    	}
-	    	return var/(double)tab.length;
+	    	return var/tab.length;
+	    	//pq tu caste ici ? 
 	    }else{
 	    	return 0.0;
 	    }
@@ -90,4 +92,21 @@ class Statistiques {
         return Math.sqrt(variance());
     // TODO
     }
+    
+    //lorsque tu fait une fonction essaye de n'avoir qu'un seul return a chaque fois !! donc si je reprend la fonction variance par exemple
+    //on aurait un truc du genre
+
+   /*double variance() {
+	    double var = 0.0;
+	    double mean = moyenne();
+	    for(double n : tab){
+	    	var += Math.pow(n-mean, 2);
+	    }
+	    return  (tab.length > 0 ) ? var/(double)tab.length : 0;
+	    	//pq tu caste ici ? 
+    // TODO
+    }*/
+    
+    
+    
 }
