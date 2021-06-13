@@ -15,7 +15,7 @@ public class TestStats {
     	
     	System.out.println();
     	
-    	double[] t = new double[] {100.00, 200.00, 250.00, 300.00, 500.00};
+    	double[] t = {100.00, 200.00, 250.00, 300.00, 500.00};
     	Statistiques tableau2 = new Statistiques(t);
     	tableau2.afficheTableau();
     	System.out.println("max = " + String.format(Locale.US, "%.2f", tableau2.getMax()));
@@ -53,5 +53,6 @@ public class TestStats {
     	System.out.println("moyenne = " + String.format(Locale.US, "%.2f", tableau5.moyenne()));
     	System.out.println("variance = " + String.format(Locale.US, "%.2f", tableau5.variance()));
     	System.out.println("ecart type = " + String.format(Locale.US, "%.2f", tableau5.ecartType()));
+    	
     }
 }
