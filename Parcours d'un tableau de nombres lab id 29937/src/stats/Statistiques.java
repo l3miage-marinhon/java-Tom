@@ -5,7 +5,6 @@ import java.util.Locale;
 class Statistiques {
 	//TODO declarer un tableau de double appartenant qu'a la class
 	private double[] tab;
-	private double max = 1000.0;
     //TODO faire le constructeur qui prend un tableau
     
 	public Statistiques(double[] t){
@@ -17,75 +16,57 @@ class Statistiques {
 	public Statistiques(int i) {
 		tab = new double[i];
 		for(int n=0; n<i; n++) {
-			tab[n] = Math.random()*200-100; //remplis le tableau avec des doubles entre 0.0 et 1000.
+			tab[n] = Math.random()*2000-1000; //remplit le tableau avec des doubles entre -1000.0 et +1000.
+			//tab[n] = Math.random()*2.0*Double.MAX_VALUE - Double.MAX_VALUE; //remplit le tableau avec des doubles entre -Double.MAX_VALUE et +Double.MAX_VALUE.
 		}
 	}
 	
     //TODO afficher le tableau dans la console de cette maniere [1.00,2.00]
 	public void afficheTableau() {
 		System.out.print("[");
-		int s = tab.length;
-		for(int i=0; i<s; i++) {
+		for(int i=0; i<tab.length; i++) {
 			String str = String.format(Locale.US,"%.2f", tab[i]);
 			System.out.print(str);
-			if(i < s-1) System.out.print(","); 
+			if(i < tab.length-1) System.out.print(","); 
 		}
 		System.out.println("]");
 	}
 
     double getMin() {
-    	if(tab.length>0){
-	    	double minAct = max;
-	    	for(int i=0; i<tab.length; i++) {
-	    		minAct = (tab[i] < minAct) ? tab[i] : minAct;
-	    	}
-	    	return minAct;
-	    }else{
-    		return 0.0;
-    	}
+	    double minAct = Double.MAX_VALUE;
+	    for(int i=0; i<tab.length; i++) {
+	    	minAct = (tab[i] < minAct) ? tab[i] : minAct;
+	    }
+	    return (tab.length>0) ? minAct : 0.0;
     	//TODO 
     }
 
     double getMax() {
-    	if(tab.length>0){
-	    	double maxAct = 0.0;
-	    	for(double n : tab) {
-	    		maxAct = (n > maxAct) ? n : maxAct;
-	    	}
-	    	return maxAct;
-	    }else{
-	    	return 0.0;
+	    double maxAct = -Double.MAX_VALUE;
+	    for(double n : tab) {
+	    	maxAct = (n > maxAct) ? n : maxAct;
 	    }
-    // TODO
+	    return (tab.length>0) ? maxAct : 0.0;
+	    // TODO
     }
 
     double moyenne() {
-    	double moyenne= 0;
-    	if(tab.length>0){
-	    	double mean = 0.0;
-	    	for(int i=0; i<tab.length; i++){
-	    		mean += tab[i];
-	    	}
-	    	return mean/(double)tab.length;
-	    }else{
-	    	return 0.0;
+	    double mean = 0.0;
+	    for(int i=0; i<tab.length; i++){
+	    	mean += tab[i];
 	    }
+	    return mean / ((tab.length>0) ? tab.length : 1);
     // TODO
     }
 
     double variance() {
-    	if(tab.length>0){
-	    	double var = 0.0;
-	    	double mean = moyenne();
-	    	for(double n : tab){
-	    		var += Math.pow(n-mean, 2);
-	    	}
-	    	return var/tab.length;
-	    	//pq tu caste ici ? 
-	    }else{
-	    	return 0.0;
+    	double var = 0.0;
+	    double mean = moyenne();
+	    for(double n : tab){
+	    	var += Math.pow(n-mean, 2);
 	    }
-    // TODO
+	    return var / ((tab.length>0) ? tab.length : 1);
+	    // TODO
     }
 
     double ecartType() {

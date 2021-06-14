@@ -53,6 +53,6 @@ public class TestStats {
     	System.out.println("moyenne = " + String.format(Locale.US, "%.2f", tableau5.moyenne()));
     	System.out.println("variance = " + String.format(Locale.US, "%.2f", tableau5.variance()));
     	System.out.println("ecart type = " + String.format(Locale.US, "%.2f", tableau5.ecartType()));
-    	
+
     }
 }
