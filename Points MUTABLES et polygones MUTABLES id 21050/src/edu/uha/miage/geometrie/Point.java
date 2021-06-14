@@ -35,6 +35,7 @@
 
 */
 package edu.uha.miage.geometrie;
+import java.util.Locale;
 
 import static java.lang.Math.*;
 
@@ -49,11 +50,16 @@ public class Point {
 	Veiller à choisir des modificateurs adaptés.
 	Respecter les noms x et y
 	*/
+	private double x;
+	private double y;
+	
     // 
     /* TODO 1.02. Déclarer les coordonnées polaires rho et theta du point, de type double.
 	Veiller à choisir des modificateurs adaptés.
 	Respecter les noms rho et theta
 	*/
+	private double rho;
+	private double theta;
 	
 	/**
      * Cadeau : une méthode d'instance privée pfromc qui calcule les coordonnées
@@ -75,6 +81,9 @@ public class Point {
     private void pfromc() {
     /* TODO 1.03. Coller ici le code ci-dessus quand les attributs de
 	cette classe seront correctement déclarés.*/
+    	rho = sqrt(x*x+y*y);
+        theta = atan2(y, x)%(2*PI);
+        if (getTheta() < 0) theta += 2*PI;
     }
 
     /**
@@ -102,8 +111,18 @@ public class Point {
      */
     private void cfromp() {
     /* TODO 1.04. Coller ici le code ci-dessus quand les attributs de
-	cette classe seront correctement déclarés.
-	*/
+	cette classe seront correctement déclarés.*/
+    	/*
+    	if (rho < 0) {
+    		rho = -rho;
+    		theta += PI;
+    	}
+        theta %= (2*PI);
+        if (theta < 0) theta += 2*PI;
+        */
+        x = rho*cos(theta);
+        y = rho*sin(theta);
+	
     }
     /* TODO 1.05. Écrire le constructeur à trois paramètres 
 	Point(double roux, double touy, boolean polaire)
@@ -117,29 +136,89 @@ public class Point {
 		vrai : les deux premiers paramètres sont des coordonnées polaires
 		faux : les deux premiers paramètres sont des coordonnées cartésiennes
 	*/
+    public Point(double roux, double touy, boolean polaire){
+    	if (polaire) {
+    		setTheta(touy);	//theta en premier car setRho peut influer sur theta
+    		setRho(roux);
+    	}else {
+    		setX(roux);
+    		setY(touy);
+    	}
+    }
     // 
     /* TODO 1.06. Écrire le constructeur à deux paramètres de type double qui 
 	qui construit le point à partir de ses coordonnées cartésiennes
 	*/
+    public Point(double px, double py){
+    	this(px, py, false);
+    }
     // 
     /* TODO 1.07. Écrire le constructeur par défaut qui construit
 	le point de coordonnées cartésiennes (0, 0)
 	*/
+    public Point(){
+    	this(0, 0, false);
+    }
     // 
     /* TODO 1.08. Ajouter un setter et un getter à chaque attribut.
-	
 	Attention aux pièges.
 	*/
+    
+  //Getters
+    public double getX() {
+    	return this.x;
+    }
+    public double getY() {
+    	return this.y;
+    }
+    public double getRho() {
+    	return this.rho;
+    }
+    public double getTheta() {
+    	return this.theta;
+    }
+    
+    //Setters
+    public void setX(double x){
+    	this.x = x;
+    	pfromc();
+    }
+    public void setY(double y){
+    	this.y = y;
+    	pfromc();
+    }
+    public void setRho(double rho){
+    	this.rho = (rho<0) ? -rho : rho;
+    	if(rho<0) {
+    		setTheta(theta+PI);	//pas de cfromp() après setTheta car ce dernier le fait deja
+    	}else {
+    		cfromp(); 
+    	}	
+    }
+    public void setTheta(double theta){
+    	this.theta = theta%(2*PI);
+    	if(getTheta()<0)this.theta += 2*PI; //utile ou pas d'utiliser le getTheta() plutot que l'attribut direct ?
+    	cfromp();
+    }
+    
+    
     
     /* TODO 1.09. Écrire une méthode translation(double dx, double dy) qui applique
 	à ce point la translation de dx en x et dy en y donnés en paramètres.
 
 	Attention aux pièges.
 	*/	
+    public void translation(double dx, double dy) {
+    	setX(x+dx);
+    	setY(y+dy);
+    }
     /* TODO 1.10. Écrire une méthode rotation(double dtheta) qui applique
 	à ce point la rotation de dtheta donnée en paramètres.
 	Attention aux pièges.
 	*/
+    public void rotation(double dtheta) {
+    	setTheta(theta+dtheta);
+    }
     /* TODO 1.11. Écrire une méthode afficher(boolean polaire) qui affiche
 	sur la sortie standard les coordonnées de ce point 
 	soit polaires soit cartésiennes selon l'état du paramètre polaire
@@ -147,12 +226,20 @@ public class Point {
 		 polaire => [<rho>:<theta>]
 		 !polaire => (<x>, <y>)
 	*/
+    public void afficher(boolean polaire) {
+    	if(polaire) {
+    		System.out.println("[" + String.format(Locale.US,"%.2f", rho) + ":" + String.format(Locale.US,"%.2f", theta) + "]");
+    	}else {
+    		System.out.println("(" + String.format(Locale.US,"%.2f", x) + ", " + String.format(Locale.US,"%.2f", y) + ")");
+    	}
+    }
     /* TODO 1.12. Écrire une méthode afficher() qui, par défaut, affiche
 	sur la sortie standard les coordonnées cartésiennes de
 	ce point en respectant le format décrit précédemment.
 	*/
-    
-    // 
-    
+    public void afficher() {
+    	afficher(false);
+    }
+        
     // 
 }
