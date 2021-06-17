@@ -196,8 +196,7 @@ public class Point {
     	}	
     }
     public void setTheta(double theta){
-    	this.theta = theta%(2*PI);
-    	if(getTheta()<0)this.theta += 2*PI; //utile ou pas d'utiliser le getTheta() plutot que l'attribut direct ?
+    	this.theta = (theta%(2*PI)<0) ? theta%(2*PI)+2*PI : theta%(2*PI); 
     	cfromp();
     }
     
