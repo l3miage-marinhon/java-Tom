@@ -2,10 +2,10 @@ package Pokedex;
 
 import java.util.ArrayList;
 
-import Pokedex.Pokemon;
-import Pokedex.Sportif;
-import Pokedex.Terrestre;
-import Pokedex.Aquatique;
+import pokedex.Pokemon;
+import pokedex.Sportif;
+import pokedex.Terrestre;
+import pokedex.Aquatique;
 
 
 public class Pokedex implements CollectionPokemons{

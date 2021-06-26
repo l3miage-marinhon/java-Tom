@@ -1,4 +1,4 @@
-package Pokedex;
+package pokedex;
 import java.util.Locale;
 
 public class Sportif extends Terrestre{
