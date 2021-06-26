@@ -33,10 +33,11 @@ package univ;
  *
  * @author yvan
  */
-public class Prof{
+public class Prof extends Personne{
 
     // TODO 1.01 Un prof enseigne un cours (prévoir un attribut à cet effet)
     // 
+	private String cours;
     
     /**
      * TODO 1.02
@@ -50,14 +51,26 @@ public class Prof{
      */
     // TODO 1.02 Constructeur comme une personne normale avec le cours en plus
     // 
+	public Prof(String nom, String prenom, boolean homme, String cours) {
+		super(nom, prenom, homme);
+		this.cours = cours;
+	}
+	
     /**
      * TODO 1.03
      * Getter pour le cours
      * @return
      */
+	public String getCours() {
+		return cours;
+	}
+	
     // TODO 1.04 Getter : un prof dit toujours son nom en majuscule
     // 
-
+	@Override
+	public String getNom() {
+		return super.getNom().toUpperCase();
+	}
 
     /**
      * TODO 1.05
@@ -81,6 +94,10 @@ public class Prof{
      * @param soutenue (true ou false)
      * @return la présentation soutenue ou pas de ce prof sous forme d'une String
      */
+	@Override
+	public String presentation(boolean soutenue) {
+		return super.presentation(false) + (soutenue ? ". J'enseigne " + getCours() : "");
+	}
 
     /**
      * TODO 1.06
@@ -92,6 +109,11 @@ public class Prof{
      *
      * @return une chaîne de caractères contenant le bonjour de ce prof
      */
+	
+	@Override
+	public String bonjour() {
+		return "Salut, je suis " + presentation(true);
+	}
 
     /**
      * TODO 1.07
@@ -111,7 +133,11 @@ public class Prof{
      * @return une chaîne de caractères contenant la réponse de ce prof au
      * bonjour de la personne en paramètre
      */
-
+	@Override
+	public String reponseAuBonjourDe(Personne personne) {
+		return "Hello " + personne.getPrenom() + ", moi c'est " + presentation(false) + " et j'enseigne " + getCours(); 
+	}
+	
 
     /**
      * TODO 1.08
@@ -124,6 +150,10 @@ public class Prof{
      * @param personne à qui ce prof s'adresse
      * @return une chaîne de caractères contenant le "ça va" de ce prof
      */
+	@Override
+	public String caVa(Personne personne) {
+		return "Ca get'z, " + personne.getPrenom() + " ?";
+	}
 
     // TODO 1.08 Redéfinir caVA() pour un prof
 
@@ -137,4 +167,8 @@ public class Prof{
      * @param personne inutile dans le cas d'un prof
      * @return une chaîne de caractères contenant le "et toi" de ce prof
      */
+	@Override
+	public String etVous(Personne personne) {
+		return "Ca roule, Raoul.";
+	}
 }
