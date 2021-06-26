@@ -2,8 +2,7 @@ package main;
 
 import java.util.ArrayList;
 
-import Pokedex.Pokedex;
-import pokedex.*;
+import Pokedex.*;
 
 public class Main {
 	public static void main(String[] args) {

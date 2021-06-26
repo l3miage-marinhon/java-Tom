@@ -1,4 +1,4 @@
-package pokedex;
+package Pokedex;
 
 public class Mer extends Aquatique{
 	

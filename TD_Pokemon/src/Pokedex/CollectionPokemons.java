@@ -1,7 +1,5 @@
 package Pokedex;
 
-import pokedex.Pokemon;
-
 public interface CollectionPokemons{
 
 	public abstract void inserePokemon(Pokemon p);
