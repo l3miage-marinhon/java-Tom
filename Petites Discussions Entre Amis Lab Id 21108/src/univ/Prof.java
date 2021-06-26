@@ -33,8 +33,7 @@ package univ;
  *
  * @author yvan
  */
-public class Prof extends Personne {
-	private String cours;
+public class Prof{
 
     // TODO 1.01 Un prof enseigne un cours (prévoir un attribut à cet effet)
     // 
@@ -51,24 +50,11 @@ public class Prof extends Personne {
      */
     // TODO 1.02 Constructeur comme une personne normale avec le cours en plus
     // 
-	public Prof(String nom,String Prenom,boolean Homme,String cours) {
-		super(nom,Prenom,Homme);
-		this.cours=cours;
-	}
     /**
      * TODO 1.03
      * Getter pour le cours
      * @return
      */
-    public String getCours() {
-        return cours;
-    // TODO 1.03
-    }
-    @Override
-    public String getNom() {
-    	return String.format("%S", super.getNom());
-    }
-
     // TODO 1.04 Getter : un prof dit toujours son nom en majuscule
     // 
 
@@ -95,15 +81,6 @@ public class Prof extends Personne {
      * @param soutenue (true ou false)
      * @return la présentation soutenue ou pas de ce prof sous forme d'une String
      */
-    @Override
-    public String presentation(boolean soutenue) {
-        if(soutenue) {
-        	return super.presentation(false)+". J'enseigne "+getCours()+"."; 
-        }else {
-        	return super.presentation(false);
-        }
-    // TODO 1.05 Redéfinir presentation() pour un prof
-    }
 
     /**
      * TODO 1.06
@@ -115,11 +92,6 @@ public class Prof extends Personne {
      *
      * @return une chaîne de caractères contenant le bonjour de ce prof
      */
-    @Override
-    protected String bonjour() {
-        return "Salut, je suis "+presentation(true);
-    // TODO 1.06 Redéfinir bonjour() pour un prof
-    }
 
     /**
      * TODO 1.07
@@ -139,11 +111,7 @@ public class Prof extends Personne {
      * @return une chaîne de caractères contenant la réponse de ce prof au
      * bonjour de la personne en paramètre
      */
-    @Override
-    protected String reponseAuBonjourDe(Personne personne) {
-        return "Hello "+personne.getPrenom()+", moi c'est "+this.presentation(false)+" et j'enseigne "+this.getCours();
-    // TODO 1.07 Redéfinir reponseAuBonjourDe() pour un prof
-    }
+
 
     /**
      * TODO 1.08
@@ -156,11 +124,8 @@ public class Prof extends Personne {
      * @param personne à qui ce prof s'adresse
      * @return une chaîne de caractères contenant le "ça va" de ce prof
      */
-    @Override
-    protected String caVa(Personne personne) {
-        return "Ca get'z, "+personne.getPrenom();
+
     // TODO 1.08 Redéfinir caVA() pour un prof
-    }
 
     /**
      * TODO 1.09
@@ -172,9 +137,4 @@ public class Prof extends Personne {
      * @param personne inutile dans le cas d'un prof
      * @return une chaîne de caractères contenant le "et toi" de ce prof
      */
-    @Override
-    protected String etVous(Personne personne) {
-        return "Ca roule, Raoul";
-    // TODO 1.09 Redéfinir etVous() pour un prof
-    }
 }

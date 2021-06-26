@@ -32,7 +32,7 @@ public class Main {
     // dans les classes Prof et Etudiant. Lisez bien les messages d'erreur de
     // compilation et faites ce qu'il faut pour que ça compile.
     public static void main(String[] args) throws IOException {
-        System.out.println("\n--- Quelque part dans le farwest ---- \n");
+        /*System.out.println("\n--- Quelque part dans le farwest ---- \n");
         Personne lucky = new Personne("Luke", "Lucky", true);
         Personne ma = new Personne("Dalton", "Ma", false);
         lucky.ditBonjourA(ma);
@@ -44,7 +44,7 @@ public class Main {
         << Comment allez-vous ? >> continue Ma Dalton.
         << Ca va bien. Merci >> termine Luke Lucky.*/
 
-        System.out.println("\n--- Pendant ce temps là, à l'est ---- \n");
+        /*System.out.println("\n--- Pendant ce temps là, à l'est ---- \n");
     
         Prof bruno = new Prof("Adam", "Bruno", true, "les bases de données");
         Prof yvan = new Prof("Maillot", "Yvan", true, "Java");
@@ -66,26 +66,6 @@ public class Main {
 
         System.out.println("\n--- Au même moment ---- \n");
        
-        skell.ditBonjourA(bruno);
-
-        char c = 'z';
-        int i = 3;
-        double d = 0.3;
-        System.out.println(c - 'a' + 'A');
-        System.out.println('B' + 1.5);
-        System.out.println(-(5 + 4) * i - (5 * 4 + 3.0));
-        System.out.println(5.0 / 2.0 * 2.0);
-        System.out.println(5.0 * 2.0 / 2.0);
-        System.out.println(5 / 2 * 2);
-        System.out.println(5 * 2 / 2);
-        System.out.println(5 % 2);
-        System.out.println(5.2 % 2.1);
-        System.out.println((char) (c - 'a' + 'A'));
-        System.out.println(5 * 1.0 / 2);
-        System.out.println(5 / 2 * 1.0);
-        // System.out.println(0.0 < d < 1.0);
-        // System.out.println(1 < (4 && 4) < 8);
-        System.out.println(0 < 1 / 2 && 1 / 2 < 1);
-        System.out.println('A' < 'a');
+        skell.ditBonjourA(bruno);*/
     }
 }

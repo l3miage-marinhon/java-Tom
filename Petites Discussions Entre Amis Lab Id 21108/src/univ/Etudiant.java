@@ -30,12 +30,10 @@ package univ;
  *
  * @author yvan
  */
-public class Etudiant extends Personne {
+public class Etudiant {
 	
     // TODO 2.00 Les attributs surnom et annee d'un étudiant
     // 
-	private String surnom;
-	private String annee;
     /**
      * TODO 2.01
      * Le constructeur initialise les attributs de cet étudiant (qui est une personne)
@@ -49,20 +47,11 @@ public class Etudiant extends Personne {
      */
     // TODO 2.01 Le constructeur comme une personne mais avec un surnom et l'année en plus
     // 
-	public Etudiant(String nom, String prenom, boolean homme,String surnom,String annee) {
-		super(nom,prenom,homme);
-		this.surnom=surnom;
-		this.annee=annee;
-	}
 
     // TODO 2.02 Écrire un getter pour le surnom
-    // 
-	public String getSurnom() {return surnom;}
-	
 
     // TODO 2.03 Écrire un getter pour l'année
     // 
-	public String getAnnee() {return annee;}
 
     /**
      * TODO 2.04
@@ -86,13 +75,6 @@ public class Etudiant extends Personne {
      * @return la présentation soutenue ou pas de ce prof sous forme d'une String
      */
     // TODO 2.04 Redéfinir presentation(boolean soutenue) - Lire Javadoc 2.04
-	public final String presentation(boolean soutenue) {
-		if(soutenue) {
-			return String.format("%s, étudiant en %s",super.presentation(false),getAnnee());
-		}else {
-			return getSurnom();
-		}
-	}
     /**
      * TODO 2.05
      * Un étudiant ne dit pas "Bonjour" mais "'Lut Gros".
@@ -102,10 +84,6 @@ public class Etudiant extends Personne {
      * @return "'Lu Gros"
      */
      // TODO 2.05 Redéfinition de bonjour() pour un étudiant (la méthode ne doit pas être redéfinissable) - Lire Javadoc 2.05
-	@Override
-	protected final String bonjour() {
-		return "'Lu Gros";
-	}
 
    /**
      * TODO 2.06
@@ -115,11 +93,7 @@ public class Etudiant extends Personne {
      *
      * @return "Ouai Gros"
      */
-    // TODO 2.06 Redéfinition de reponseAuBonjourDe() pour un étudiant (la méthode ne doit pas être redéfinissable) - Lire Javadoc 2.06
-	@Override
-	protected final String reponseAuBonjourDe(Personne personne) {
-		return "Ouai Gros";
-	}
+    // TODO 2.06 Redéfinition de reponseAuBonjourDe() pour un étudiant (la méthode ne doit pas être redéfinissable) - Lire Javadoc 2.0
     /**
      * TODO 2.07
      * Un étudiant demande si ça va en disant "Bien ou quoi, Gros ?"
@@ -129,11 +103,6 @@ public class Etudiant extends Personne {
      * @return "Bien ou quoi, Gros ?"
      */
     // TODO 2.07 Redéfinition de caVa() pour un étudiant (la méthode ne doit pas être redéfinissable) - Lire Javadoc 2.07
-	@Override
-
-	protected final String caVa(Personne personne) {
-		return "Bien ou quoi, Gros ?";
-	}
     /**
      * TODO 2.08
      * Un étudiant répond à un ça va en disant "Wesh, Gros"
@@ -143,9 +112,5 @@ public class Etudiant extends Personne {
      * @return "Wesh, Gros"
      */
     // TODO 2.08 Redéfinition de etVous() pour un étudiant (la méthode ne doit pas être redéfinissable) - Lire Javadoc 2.08
-	@Override
-	protected final String etVous(Personne personne) {
-		return "Wesh, Gros";
-	}
     
 }
