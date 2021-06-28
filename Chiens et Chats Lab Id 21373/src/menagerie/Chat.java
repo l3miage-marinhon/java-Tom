@@ -12,4 +12,9 @@ public class Chat extends Mammifere{
 	public String cri() {
 		return "miaou";
 	}
+	
+	@Override
+	public String toString() {
+		return "Je suis un chat, " + super.toString();
+	}
 }

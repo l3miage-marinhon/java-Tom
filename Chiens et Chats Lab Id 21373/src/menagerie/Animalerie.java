@@ -1,24 +1,25 @@
 package menagerie;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Animalerie {
 	
-	private Animal chenil[];
+	private ArrayList<Animal> chenil;
 	
 	public Animalerie(int n) {
 		setChenil(n);
 	}
 	
 	public Animalerie() {
-		chenil = new Animal[3];
-    	chenil[0] = new Chat("Kira");
-    	chenil[1] = new Chien("Beethoven");
-    	chenil[2] = new Poisson("Saumon");
+		chenil = new ArrayList<Animal>();
+    	chenil.add(new Chat("Kira"));
+    	chenil.add(new Chien("Médor"));
+    	chenil.add( new Poisson("Bubulle"));
 	}
 	
 	public void setChenil(int n) {
-		chenil = new Animal[n];
+		chenil = new ArrayList<Animal>(n);
 		Scanner sc = new Scanner(System.in);
 		int choix;
 		String nom;
@@ -33,11 +34,11 @@ public class Animalerie {
 			System.out.print("Nom de l'animal : ");
 			nom = sc.nextLine();
 			if(choix == 1) {
-				chenil[i] = new Chien(nom);
+				chenil.add(new Chien(nom));
 			}else if(choix == 2) {
-				chenil[i] = new Chat(nom);
+				chenil.add(new Chat(nom));
 			}else {
-				chenil[i] = new Poisson(nom);
+				chenil.add(new Poisson(nom));
 			}
 		}
 		sc.close();
@@ -56,11 +57,20 @@ public class Animalerie {
       
 
     public static void main(String[] args) {
+
         Animalerie an = new Animalerie();
         System.out.println(an.getChenil());
+        
+        Scanner sc = new Scanner(System.in);
+        int nb = 0;
+        while(!(nb>0 && nb<10)) {
+        	System.out.print("Combien d'animaux souhaitez vous enregistrer (entre 1 et 9) : ");
+        	nb = sc.nextInt();
+        }
        
-        Animalerie an2 = new Animalerie(4);
+        Animalerie an2 = new Animalerie(nb);
         System.out.println(an2.getChenil());
+        sc.close();
     }
     
     /*

@@ -12,4 +12,9 @@ public class Chien extends Mammifere{
 	public String cri() {
 		return "wouaf";
 	}
+	
+	@Override
+	public String toString() {
+		return "Je suis un chien, " + super.toString();
+	}
 }

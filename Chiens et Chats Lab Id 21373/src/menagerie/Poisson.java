@@ -14,4 +14,8 @@ public class Poisson extends Animal{
 		return "glouglou";
 	}
 
+	@Override
+	public String toString() {
+		return "Je suis un poisson, " + super.toString();
+	}
 }

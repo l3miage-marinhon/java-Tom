@@ -25,6 +25,6 @@ public abstract class Animal {
 	
 	@Override
 	public String toString() {
-		return "Je m'appelle " + getNom() + ", et je peux faire " + cri() + "\n";
+		return "je m'appelle " + getNom() + ", et je peux faire " + cri() + "\n";
 	}
 }
