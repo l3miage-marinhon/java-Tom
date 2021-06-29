@@ -2,13 +2,14 @@ package menagerie;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
+ 
 public class Animalerie {
 	
 	private ArrayList<Animal> chenil;
 	
 	public Animalerie(int n) {
 		setChenil(n);
+		
 	}
 	
 	public Animalerie() {
