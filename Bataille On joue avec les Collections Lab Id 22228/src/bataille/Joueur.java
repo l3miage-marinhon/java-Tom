@@ -1,51 +1,27 @@
 package bataille;
-
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.Deque;
-
+//quand la classe est terminer faire le TestJoueur
+//a la bataille, on utilise un deque de carte 
 public class Joueur{
-	private String nom;
-	private Deque<Carte> tab;
+	//TODO donner les attribues d'un joueur
 	
+	//TODO faire le conctructeur
 	
+	//TODO faire la méthode remporte qui lorsqu'un joueur gagne une partie, il ajoute
+	//une carte son deque
+	//public void remporte(Carte carte)
+	//ou bien un tas de carte
+	//public void remporte(Collection<Carte> cartes)
 	
-	public Joueur(String nom) {
-		// TODO Auto-generated constructor stub
-		this.nom=nom;
-		tab= new ArrayDeque<Carte>();
-	}
+	//TODO faire la méthode joue qui permet de jouer la carte la plus hautes dans le deque
+	//public Carte joue() 
 	
-	public String getNom() {
-		return nom;
-	}
+	//TODO faire le nb carte
+	//public int nbCartes()
 	
-	public void remporte(Carte carte) {
-		tab.addLast(carte);
-	}
-	public void remporte(Collection<Carte> cartes) {
-		for(Carte c : cartes) {
-			tab.addLast(c);
-		}
-	}
+	//TODO faire printTas qui affiche le tas d'un joueur de cette maniere
+	//--- Tas du joueur: Nicolas ---
+	//	valet de trefle
 	
-	public Carte joue() {
-		Carte carte=tab.getFirst();
-		tab.removeFirst();
-		return carte;
-	}
-	
-	public int nbCartes() {
-		return tab.size();
-		
-	}
-	
-	public void printTas() {
-		System.out.println("--- Tas du joueur: "+nom+"---");
-		for(Carte c:tab) {
-			System.out.println(c.toString());
-		}
-	}
 	
 
 }
