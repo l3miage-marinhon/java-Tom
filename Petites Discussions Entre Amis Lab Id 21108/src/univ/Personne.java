@@ -35,7 +35,7 @@ package univ;
  * suivantes :
  *       1. public final void ditBonjourA(Personne personne)
  *       2. private void repondAuBonjourDe(Personne personne)
- *       3. private void repondAuBonjourDe(Personne personne)
+ *       3. private void demandeEtVousA(Personne personne)
  *       4. private void demandeSiCaVaA(Personne personne)
  *
  * ELLES N'ONT PAS À ÊTRE MODIFIÉES EN QUOIQUE CE SOIT.

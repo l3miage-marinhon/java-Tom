@@ -1,4 +1,4 @@
-package Pokedex;
+package pokedex;
 
 public abstract class Pokemon {
 	private String nom;

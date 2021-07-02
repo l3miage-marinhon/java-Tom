@@ -1,4 +1,4 @@
-package Pokedex;
+package pokedex;
 
 public class Casanier extends Terrestre{
 	private int nbHeuresTele;
