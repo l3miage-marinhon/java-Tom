@@ -24,6 +24,15 @@ public class TestJoueur {
 		joueur.remporte(new Carte(Couleur.PIQUE, Valeur.VALET));
 		joueur.remporte(desCartes);
 		joueur.printTas();
+		System.out.println("\nJoueur joue : " + joueur.joue());
+		System.out.println("Joueur joue : " + joueur.joue());
+		System.out.println("Joueur joue : " + joueur.joue());
+		joueur.printTas();
+		System.out.println("Joueur remporte as de carreau");
+		joueur.remporte(new Carte(Couleur.CARREAU, Valeur.AS));
+		System.out.println("Joueur remporte 9 de carreau");
+		joueur.remporte(new Carte(Couleur.CARREAU, Valeur.NEUF));
+		joueur.printTas();
 	}
 
 }
