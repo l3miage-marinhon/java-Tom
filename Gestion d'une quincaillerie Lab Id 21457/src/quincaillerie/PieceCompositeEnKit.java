@@ -1,7 +1,8 @@
 package quincaillerie;
 
 // TODO Question 5: écrire la classe PieceCompositeEnKit.
-// 
+// une pieces composite en kit est une pieces qui a besoins d'un certain temps de montage
+//son prix est la somme de toutes ses pièces et son temps de garantie et celui de base /2 
 public class PieceCompositeEnKit extends PieceComposite{
 	protected int dureeMontage;
 	

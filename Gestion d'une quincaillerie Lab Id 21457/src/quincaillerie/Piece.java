@@ -3,31 +3,16 @@ package quincaillerie;
 // TODO Question 1: Ecrire la classe Piece.
 // 
 public abstract class Piece {
-	protected String nom;
-	protected String reference;
+	//TODO une piece  1 ref qui peut ressembler a ça 89B13 et un nom
 	
 	
+	// une pieces a des propriété qui lui sont propre peut import sont types de pieces
+	//on peut lui chnager ça ref
+	//onpeut l'afficher
+	//on peut avoir son prix
+	// on peut avoir ça dureer de garantie
+	//on peut avoir ça dureer de garantie de base
+	//on peut avoir ça dureer de fabrication
 	
-	public Piece(String nom,String reference) {
-		this.nom=nom;
-		this.reference=reference;
-	}
 	
-	@Override
-	public String toString () {
-		return nom+" - "+reference;
-	}
-	
-	protected abstract void setReference(String reference);
-	
-	public abstract void affiche() ;
-	
-	public abstract double prix();
-	
-	public abstract int dureeGarantie();
-	
-	public abstract int dureeGarantieDeBase();
-	
-	public abstract int dureeFabrication() ;
-
 }
