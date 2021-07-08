@@ -21,15 +21,7 @@ package edu.uha.miage.exceptions;
  */
 // TODO 1.00 Créer une exception contrôlée
 
-public class BadHoraireException extends Exception {
-
-	private static final long serialVersionUID = 1L;
-
-	public BadHoraireException(String s) {
-		// TODO Auto-generated constructor stub
-		super(s);
-	}
-	
+public class BadHoraireException{
 	
 }
 // 
