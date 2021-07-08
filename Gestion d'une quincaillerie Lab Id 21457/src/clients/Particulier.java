@@ -2,7 +2,7 @@ package clients;
 
 // TODO Question 26: écrire la classe Particulier.
 // 
-public class Particulier{
-
+public class Particulier extends Client{
+	
 	
 }
