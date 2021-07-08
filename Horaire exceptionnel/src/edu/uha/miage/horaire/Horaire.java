@@ -34,8 +34,7 @@ import edu.uha.miage.exceptions.*;
  * @author Yvan Maillot <yvan.maillot@uha.fr>
  */
 public class Horaire {
-
-    private int heures, minutes, secondes;
+	//TODO mettre les attribue de la classes
 
     /**
      * TODO 1.02 Ecrire le constructeur qui construit un nouvel horaire à partir
@@ -56,11 +55,6 @@ public class Horaire {
      * @throws edu.uha.miage.exceptions.BadHoraireException si l'horaire donnée
      * est incorrect.
      */
-    public Horaire(int h, int m, int s) throws BadHoraireException{
-    		setHeures(h);
-    		setMinutes(m);
-    		setSecondes(s);
-    }
     /**
      
      * 
@@ -77,10 +71,6 @@ public class Horaire {
      * est incorrect.
      */
     
-    public Horaire(int h,int m) throws BadHoraireException {
- 
-    		this(h,m,0);
-    }
     /**
      * TODO 1.04. Ecrire le constructeur qui construit un nouvel horaire à
      * partir d'un seul argument : l'heure (les secondes et les minutes sont nulles).
@@ -90,42 +80,31 @@ public class Horaire {
      *
      * @throws edu.uha.miage.exceptions.BadHoraireException si l'horaire donnée
      * est incorrect.
-     */
-    public Horaire(int h) throws BadHoraireException{
-    	this(h,0,0);
-    }
     /**
      * TODO 1.05. Ecrire le constructeur par défaut qui construit l'horaire
      * 00:00:00.
      * 
 		
      */
-    public Horaire() {
-    	heures=0;
-    	minutes=0;
-    	secondes=0;
-    }
+	
+	//TODO faire les getter 
     /**
      * @return les heures de cet horaire
      */
-    public int getHeures() {
-        return heures;
-    }
+
 
     /**
      * @return les minutes de cet horaire
      */
-    public int getMinutes() {
-        return minutes;
-    }
+
 
     /**
      * @return les secondes de cet horaire
      */
-    public int getSecondes() {
-        return secondes;
-    }
 
+
+	
+	//TODO 
     /**
      * Retourne un horaire sous la forme d'une chaîne de caractères sous la
      * forme "hh:mm:ss" où hh, mm, ss sont les heures, les minutes et les
@@ -135,68 +114,22 @@ public class Horaire {
      *
      * @return un horaire de la forme "hh:mm:ss"
      */
-    @Override
-    public String toString() {
-        return String.format("%02d:%02d:%02d", heures, minutes, secondes);
-    }
+	
+    /**
+     * TODO Augmente cet horaire d'une heure.
+     */
+    /**
+     * TODO Augmente cet horaire d'une minute.
+     */
 
     /**
-     * Augmente cet horaire d'une heure.
+     * TODO Augmente cet horaire d'une seconde.
      */
-    public void uneHeureDePlus() {
-        ++heures;
-        if (heures > 23) {
-            heures = 0;
-        }
-    }
-
-    /**
-     * Augmente cet horaire d'une minute.
-     */
-    public void uneMinuteDePlus() {
-        ++minutes;
-        if (minutes > 59) {
-            minutes = 0;
-            uneHeureDePlus();
-        }
-    }
-
-    /**
-     * Augmente cet horaire d'une seconde.
-     */
-    public void uneSecondeDePlus() {
-        ++secondes;
-        if (secondes > 59) {
-            secondes = 0;
-            uneMinuteDePlus();
-        }
-    }
     // 
     // 
     // 
     // 
     // TODO 1.06. Écrire les setters pour les heures, les minutes et les secondes
-	public void setHeures(int heures) throws BadHoraireException {
-		if(heures<0 || heures>23){
-			throw new BadHoraireException("l'heure n'est pas compris entre 0 et 23 , heure donne : <"+heures+">");
-		}else {
-			this.heures = heures;
-		}
-	}
-	public void setMinutes(int minutes) throws BadHoraireException {
-		if(minutes<0 || minutes>59) {
-			throw new BadHoraireException("les minutes ne sont pas entre 0 et 59 , minutes donnée: <"+minutes+">");
-		}else {
-			this.minutes = minutes;
-		}
-	}
-	public void setSecondes(int secondes) throws BadHoraireException  {
-		if(secondes<0 || secondes>59) {
-			throw new BadHoraireException("les seconde ne sont pas compris entre 0 et 59, seconde donné :<"+secondes+">");
-		}else{	
-			this.secondes = secondes;
-		}
-	}
     
     
     
@@ -218,22 +151,5 @@ public class Horaire {
 		Ne sont pas admis : "25:00" "2h2" "13:45:62"
 		*/
     // 
-	
-	public static Horaire of(String horaire) throws BadHoraireException {
-			String[] tab=horaire.split(":");
-			if(tab.length==2) {
-					int h=Integer.parseInt(tab[0]);
-					int m=Integer.parseInt(tab[1]);
-					return new Horaire(h,m);
-			}else if (tab.length==3) {
-				    int h=Integer.parseInt(tab[0]);
-					int m=Integer.parseInt(tab[1]);
-					int s=Integer.parseInt(tab[2]);
-					return new Horaire(h,m,s);
-			}else {
-				throw new BadHoraireException("le format de l'horaire ne respectait pas <hh:mm:ss> ou <hh:mm>, horaire donné :  <"+horaire+">");
-			}
-		
-	}
 	
 }

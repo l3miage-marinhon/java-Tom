@@ -125,7 +125,6 @@ public class Bataille {
 		int res;
 		String quiRemporte = new String();
 		quiRemporte = jeu.remporter();
-		System.out.println(quiRemporte);
 		if(quiRemporte.equals("TIE")) {
 			commentaire.setText("  Egalité, vous devez rejouer");
 			res = 0;
