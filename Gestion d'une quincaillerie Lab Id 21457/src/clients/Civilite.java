@@ -2,18 +2,17 @@ package clients;
 
 // TODO Questioin 23: Définir l'énumération Civlite.
 // 
-public enum Civilite{
-	M("Monsieur"),Mme("Madame"),Mlle("Mademoiselle");
+public enum Civilite { 
+	MADAME("Mme."), MONSIEUR("M.");
 	
-	private String denomination;
-		
-	Civilite(String s){
-		denomination=s;
+	private String nom;
+	
+	
+	private Civilite(String nom) {
+		this.nom = nom;
 	}
-	
-	@Override
-	public String toString() {
-		return denomination;
+
+	public String getNom() {
+		return nom;
 	}
-	
 }
