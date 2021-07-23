@@ -1,5 +1,8 @@
 package quincaillerie;
 
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 // TODO Question 5: écrire la classe PieceCompositeEnKit.
 // une pieces composite en kit est une pieces qui a besoins d'un certain temps de montage
 //son prix est la somme de toutes ses pièces et son temps de garantie et celui de base /2
@@ -8,6 +11,38 @@ package quincaillerie;
 //nom : 
 // ref : 
 // etc .... 
-public class PieceCompositeEnKit{
+public class PieceCompositeEnKit extends PieceComposite{
+	
+	private int tempsMontage;
+	
+	public PieceCompositeEnKit(String nom, String ref, ArrayList<Piece> composants, int tempsMontage) {
+		super(nom, composants);
+		setRef(ref);
+		setTempsMontage(tempsMontage);
+		setPrix(prixTotalComp());
+		setDureeGarantie(garCompKit());
+	}
+
+	public int getTempsMontage() {
+		return tempsMontage;
+	}
+	public void setTempsMontage(int tempsMontage) {
+		this.tempsMontage = (tempsMontage>0 ? tempsMontage : 1);
+	}
+	
+	private int garCompKit() {
+		return getDureeGarantieBase()/2;
+	}
+	
+	@Override
+	public void setRef(String ref) {
+		super.setRef(!Pattern.matches("01[A-Z]{2}[0-9]{2}", ref) ? "01AA00" : ref);
+		//exception plus tard si match false
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "\nTemps de montage : " + getTempsMontage() + (getTempsMontage()>1 ? " jours" : " jour");
+	}
 	
 }

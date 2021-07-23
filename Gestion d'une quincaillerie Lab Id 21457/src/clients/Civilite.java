@@ -7,12 +7,12 @@ public enum Civilite {
 	
 	private String nom;
 	
-	
 	private Civilite(String nom) {
 		this.nom = nom;
 	}
 
-	public String getNom() {
+	@Override
+	public String toString() {
 		return nom;
 	}
 }
