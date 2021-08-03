@@ -1,58 +1,129 @@
 package quincaillerie;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
-import clients.CategorieEntreprise;
-import clients.Civilite;
-import clients.Entreprise;
-import clients.Particulier;
+import clients.Client;
+import pieces.Piece;
 
 public class Quincaillerie {
 	
+	private String nom;
+	private double tresorerie;
+	private Catalogue catalogue;
+	private Stocks stocks;
+	private Map<Client, Collection<Facture>> listeClientsFactures;
+
+    public Quincaillerie(String nom, double tresorerie, Catalogue catalogue, Stocks stocks, Map<Client, Collection<Facture>> listeClientsFactures) {
+		setNom(nom);
+		setTresorerie(tresorerie);
+		setCatalogue(catalogue);
+		setStocks(stocks);
+		setListeClientsFactures();
+	}
+    
+	public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 	
+	public double getTresorerie() {
+		return tresorerie;
+	}
+	public void setTresorerie(double tresorerie) {
+		this.tresorerie = tresorerie;
+	}
+	
+	public Catalogue getCatalogue() {
+		return catalogue;
+	}
+	public void setCatalogue(Catalogue catalogue) {
+		this.catalogue = catalogue;
+	}
 
-    public static void main(String[] args) {
-    /* TODO Question 3: Afficher les caractéristiques de pneu, chambre à air e, disque de jante et rayon
- Question 6: Afficher les fiches caractéristiques des 2 piièces composites jantes en kit et brouette en kit décrites dans l'énoncé.
- //une jante en kit est constituer d'un disque de jante et de 3 Rayon
- //et une brouette montée et constituer d'un pneu , d'une jante en kit et d'une chambre a air
- Question 14: Afficher les fiches caractéristiques des 2 piièces composites jantes montée et brouette montée décrites dans l'énoncé.
- Question 27: Ajouter un client particulier et une entreprise et afficher le résultat.*/
-    	//tu peut ici remplacer avec des Collections si tu trouve ça plus simple 
-    	ArrayList<Piece> compRoueVelo = new ArrayList<>();
-    	compRoueVelo.add(new PieceDeBase("rayon", "00OF48",1,20,1));
-    	compRoueVelo.add(new PieceDeBase("pneu", "00BD41",12.5,60,2));
-    	compRoueVelo.add(new PieceDeBase("disque de jante", "00DJ42",5.5,36,2));
-    	
-    	ArrayList<Piece> compAmpoule = new ArrayList<>();
-    	compAmpoule.add(new PieceDeBase("verre", "00KF48",2,24,1));
-    	compAmpoule.add(new PieceDeBase("filament", "00FF92",5,24,1));
-    	
-    	ArrayList<Piece> listePieces = new ArrayList<>();
-    	listePieces.add(new PieceDeBase("pneu", "00BD41",12.5,60,2));
-    	listePieces.add(new PieceDeBase("chambre à air", "00AA65",4.0,20,2));
-    	listePieces.add(new PieceDeBase("disque de jante", "00DJ41",4.5,60,2));
-    	listePieces.add(new PieceDeBase("rayon", "00OF48",1,20,1));
-    	listePieces.add(new PieceDeBase("rayon", "00OF49",4,23,2));
-    	listePieces.add(new PieceCompositeEnKit("roue de vélo", "01TY87", compRoueVelo, 2));
-    	listePieces.add(new PieceCompositeMontee("ampoule", "02AM33", compAmpoule, 2, 5));
-    	
-    	Catalogue catalogue = Catalogue.creationCatalogue(listePieces);
+	public Stocks getStocks() {
+		return stocks;
+	}
+	public void setStocks(Stocks stocks) {
+		this.stocks = stocks;
+	}
 
-    	System.out.println(catalogue);
-    	
-    	catalogue.pieceExiste("pneu", "00BD41", true);
-    	catalogue.pieceExiste("jj", "00AA11", true);
-    	catalogue.pieceExiste("roue de vélo", "01TY87", true);
-    	
-    	catalogue.affichePiece("ampoule", "02AM33");
-    	catalogue.affichePiece("rayon", "02AZ56");
-    	
-    	Entreprise e1 = new Entreprise("0456AE94", "30 rue des prés", "08562205190", "entrepriseE1@gmail.com", "Paris", "Carroufino", CategorieEntreprise.PetiteMoyenneEntreprise);
-		System.out.println("Entreprise 1 : \n" + e1);
-		
-		Particulier p1 = new Particulier("9877TY34", "12 rue marcel porte", "0629713873", "tom.frances97@yahoo.fr", Civilite.MONSIEUR, "Frances", "Tom", true);
-		System.out.println("\nParticulier 1 : \n" + p1); 
+	public Map<Client, Collection<Facture>> getListeClientsFactures() {
+		return listeClientsFactures;
+	}
+	public void setListeClientsFactures() {
+		listeClientsFactures = new HashMap<>();
+	}
+	
+	//retourne le numéro de la prochaine facture basé sur le nombre de facture déjà créées
+	public int numFacture() {
+		int n = 0;
+		for(Collection<Facture> lf : listeClientsFactures.values()) {
+			n += lf.size();
+		}
+		return n;
+	}
+	
+	//ajoute ou retire le montant à la trésorerie (suivant le signe de montant)
+	public void actualiseTresorerie(double montant) {
+		setTresorerie(getTresorerie() + montant);
+	}
+	
+	//vérifie l'existance du client dans la liste des clients et factures de la quincaillerie
+	public boolean clientExiste(Client c) {
+		return listeClientsFactures.containsKey(c);
+	}
+	
+	//vérifie que le client a des fonds suffisants pour l'achat des pièces
+	public boolean clientCreditSuffisant(Client c, Collection<Piece> l) {
+		double prix = 0;
+		for(Piece p : l) {
+			prix += p.getPrix();
+		}
+		return c.getCredit() >= prix;
+	}
+	
+	//ajoute un client à la liste des clients et factures de la quincaillerie
+	public void ajouterClient(Client client) {
+		if(!clientExiste(client)) {
+			listeClientsFactures.put(client, new HashSet<>());
+		}else {
+			System.out.println("Client connu");
+		}
+	}
+	
+	//ajoute une facture à la liste des clients et factures de la quincaillerie pour un client donné
+	public void ajouterFactureClient(Client client, Facture facture) {
+		if(!clientExiste(client)) {
+			System.out.println("Vous devez d'abord vous enregistrer avant de passer commande");
+		}else {
+			listeClientsFactures.get(client).add(facture);
+		}
+	}
 
-    }
+	//effectue une commande faite par un client pour une liste de pieces
+	public void passerCommande(Client client, Collection<Piece> listePieces) {
+		if(!clientExiste(client)) {
+			System.out.println("Vous devez d'abord vous enregistrer avant de passer commande");
+		}else {
+			if(!clientCreditSuffisant(client, listePieces)) {
+				System.out.println("Vous n'avez pas assez d'argent pour effectuer cette commande");
+			}else {
+				int n = numFacture() + 1;
+				Date d = new Date();
+				Facture f = new Facture(n, d, client, listePieces);
+				client.actualiseCredit(-f.getPrix());
+				client.ajouterFacture(f);
+				actualiseTresorerie(f.getPrix());
+				ajouterFactureClient(client, f);
+				System.out.println("Votre commande a bien été enregistrée");
+			}
+		}
+	}
+	
 }

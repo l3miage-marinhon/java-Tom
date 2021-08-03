@@ -1,6 +1,7 @@
 package bataille;
 //quand la classe  est terminé faire le TestCarte
 //une carte est un objet qui est comparable
+
 public class Carte implements Comparable<Carte>{
 	//TODO mettre les attribues
 	private Couleur couleur;
@@ -8,7 +9,6 @@ public class Carte implements Comparable<Carte>{
 	
 	//TODO constructeur
 	public Carte(Couleur couleur, Valeur valeur) {
-		super();
 		this.couleur = couleur;
 		this.valeur = valeur;
 	}

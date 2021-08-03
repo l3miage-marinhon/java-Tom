@@ -7,9 +7,9 @@ public class Entreprise extends Client{
 	private String nomCommercial;
 	private CategorieEntreprise categorie;
 	
-	public Entreprise(String id, String adresse, String tel, String email, String siegeSocial, String nomCommercial,
+	public Entreprise(String id, String adresse, String tel, String email, double credit, String siegeSocial, String nomCommercial,
 			CategorieEntreprise categorie) {
-		super(id, adresse, tel, email);
+		super(id, adresse, tel, email, credit);
 		setSiegeSocial(siegeSocial);;
 		setNomCommercial(nomCommercial);
 		setCategorie(categorie);

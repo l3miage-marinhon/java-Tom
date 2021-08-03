@@ -1,9 +1,13 @@
 package bataille;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.Stack;
+
+import javax.sound.midi.SysexMessage;
 
 import exceptions.*;
 
@@ -14,16 +18,16 @@ public class Jeu{
 	private Joueur joueur1;
 	private Joueur joueur2;
 	private ArrayList<Carte> jeuDeCartes;
-	private Stack<Carte> tasJ1;
-	private Stack<Carte> tasJ2;
+	private Deque<Carte> tasJ1;
+	private Deque<Carte> tasJ2;
 	
 	
 	//TODO le constructeur, ici on prend les 2 noms des joueurs
 	public Jeu(String n1, String n2) {
 		joueur1 = new Joueur(n1);
 		joueur2 = new Joueur(n2);
-		tasJ1 = new Stack<>();
-		tasJ2 = new Stack<>();
+		tasJ1 = new ArrayDeque<Carte>();
+		tasJ2 = new ArrayDeque<Carte>();
 		this.initialiseJeuDeCartes();
 	}
 	
@@ -38,42 +42,11 @@ public class Jeu{
 	//TODO faire la méthode void initialiseJeuDeCartes() qui vas creer le jeux de carte
 	private void initialiseJeuDeCartes() {
 		jeuDeCartes = new ArrayList<>();
-		
-		jeuDeCartes.add(new Carte(Couleur.COEUR, Valeur.SEPT));
-		jeuDeCartes.add(new Carte(Couleur.COEUR, Valeur.HUIT));
-		jeuDeCartes.add(new Carte(Couleur.COEUR, Valeur.NEUF));
-		jeuDeCartes.add(new Carte(Couleur.COEUR, Valeur.DIX));
-		jeuDeCartes.add(new Carte(Couleur.COEUR, Valeur.VALET));
-		jeuDeCartes.add(new Carte(Couleur.COEUR, Valeur.DAME));
-		jeuDeCartes.add(new Carte(Couleur.COEUR, Valeur.ROI));
-		jeuDeCartes.add(new Carte(Couleur.COEUR, Valeur.AS));
-		
-		jeuDeCartes.add(new Carte(Couleur.PIQUE, Valeur.SEPT));
-		jeuDeCartes.add(new Carte(Couleur.PIQUE, Valeur.HUIT));
-		jeuDeCartes.add(new Carte(Couleur.PIQUE, Valeur.NEUF));
-		jeuDeCartes.add(new Carte(Couleur.PIQUE, Valeur.DIX));
-		jeuDeCartes.add(new Carte(Couleur.PIQUE, Valeur.VALET));
-		jeuDeCartes.add(new Carte(Couleur.PIQUE, Valeur.DAME));
-		jeuDeCartes.add(new Carte(Couleur.PIQUE, Valeur.ROI));
-		jeuDeCartes.add(new Carte(Couleur.PIQUE, Valeur.AS));
-		
-		jeuDeCartes.add(new Carte(Couleur.CARREAU, Valeur.SEPT));
-		jeuDeCartes.add(new Carte(Couleur.CARREAU, Valeur.HUIT));
-		jeuDeCartes.add(new Carte(Couleur.CARREAU, Valeur.NEUF));
-		jeuDeCartes.add(new Carte(Couleur.CARREAU, Valeur.DIX));
-		jeuDeCartes.add(new Carte(Couleur.CARREAU, Valeur.VALET));
-		jeuDeCartes.add(new Carte(Couleur.CARREAU, Valeur.DAME));
-		jeuDeCartes.add(new Carte(Couleur.CARREAU, Valeur.ROI));
-		jeuDeCartes.add(new Carte(Couleur.CARREAU, Valeur.AS));
-		
-		jeuDeCartes.add(new Carte(Couleur.TREFLE, Valeur.SEPT));
-		jeuDeCartes.add(new Carte(Couleur.TREFLE, Valeur.HUIT));
-		jeuDeCartes.add(new Carte(Couleur.TREFLE, Valeur.NEUF));
-		jeuDeCartes.add(new Carte(Couleur.TREFLE, Valeur.DIX));
-		jeuDeCartes.add(new Carte(Couleur.TREFLE, Valeur.VALET));
-		jeuDeCartes.add(new Carte(Couleur.TREFLE, Valeur.DAME));
-		jeuDeCartes.add(new Carte(Couleur.TREFLE, Valeur.ROI));
-		jeuDeCartes.add(new Carte(Couleur.TREFLE, Valeur.AS));
+		for(Couleur c : Couleur.values()) {
+			for(Valeur v : Valeur.values()) {
+				jeuDeCartes.add(new Carte(c, v));
+			}
+		}
 	}
 
 	//TODO faire la méthode void distribuer() qui distribue 1 a 1 les cartes entre les 2 joueurs
@@ -99,13 +72,13 @@ public class Jeu{
 	
 	//TODO faire la méthode Carte joueurJoue(int joueur) qui si c'est le joueur est 1 c'est le joueur 1 qui joue ,pareil pour 2
 	public Carte joueurJoue(int joueur) throws UnknownPlayer{
-		Carte carte=null;
+		Carte carte;
 		if(joueur==1) {
 			carte = joueur1.joue();
-			tasJ1.push(carte);
+			tasJ1.addFirst(carte);
 		}else if(joueur==2) {
 			carte = joueur2.joue();
-			tasJ2.push(carte);
+			tasJ2.addFirst(carte);
 		}else {
 			throw new UnknownPlayer("Joueur inconnu");
 		}
@@ -113,38 +86,23 @@ public class Jeu{
 	}
 	
 	//TODO faire la méthode public Carte derniereCarteJouee(int joueur)
-	public Carte derniereCarteJouee(int joueur) throws UnknownPlayer{
-		Carte carte=null;
-		if(joueur==1) {
-			if(!tasJ1.isEmpty()) carte = tasJ1.peek();
-		}else if(joueur==2) {
-			if(!tasJ2.isEmpty()) carte = tasJ2.peek();
-		}else {
+	public Carte derniereCarteJouee(int joueur) throws UnknownPlayer{		
+		if(joueur!=1 && joueur!=2) {
 			throw new UnknownPlayer("Joueur inconnu");
 		}
-		return carte;
+		return (joueur==1 ? tasJ1 : tasJ2).peek();
 	}
 	
 	//TODO faire la méthode void printTasJoueur(int joueur)
 	public void printTasJoueur(int joueur) throws UnknownPlayer{
-		String nom = "";
-		Iterator<Carte> it;
 		
-		if(joueur==1) {
-			nom = joueur1.getNom();
-			it = tasJ1.iterator();
-			//joueur1.printDeck();
-		}else if(joueur==2) {
-			nom = joueur2.getNom();
-			it = tasJ2.iterator();
-			//joueur2.printDeck();
+		if(joueur==1 || joueur==2) {
+			System.out.println("\nTas du joueur " + (joueur==1 ? joueur1 : joueur2).getNom());
+			for(Carte c : (joueur == 1 ? tasJ1 : tasJ2)) {
+				System.out.println(c);
+			}
 		}else {
 			throw new UnknownPlayer("Joueur inconnu");
-		}
-		
-		System.out.println("\nTas du joueur : " + nom);
-		while(it.hasNext()) {
-			System.out.println(it.next());
 		}
 		
 	}

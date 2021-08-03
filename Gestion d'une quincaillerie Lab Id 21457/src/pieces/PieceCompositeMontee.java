@@ -1,4 +1,4 @@
-package quincaillerie;
+package pieces;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -27,7 +27,6 @@ public class PieceCompositeMontee extends PieceComposite{
 	public int getDureeMontage() {
 		return dureeMontage;
 	}
-
 	public void setDureeMontage(int dureeMontage) {
 		this.dureeMontage = dureeMontage;
 	}
@@ -35,14 +34,23 @@ public class PieceCompositeMontee extends PieceComposite{
 	public double getPrixMontage() {
 		return prixMontage;
 	}
-
 	public void setPrixMontage(double prixMontage) {
 		this.prixMontage = prixMontage;
 	}
 	
 	@Override
+	public void setPrix(double prix) {
+		super.prix = prix;
+	}
+	
+	@Override
+	public void setDureeGarantie(int dureeGarantie) {
+		super.dureeGarantie = dureeGarantie;
+	}
+	
+	@Override
 	public void setRef(String ref) {
-		super.setRef(!Pattern.matches("02[A-Z]{2}[0-9]{2}", ref) ? "02AA00" : ref);
+		super.ref = !Pattern.matches("02[A-Z]{2}[0-9]{2}", ref) ? "02AA00" : ref;
 		//exception plus tard si match false
 	}
 	

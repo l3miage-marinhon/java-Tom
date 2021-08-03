@@ -1,4 +1,4 @@
-package quincaillerie;
+package pieces;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -30,14 +30,24 @@ public class PieceCompositeEnKit extends PieceComposite{
 		this.tempsMontage = (tempsMontage>0 ? tempsMontage : 1);
 	}
 	
-	private int garCompKit() {
-		return getDureeGarantieBase()/2;
+	@Override
+	public void setRef(String ref) {
+		super.ref = !Pattern.matches("01[A-Z]{2}[0-9]{2}", ref) ? "01AA00" : ref;
+		//exception plus tard si match false
+	}
+
+	@Override
+	public void setPrix(double prix) {
+		super.prix = prix;
 	}
 	
 	@Override
-	public void setRef(String ref) {
-		super.setRef(!Pattern.matches("01[A-Z]{2}[0-9]{2}", ref) ? "01AA00" : ref);
-		//exception plus tard si match false
+	public void setDureeGarantie(int dureeGarantie) {
+		super.dureeGarantie = dureeGarantie;
+	}
+	
+	private int garCompKit() {
+		return getDureeGarantieBase()/2;
 	}
 	
 	@Override

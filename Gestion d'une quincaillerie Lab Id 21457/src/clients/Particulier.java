@@ -8,9 +8,9 @@ public class Particulier extends Client{
 	private String prenom;
 	private boolean fidelite;
 	
-	public Particulier(String id, String adresse, String tel, String email, Civilite civilite, String nom,
+	public Particulier(String id, String adresse, String tel, String email, double credit, Civilite civilite, String nom,
 			String prenom, boolean fidelite) {
-		super(id, adresse, tel, email);
+		super(id, adresse, tel, email, credit);
 		setCivilite(civilite);;
 		setNom(nom);;
 		setPrenom(prenom);

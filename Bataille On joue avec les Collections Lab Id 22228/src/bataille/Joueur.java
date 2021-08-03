@@ -40,11 +40,7 @@ public class Joueur{
 	//TODO faire la méthode joue qui permet de jouer la carte la plus hautes dans le deque
 	//public Carte joue() 
 	public Carte joue() {
-		Carte carte = null;
-		if(!deck.isEmpty()) {
-			carte = deck.pollFirst();
-		}
-		return carte;
+		return deck.pollFirst();
 	}
 	
 	//TODO faire le nb carte
@@ -55,9 +51,8 @@ public class Joueur{
 	
 	public void printDeck() {
 		System.out.println("Cartes du deck de " + getNom());
-		Iterator<Carte> it = deck.iterator();
-		while(it.hasNext()) {
-			System.out.println(it.next());
+		for(Carte c : deck) {
+			System.out.println(c);
 		}
 	}
 	

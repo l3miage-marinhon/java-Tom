@@ -1,6 +1,10 @@
 package clients;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.regex.*;
+
+import quincaillerie.Facture;
 // TODO Question 24: écrire la classe Client.
 // 
 public abstract class Client{
@@ -9,13 +13,18 @@ public abstract class Client{
 	private String adresse;
 	private String tel;
 	private String email;
-	private static int nbCommande;
+	private Collection<Facture> listeFactures;
+	private double credit;
+	private int nbCommande;
 	
-	public Client(String id, String adresse, String tel, String email) {
+	public Client(String id, String adresse, String tel, String email, double credit) {
 		setId(id);
 		setAdresse(adresse);
 		setTel(tel);
 		setEmail(email);
+		setListeFactures();
+		setCredit(credit);
+		setNbCommande();
 	}
 	
 	public String getId() {
@@ -25,7 +34,7 @@ public abstract class Client{
 		if(Pattern.matches("\\d{4}[A-Z]{2}\\d{2}", id)) {
 			this.id = id;
 		}else {
-			//exception plus tard
+			//exception plus tard, ou gestion directement à la saisie au clavier
 			this.id = "0000AA00";
 		}
 	}
@@ -59,8 +68,33 @@ public abstract class Client{
 		}
 	}
 	
+	public Collection<Facture> getListeFactures(){
+		return listeFactures;
+	}
+	public void setListeFactures() {
+		listeFactures = new HashSet<>();
+	}
+	
+	public double getCredit() {
+		return credit;
+	}
+	public void setCredit(double credit) {
+		this.credit = credit;
+	}
+	
 	public int getNbCommande() {
 		return nbCommande;
+	}
+	public void setNbCommande() {
+		this.nbCommande = listeFactures.size();
+	}
+	
+	public void ajouterFacture(Facture f) {
+		listeFactures.add(f);
+	}
+	
+	public void actualiseCredit(double montant) {
+		setCredit(getCredit() + montant);
 	}
 	
 	@Override
@@ -69,7 +103,8 @@ public abstract class Client{
 			+ "\nAdresse : " + getAdresse()
 			+ "\nTel : " + getTel()
 			+ "\nEmail : " + getEmail()
-			+ "\nNombre de commandes : " + getNbCommande();
+			+ "\nNombre de commandes : " + getNbCommande()
+			+ "\nCrédit : " + getCredit() + (getCredit()>1 ? " euros" : " euro");
 	}
 	
 }

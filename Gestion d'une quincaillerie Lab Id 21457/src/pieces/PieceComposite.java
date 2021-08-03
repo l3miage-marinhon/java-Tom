@@ -1,4 +1,4 @@
-package quincaillerie;
+package pieces;
 
 import java.util.ArrayList;
 
@@ -10,7 +10,7 @@ public abstract class PieceComposite extends Piece{
 	private ArrayList<Piece> composants;
 	
 	public PieceComposite(String nom, ArrayList<Piece> composants) {
-		super(nom, 0, 0, 0);
+		super(nom);
 		setComposants(composants);
 		setDureeGarantieBase(garBaseComp());
 		setDureeFabrication(fabComp());
@@ -21,6 +21,16 @@ public abstract class PieceComposite extends Piece{
 	}
 	public void setComposants(ArrayList<Piece> composants) {
 		this.composants = composants;
+	}
+	
+	@Override
+	public void setDureeGarantieBase(int dureeGarantie) {
+		super.dureeGarantieBase = (dureeGarantieBase>0 ? dureeGarantieBase : 12);
+	}
+	
+	@Override
+	public void setDureeFabrication(int dureeFabrication) {
+		super.dureeFabrication = (dureeFabrication>0 ? dureeFabrication : 12);
 	}
 	
 	private int garBaseComp() {
@@ -43,7 +53,7 @@ public abstract class PieceComposite extends Piece{
 		return max;
 	}
 	
-	public double prixTotalComp() {
+	protected double prixTotalComp() {
 		double s = 0;
 		for(Piece p : composants) {
 			s += p.getPrix();
