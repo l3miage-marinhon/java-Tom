@@ -1,10 +1,13 @@
 package clients;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.regex.*;
 
-import quincaillerie.Facture;
+import commandes.Commande;
+import pieces.*;
 // TODO Question 24: écrire la classe Client.
 // 
 public abstract class Client{
@@ -13,7 +16,8 @@ public abstract class Client{
 	private String adresse;
 	private String tel;
 	private String email;
-	private Collection<Facture> listeFactures;
+	private Map<Piece, Integer> piecesPossedees;
+	private LinkedHashSet<Commande> historiqueCommandes; //vraiment utile ?
 	private double credit;
 	private int nbCommande;
 	
@@ -22,7 +26,7 @@ public abstract class Client{
 		setAdresse(adresse);
 		setTel(tel);
 		setEmail(email);
-		setListeFactures();
+		setHistoriqueCommandes();
 		setCredit(credit);
 		setNbCommande();
 	}
@@ -68,11 +72,18 @@ public abstract class Client{
 		}
 	}
 	
-	public Collection<Facture> getListeFactures(){
-		return listeFactures;
+	public Map<Piece, Integer> getPiecesPossedees(){
+		return piecesPossedees;
 	}
-	public void setListeFactures() {
-		listeFactures = new HashSet<>();
+	public void setPiecesPossedees() {
+		piecesPossedees = new HashMap<>();
+	}
+	
+	public LinkedHashSet<Commande> getHistoriqueCommandes(){
+		return historiqueCommandes;
+	}
+	public void setHistoriqueCommandes() {
+		historiqueCommandes = new LinkedHashSet<>();
 	}
 	
 	public double getCredit() {
@@ -86,15 +97,35 @@ public abstract class Client{
 		return nbCommande;
 	}
 	public void setNbCommande() {
-		this.nbCommande = listeFactures.size();
+		this.nbCommande = historiqueCommandes.size();
 	}
 	
-	public void ajouterFacture(Facture f) {
-		listeFactures.add(f);
+	public void ajouterCommande(Commande c) {
+		historiqueCommandes.add(c);
 	}
+	
+	//public void 
 	
 	public void actualiseCredit(double montant) {
 		setCredit(getCredit() + montant);
+	}
+	
+	/**
+	 * Vérifie si un client possède suffisement d'argent pour acheter un ensemble de pièces
+	 * @param client {@link Client} le client dont on veut vérifier les fonds
+	 * @param listeArticles {@link Map} la liste des pièces et nombre d'exemplaires que le client veut acheter 
+	 * @return creditSuff {@link Boolean} <b>true</b> si le client possède suffisement d'argent, <b>false</b> sinon
+	 */
+	public boolean creditSuffisant(Client client, Map<Piece, Integer> listeArticles) {
+		double prix = 0;
+		boolean creditSuff = true;
+		Iterator<Piece> it = listeArticles.keySet().iterator();
+		while(it.hasNext() && creditSuff) {
+			Piece p = it.next();
+			prix += p.getPrix() * listeArticles.get(p);
+			if(prix > client.getCredit()) creditSuff = false;
+		}
+		return creditSuff;
 	}
 	
 	@Override
