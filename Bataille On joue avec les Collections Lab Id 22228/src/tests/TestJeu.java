@@ -14,8 +14,8 @@ public class TestJeu {
             
         System.out.println("--- On distribue les cartes ---");
            jeu.distribuer();
-           jeu.printTasJoueur(1);
-           jeu.printTasJoueur(2);
+           //jeu.printTasJoueur(1);
+           //jeu.printTasJoueur(2);
            
     }
 

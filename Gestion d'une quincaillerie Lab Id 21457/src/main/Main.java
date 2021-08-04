@@ -9,12 +9,12 @@ import clients.CategorieEntreprise;
 import clients.Civilite;
 import clients.Entreprise;
 import clients.Particulier;
+import commandes.Facture;
 import pieces.Piece;
 import pieces.PieceCompositeEnKit;
 import pieces.PieceCompositeMontee;
 import pieces.PieceDeBase;
 import quincaillerie.Catalogue;
-import quincaillerie.Facture;
 import quincaillerie.Stocks;
 
 public class Main {

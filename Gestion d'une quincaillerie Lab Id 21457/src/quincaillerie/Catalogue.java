@@ -25,11 +25,11 @@ public class Catalogue{
 		this.catalogue = catalogue;
 	}
 	
-	public void ajoutePieceCatalogue(Piece p) {
-		if(catalogue.add(p)==false) System.out.println("Cette piece existe déjà dans le catalogue");
+	public boolean pieceExiste(Piece p) {
+		return catalogue.contains(p);
 	}
 	
-	public boolean pieceExisteCatalogue(String nom, String ref, boolean aff) {
+	public Piece pieceExiste(String nom, String ref, boolean affichePiece) {
 		boolean f = false;
 		Piece p = null;
 		Iterator<Piece> it = catalogue.iterator();
@@ -37,7 +37,7 @@ public class Catalogue{
 			p = it.next();
 			if(p.getNom()==nom && p.getRef()==ref) {
 				f=true;
-				if(aff) {
+				if(affichePiece) {
 					System.out.println("\nPiece nom \"" + nom + "\", ref \"" + ref + "\" : \n" + p + "\n");;
 				}else {
 					System.out.println("\nLa piece de nom \"" + nom + "\" et de ref \"" + ref + "\" est dans le catalogue\n");
@@ -45,11 +45,23 @@ public class Catalogue{
 			}
 		}
 		if(!f) System.out.println("\nLa piece de nom \"" + nom + "\" et de ref \"" + ref + "\" n'est pas dans le catalogue\n");
-		return f;
+		return p;
+	}
+	
+	public void ajoutePiece(Piece p) {
+		if(catalogue.add(p)==false) System.out.println("Cette piece existe déjà dans le catalogue");
+	}
+	
+	public void supprimePiece(String nom, String ref) {
+		catalogue.remove(pieceExiste(nom, ref, false));
+	}
+	
+	public void supprimePiece(Piece p) {
+		catalogue.remove(p);
 	}
 	
 	public void affichePieceCatalogue(String nom, String ref) {
-		pieceExisteCatalogue(nom, ref, true);
+		pieceExiste(nom, ref, true);
 	}
 	
 	@Override
