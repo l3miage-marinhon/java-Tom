@@ -17,18 +17,14 @@ public abstract class Client{
 	private String tel;
 	private String email;
 	private Map<Piece, Integer> piecesPossedees;
-	private LinkedHashSet<Commande> historiqueCommandes; //vraiment utile ?
 	private double credit;
-	private int nbCommande;
 	
 	public Client(String id, String adresse, String tel, String email, double credit) {
 		setId(id);
 		setAdresse(adresse);
 		setTel(tel);
 		setEmail(email);
-		setHistoriqueCommandes();
 		setCredit(credit);
-		setNbCommande();
 	}
 	
 	public String getId() {
@@ -79,13 +75,6 @@ public abstract class Client{
 		piecesPossedees = new HashMap<>();
 	}
 	
-	public LinkedHashSet<Commande> getHistoriqueCommandes(){
-		return historiqueCommandes;
-	}
-	public void setHistoriqueCommandes() {
-		historiqueCommandes = new LinkedHashSet<>();
-	}
-	
 	public double getCredit() {
 		return credit;
 	}
@@ -93,48 +82,13 @@ public abstract class Client{
 		this.credit = credit;
 	}
 	
-	public int getNbCommande() {
-		return nbCommande;
-	}
-	public void setNbCommande() {
-		this.nbCommande = historiqueCommandes.size();
-	}
-	
-	public void ajouterCommande(Commande c) {
-		historiqueCommandes.add(c);
-	}
-	
-	//public void 
-	
-	public void actualiseCredit(double montant) {
-		setCredit(getCredit() + montant);
-	}
-	
-	/**
-	 * Vérifie si un client possède suffisement d'argent pour acheter un ensemble de pièces
-	 * @param client {@link Client} le client dont on veut vérifier les fonds
-	 * @param listeArticles {@link Map} la liste des pièces et nombre d'exemplaires que le client veut acheter 
-	 * @return creditSuff {@link Boolean} <b>true</b> si le client possède suffisement d'argent, <b>false</b> sinon
-	 */
-	public boolean creditSuffisant(Client client, Map<Piece, Integer> listeArticles) {
-		double prix = 0;
-		boolean creditSuff = true;
-		Iterator<Piece> it = listeArticles.keySet().iterator();
-		while(it.hasNext() && creditSuff) {
-			Piece p = it.next();
-			prix += p.getPrix() * listeArticles.get(p);
-			if(prix > client.getCredit()) creditSuff = false;
-		}
-		return creditSuff;
-	}
-	
+
 	@Override
 	public String toString() {
 		return "ID : " + getId() 
 			+ "\nAdresse : " + getAdresse()
 			+ "\nTel : " + getTel()
 			+ "\nEmail : " + getEmail()
-			+ "\nNombre de commandes : " + getNbCommande()
 			+ "\nCrédit : " + getCredit() + (getCredit()>1 ? " euros" : " euro");
 	}
 	

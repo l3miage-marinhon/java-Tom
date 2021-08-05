@@ -12,6 +12,7 @@ import clients.Client;
 import commandes.Commande;
 import commandes.Facture;
 import pieces.Piece;
+import servicesBancaires.ServiceBancaire;
 
 public class Quincaillerie {
 	
@@ -68,7 +69,7 @@ public class Quincaillerie {
 	 * Retourne le numéro de la prochaine facture à créer, basé sur le nombre de factures déjà éditées
 	 * @return int le numéro de la prochaine facture
 	 */
-	private int numCommande(Quincaillerie quinc) {
+	private int numCommande() {
 		int nb = 0;
 		for(LinkedHashSet<Commande> listesCommandes : listeClientsCommandes.values()) {
 			nb += listesCommandes.size();
@@ -77,17 +78,22 @@ public class Quincaillerie {
 	}
 	
 	/**
-	 * Actualise le montant de la trésorerie de la quincaillerie, plus ou moins
-	 * @param montant à ajouter ou soustraire (suivant le signe) à la trésorerie
+	 * Calcule le prix de la commande en fonctions des pièces et du nombre d'exemplaires qui la composent
+	 * @param listePiecesExemplaires {@link Map} la liste des pièces qui composent la commande
+	 * @return {@link Double} le prix de la commande
 	 */
-	public void actualiseTresorerie(double montant) {
-		setTresorerie(getTresorerie() + montant);
+	public double calculPrixCommande(Map<Piece, Integer> listePiecesExemplaires) {
+		double prix = 0;
+		for(Piece p : listePiecesExemplaires.keySet()) {
+			prix += p.getPrix() * listePiecesExemplaires.get(p);
+		}
+		return prix;
 	}
 	
 	/**
 	 * Vérifie l'existence d'un client dans la liste des clients de la quincaillerie
 	 * @param client {@link Client} dont on veut vérifier l'existence
-	 * @return boolean <b>true</b> si le client est connu de la quincaillerie, <b>false</b> sinon
+	 * @return {@link Boolean} true si le client est connu de la quincaillerie, false sinon
 	 */
 	public boolean clientConnu(Client client) {
 		return listeClientsCommandes.containsKey(client);
@@ -96,7 +102,7 @@ public class Quincaillerie {
 	/**
 	 * Vérifie si la quincaillerie possède suffisement de stocks de chaque pièces de la liste donnée en paramètre
 	 * @param listeArticles {@link Map} la liste des pièces et nombre d'exemplaires de chaque pièces
-	 * @return stockSuff {@link Boolean} <b>true</b> si la quincaillerie a des stocks suffisants, <b>false</b> sinon
+	 * @return stockSuff {@link Boolean} true si la quincaillerie a des stocks suffisants, false sinon
 	 */
 	public boolean stocksSuffisants(Map<Piece, Integer> listeArticles) {
 		boolean stockSuff = true;
@@ -109,67 +115,86 @@ public class Quincaillerie {
 	}
 	
 	/**
-	 * Ajoute un client dans la listeClientsFactures de la quincaillerie, et crée un set vide pour ses factures
+	 * Ajoute un client dans la listeClientsCommandes de la quincaillerie, et crée un set vide pour ses commandes
 	 * @param client {@link Client} le client à ajouter
 	 */
 	public void ajouterClient(Client client) {
-		if(!clientExiste(client)) {
-			listeClientsFactures.put(client, new HashSet<>());
-		}else {
-			System.out.println("Client connu");
+		if(listeClientsCommandes.putIfAbsent(client, new LinkedHashSet<>()) != null){
+			System.out.println("Client déjà connu");
 		}
 	}
 	
 	/**
-	 * Ajoute une facture à la liste des factures du client passé en paramètre dans la listeClientsFactures de la quincaillerie, uniquement
-	 * si le client est déjà connu de lad quincaillerie <br>
-	 * &emsp;&emsp;- ndjhd df <br>
-	 * &emsp;&emsp;- <br>
-	 * &emsp;&emsp;- <br>
-	 * @param client {@link Client} le client auquel on ajoute la facture
-	 * @param facture {@link Facture} la facture à ajouter au client
+	 * Ajoute une commande à la liste des commandes du client passé en paramètre dans la listeClientsCOmmandes de la quincaillerie, uniquement
+	 * si le client est déjà connu de la quincaillerie 
+	 * @param client {@link Client} le client auquel on ajoute la commande
+	 * @param commande {@link Commande} la commande à ajouter au client
 	 */
-	public void ajouterFactureClient(Client client, Facture facture) {
-		if(!clientExiste(client)) {
-			System.out.println("Vous devez d'abord vous enregistrer avant de passer commande");
-		}else {
-			listeClientsFactures.get(client).add(facture);
-		}
+	public void ajouterCommandeClient(Client client, Commande commande) {
+		listeClientsCommandes.get(client).add(commande);
 	}
 	
-	
-
 	/**
-	 * Passe une commande entre un client et la quincaillerie : procède à l'achat d'un ensemble de pièces par le client contre <br>
-	 * de l'argent, uniquement si le client est connu de la quincaillerie, si il possède les fonds nécessaires et si la quincaillerie <br>
-	 * a des stocks suffisants. <br>
-	 * En particulier :<br>
-	 * &emsp;&emsp;- vérifie les fonds du client et les stocks de la quincaillerie <br>
-	 * &emsp;&emsp;- crée une nouvelle facture, la donne au client et à la quincaillerie<br>
-	 * &emsp;&emsp;- actualise la trésorerie de la quincaillerie et les fonds du client<br>
-	 * &emsp;&emsp;- actualise les stocks de la quincaillerie et les pièces possédées par le client<br>
-	 * @param client {@link Client} le client passant la commande
-	 * @param listePieces {@link Map} la liste des pièces que le client veut commander
-	 * @return {@link Facture} renvoie la facture de la commande si cette dernière a été passée avec succès, <b>null</b> sinon
+	 * Recherche une commande d'un client suivant son numéro de commande
+	 * @param client {@link Client} le client dont on souhaite cherche la commande
+	 * @param numCommande {@link Integer} le numéro de la commande recherchée
+	 * @return {@link Boolean} true si la commande a été trouvée, false sinon
 	 */
-	public Facture passerCommande(Client client, Map<Piece, Integer> listePieces) {
-		Facture f = null;
-		if(!clientExiste(client)) {
-			System.out.println("Vous devez d'abord vous enregistrer avant de passer commande");
-		}else if(!clientCreditSuffisant(client, listePieces)) {
-			System.out.println("Vous n'avez pas assez d'argent pour effectuer cette commande");
-		//ajouter condition if(!stocksSuffisants(listePieces))
-		}else {
-			int n = numFacture() + 1;
-			Date d = new Date();
-			f = new Facture(n, d, client, listePieces);
-			client.actualiseCredit(-f.getPrix());
-			client.ajouterFacture(f);
-			actualiseTresorerie(f.getPrix());
-			ajouterFactureClient(client, f);
-			System.out.println("Votre commande a bien été enregistrée");
+	public Commande rechercheCommandeClient(Client client, int numCommande) {
+		Commande commande = null;
+		Iterator<Commande> it = listeClientsCommandes.get(client).iterator();
+		while(it.hasNext() && commande == null) {
+			Commande cInt = it.next();
+			if(cInt.getNum() == numCommande) {
+				commande = cInt;
+			}
 		}
-		return f;
+		return commande;
+	}
+	
+	/**
+	 * Annule une commade d'un client suivant son numéro de commande, c'est à dire qu'elle est supprimée de la liste des clients et commandes de la quincaillerie
+	 * @param client {@link Client} le client dont on souhaite cherche la commande
+	 * @param numCommande {@link Integer} le numéro de la commande recherchée
+	 * @return {@link Boolean} true si la commande a été annulée, false sinon
+	 */
+	public boolean annulerCommande(Client client, int numCommande) {
+		boolean annule = false;
+		Commande commande = rechercheCommandeClient(client, numCommande);
+		if(commande == null) {
+			System.out.println("Commande introuvable");
+		}else if(!commande.estAnnulable()) {
+			System.out.println("Vous ne pouvez plus annuler votre commande");
+		}else {
+			listeClientsCommandes.get(client).remove(commande);
+			System.out.println("Commande annulée");
+			annule = true;
+		}
+		return annule;
+	}
+	
+	/**
+	 * Crée une commande pour un client. Une commande ne peut être passée que sous 3 conditions:<br>
+	 * &emsp; * le client est connu de la quincaillerie<br>
+	 * &emsp; * la quincaillerie possède suffisement de stocks pour couvrir la commande<br>
+	 * &emsp; * le client a suffisement de crédit pour acheter les pièces de la commande<br>
+	 * @param client {@link Client} le client qui passe la commande
+	 * @param listePiecesExemplaires {@link Map} la liste des pièces et leur nombre d'exemplaires que le client veut acheter
+	 * @return {@link Commande} null si la commande n'a pas pu être passée, la commande créée sinon
+	 */
+	public Commande creationCommande(Client client, Map<Piece, Integer> listePiecesExemplaires) {
+		Commande commande = null;
+		double prixCommande = calculPrixCommande(listePiecesExemplaires);
+		if(!clientConnu(client)) {
+			System.out.println("Vous devez vous enregistrer avant de passer commande");
+		}else if(!stocksSuffisants(listePiecesExemplaires)) {
+			System.out.println("Stocks insuffisants");
+		}else if(ServiceBancaire.prelevementCreditClient(client, prixCommande)) {
+			commande = new Commande(numCommande(), this.getNom(), client, new Date(), listePiecesExemplaires, prixCommande);
+			ajouterCommandeClient(client, commande);
+			ServiceBancaire.approvisionneTresorerieQuincaillerie(this, prixCommande);
+		}
+		return commande;
 	}
 	
 }

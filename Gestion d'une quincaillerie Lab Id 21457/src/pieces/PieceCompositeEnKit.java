@@ -46,6 +46,10 @@ public class PieceCompositeEnKit extends PieceComposite{
 		super.dureeGarantie = dureeGarantie;
 	}
 	
+	/**
+	 * Calcule la durée de garantie de la pièce en fonction de sa garantie de base
+	 * @return {@link Integer} la durée de garantie de la pièce 
+	 */
 	private int garCompKit() {
 		return getDureeGarantieBase()/2;
 	}

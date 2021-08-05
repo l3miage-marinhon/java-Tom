@@ -49,9 +49,9 @@ public class Main {
 
 	    	System.out.println(catalogue);
 	    	
-	    	catalogue.pieceExisteCatalogue("pneu", "00BD41", false);
-	    	catalogue.pieceExisteCatalogue("jj", "00AA11", false);
-	    	catalogue.pieceExisteCatalogue("roue de vélo", "01TY87", false);
+	    	catalogue.pieceExiste("pneu", "00BD41", false);
+	    	catalogue.pieceExiste("jj", "00AA11", false);
+	    	catalogue.pieceExiste("roue de vélo", "01TY87", false);
 	    	
 	    	catalogue.affichePieceCatalogue("ampoule", "02AM33");
 	    	catalogue.affichePieceCatalogue("rayon", "02AZ56");
@@ -66,9 +66,9 @@ public class Main {
 	    	System.out.println(stocks);
 
 	    	System.out.println("recherche piece ");
-	    	stocks.pieceExisteStocks("pneu", "00BD41", true);
+	    	stocks.pieceExiste("pneu", "00BD41", true);
 	    	System.out.println("ajoute stock piece ");
-	    	stocks.ajoutePieceStocks("pneu", "00BD41", 5);
+	    	stocks.ajoutePiece("pneu", "00BD41", 5);
 	    	System.out.println(stocks);
 	    	System.out.println("recherche stocks piece");
 	    	stocks.afficheStocksPiece("pneu", "00BD41");

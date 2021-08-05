@@ -25,10 +25,22 @@ public class Catalogue{
 		this.catalogue = catalogue;
 	}
 	
+	/**
+	 * Vérifie l'existence d'une pièce dans le catalogue
+	 * @param p {@link Piece} la pièce dont on souhaite vérifier l'existence
+	 * @return {@link Boolean} true si la pièce existe dans le catalogue, false sinon
+	 */
 	public boolean pieceExiste(Piece p) {
 		return catalogue.contains(p);
 	}
 	
+	/**
+	 * Vérifie l'existence d'une pièce dans le catalogue en fonction de son nom et de sa ref
+	 * @param nom {@link String} le nom de la pièce
+	 * @param ref {@link String} la référence de la pièce
+	 * @param affichePiece {@link Boolean} true si l'on souhaite afficher le détail de la pièce recherchée, false sinon
+	 * @return {@link Boolean} true si la pièce existe dans le catalogue, false sinon
+	 */
 	public Piece pieceExiste(String nom, String ref, boolean affichePiece) {
 		boolean f = false;
 		Piece p = null;
@@ -48,18 +60,37 @@ public class Catalogue{
 		return p;
 	}
 	
+	/**
+	 * Ajoute une pièce au catalogue sauf si elle existe
+	 * @param p {@link Piece} la pièce à ajouter au catalogue
+	 */
 	public void ajoutePiece(Piece p) {
 		if(catalogue.add(p)==false) System.out.println("Cette piece existe déjà dans le catalogue");
 	}
 	
+	/**
+	 * Supprime une pièce du catalogue en donnant son nom et sa référence 
+	 * @param nom {@link String} le nom de la pièce
+	 * @param ref {@link String} la référence de la pièce
+	 */
 	public void supprimePiece(String nom, String ref) {
 		catalogue.remove(pieceExiste(nom, ref, false));
 	}
 	
+	
+	/**
+	 * Supprime une pièce du catalogue
+	 * @param p {@link Piece} la pièce à supprimer
+	 */
 	public void supprimePiece(Piece p) {
 		catalogue.remove(p);
 	}
 	
+	/**
+	 * Affiche les informations d'une pièce du catalogue en donnant son nom et sa référence
+	 * @param nom {@link String} le nom de la pièce
+	 * @param ref {@link String} la référence de la pièce
+	 */
 	public void affichePieceCatalogue(String nom, String ref) {
 		pieceExiste(nom, ref, true);
 	}

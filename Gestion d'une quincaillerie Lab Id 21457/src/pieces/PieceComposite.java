@@ -33,6 +33,10 @@ public abstract class PieceComposite extends Piece{
 		super.dureeFabrication = (dureeFabrication>0 ? dureeFabrication : 12);
 	}
 	
+	/**
+	 * Calcule la durée de la garantie de base d'une pièce composite en fonction des garanties de base des pièces qui la composent
+	 * @return {@link Integer} la garantie de base de la pièce composite
+	 */
 	private int garBaseComp() {
 		int min = Integer.MAX_VALUE;
 		for(Piece p : composants) {
@@ -43,6 +47,10 @@ public abstract class PieceComposite extends Piece{
 		return min;
 	}
 	
+	/**
+	 * Calcule la durée de fabrication d'une pièce composite en fonction des durées de fabrication des pièces qui la composent
+	 * @return {@link Integer} la durée de fabrication de la pièce composite
+	 */
 	private int fabComp() {
 		int max = Integer.MIN_VALUE;
 		for(Piece p : composants) {
@@ -53,6 +61,10 @@ public abstract class PieceComposite extends Piece{
 		return max;
 	}
 	
+	/**
+	 * Calcule le prix total d'une pièce composite en fonction des prix des pièces qui la composent
+	 * @return {@link Integer} le prix total de la pièce composite
+	 */
 	protected double prixTotalComp() {
 		double s = 0;
 		for(Piece p : composants) {
