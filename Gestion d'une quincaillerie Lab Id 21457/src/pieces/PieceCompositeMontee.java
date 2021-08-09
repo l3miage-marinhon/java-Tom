@@ -23,7 +23,7 @@ public class PieceCompositeMontee extends PieceComposite{
 		setDureeMontage(dureeMontage);
 		setPrixMontage(prixMontage);
 		setPrix(prixPieceCompMontee(composants));
-		setDureeGarantie(getDureeGarantieBase()+6);
+		setDureeGarantie(super.getDureeGarantieBase()+6);
 	}
 
 	public int getDureeMontage() {
@@ -44,14 +44,14 @@ public class PieceCompositeMontee extends PieceComposite{
 		return prix;
 	}
 	public void setPrix(double prix) {
-		super.prix = prix;
+		this.prix = prix;
 	}
 	
 	public int getDureeGarantie() {
 		return dureeGarantie;
 	}
 	public void setDureeGarantie(int dureeGarantie) {
-		super.dureeGarantie = dureeGarantie;
+		this.dureeGarantie = dureeGarantie;
 	}
 	
 	/**

@@ -43,14 +43,14 @@ public class PieceCompositeEnKit extends PieceComposite{
 		return prix;
 	}
 	public void setPrix(double prix) {
-		super.prix = prix;
+		this.prix = prix;
 	}
 	
 	public int getDureeGarantie() {
 		return dureeGarantie;
 	}
 	public void setDureeGarantie(int dureeGarantie) {
-		super.dureeGarantie = dureeGarantie;
+		this.dureeGarantie = dureeGarantie;
 	}
 	
 	/**

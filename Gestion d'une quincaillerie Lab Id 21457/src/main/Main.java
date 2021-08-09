@@ -2,19 +2,23 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import clients.CategorieEntreprise;
 import clients.Civilite;
 import clients.Entreprise;
 import clients.Particulier;
+import commandes.Commande;
 import commandes.Facture;
 import pieces.Piece;
 import pieces.PieceCompositeEnKit;
 import pieces.PieceCompositeMontee;
 import pieces.PieceDeBase;
 import quincaillerie.Catalogue;
+import quincaillerie.Quincaillerie;
 import quincaillerie.Stocks;
 
 public class Main {
@@ -46,7 +50,6 @@ public class Main {
 	    	listePieces.add(new PieceCompositeMontee("ampoule", "02AM33", compAmpoule, 2, 5));
 	    	
 	    	Catalogue catalogue = new Catalogue(listePieces);
-
 	    	System.out.println(catalogue);
 	    	
 	    	catalogue.pieceExiste("pneu", "00BD41", false);
@@ -56,7 +59,7 @@ public class Main {
 	    	catalogue.affichePieceCatalogue("ampoule", "02AM33");
 	    	catalogue.affichePieceCatalogue("rayon", "02AZ56");
 	    	
-	    	Entreprise e1 = new Entreprise("0456AE94", "30 rue des prés", "08562205190", "entrepriseE1@gmail.com", 1000,  "Paris", "Carroufino", CategorieEntreprise.PetiteMoyenneEntreprise);
+	    	Entreprise e1 = new Entreprise("0456AE94", "30 rue des prés", "08562205190", "entrepriseE1@gmail.com", 1000,  "Paris", "Carroufino", CategorieEntreprise.PME);
 			System.out.println("Entreprise 1 : \n" + e1);
 			
 			Particulier p1 = new Particulier("9877TY34", "12 rue marcel porte", "0629713873", "tom.frances97@yahoo.fr", 120, Civilite.MONSIEUR, "Frances", "Tom", true);
@@ -79,9 +82,23 @@ public class Main {
 	    	//stocks.supprimePieceStocks("rayon", "00OF48");
 	    	System.out.println(stocks);
 	    	
+	    	Quincaillerie leroyMaerlin = new Quincaillerie("LeroyMaerlin", 1000, catalogue, stocks, new HashMap<>());
 	    	//Date date1 = new Date();
 	    	//Facture fact1 = new Facture(1, date1, p1, compAmpoule);
 	    	//System.out.println("Facture 1 : " + fact1);
+	    	Map<Piece, Integer> listeachat = new HashMap<>();
+	    	listeachat.put(catalogue.pieceExiste("ampoule", "02AM33", false), 2);
+	    	listeachat.put(catalogue.pieceExiste("pneu", "00BD41", false), 4);
+	    	
+	    	leroyMaerlin.ajouterClient(p1);
+	    	if(leroyMaerlin.creationCommande(p1, listeachat) != null) System.out.println("Commande passée avec succès");
+	    	//Commande commande1 = new Commande(1, "AAA", p1, new Date(), listeachat, 0);
+	    	leroyMaerlin.rechercheCommandeClient(p1, 1).avancerEtat();
+	    	leroyMaerlin.rechercheCommandeClient(p1, 1).avancerEtat();
+	    	leroyMaerlin.rechercheCommandeClient(p1, 1).avancerEtat();
+	    	System.out.println("Commande 1 : " + leroyMaerlin.rechercheCommandeClient(p1, 1));
+	    	System.out.println("\nFacture 1 : " + leroyMaerlin.rechercheCommandeClient(p1, 1).getFacture());
+	    	System.out.println(p1);
 	    }
 	
 }

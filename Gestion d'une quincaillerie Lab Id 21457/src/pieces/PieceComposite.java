@@ -67,8 +67,6 @@ public abstract class PieceComposite extends Piece{
 		return max;
 	}
 	
-	
-	
 	@Override
 	public String toString() {
 		return super.toString() + "\nNombre de composants : " + composants.size()

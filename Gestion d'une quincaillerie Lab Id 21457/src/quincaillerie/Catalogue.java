@@ -49,11 +49,7 @@ public class Catalogue{
 			p = it.next();
 			if(p.getNom()==nom && p.getRef()==ref) {
 				f=true;
-				if(affichePiece) {
-					System.out.println("\nPiece nom \"" + nom + "\", ref \"" + ref + "\" : \n" + p + "\n");;
-				}else {
-					System.out.println("\nLa piece de nom \"" + nom + "\" et de ref \"" + ref + "\" est dans le catalogue\n");
-				}
+				if(affichePiece) System.out.println("\nPiece nom \"" + nom + "\", ref \"" + ref + "\" : \n" + p + "\n");;
 			}
 		}
 		if(!f) System.out.println("\nLa piece de nom \"" + nom + "\" et de ref \"" + ref + "\" n'est pas dans le catalogue\n");
@@ -85,7 +81,7 @@ public class Catalogue{
 	public void supprimePiece(Piece p) {
 		catalogue.remove(p);
 	}
-	
+		
 	/**
 	 * Affiche les informations d'une pièce du catalogue en donnant son nom et sa référence
 	 * @param nom {@link String} le nom de la pièce
