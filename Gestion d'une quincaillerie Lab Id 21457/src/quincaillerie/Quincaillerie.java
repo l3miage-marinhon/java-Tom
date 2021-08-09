@@ -12,6 +12,9 @@ import clients.Client;
 import commandes.Commande;
 import commandes.Facture;
 import pieces.Piece;
+import pieces.PieceCompositeEnKit;
+import pieces.PieceCompositeMontee;
+import pieces.PieceDeBase;
 import servicesBancaires.ServiceBancaire;
 
 public class Quincaillerie {
@@ -85,7 +88,13 @@ public class Quincaillerie {
 	public double calculPrixCommande(Map<Piece, Integer> listePiecesExemplaires) {
 		double prix = 0;
 		for(Piece p : listePiecesExemplaires.keySet()) {
-			prix += p.getPrix() * listePiecesExemplaires.get(p);
+			if(p instanceof PieceCompositeEnKit) {
+				prix += ((PieceCompositeEnKit) p).getPrix() * listePiecesExemplaires.get(p);
+			}else if(p instanceof PieceCompositeMontee) {
+				prix += ((PieceCompositeMontee) p).getPrix() * listePiecesExemplaires.get(p);
+			}else if(p instanceof PieceDeBase) {
+				prix += ((PieceDeBase) p).getPrix() * listePiecesExemplaires.get(p);
+			}
 		}
 		return prix;
 	}

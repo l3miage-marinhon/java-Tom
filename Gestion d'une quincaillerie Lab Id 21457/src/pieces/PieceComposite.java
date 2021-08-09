@@ -7,30 +7,36 @@ import java.util.ArrayList;
 // et la dureer de fabircation et correspond a la pieces la plus longue a fabriquer
 public abstract class PieceComposite extends Piece{
 	
-	private ArrayList<Piece> composants;
+	private ArrayList<PieceDeBase> composants;
+	private int dureeGarantieBase;
+	private int dureeFabrication;
 	
-	public PieceComposite(String nom, ArrayList<Piece> composants) {
+	public PieceComposite(String nom, ArrayList<PieceDeBase> composants) {
 		super(nom);
 		setComposants(composants);
 		setDureeGarantieBase(garBaseComp());
 		setDureeFabrication(fabComp());
 	}
 
-	public ArrayList<Piece> getComposants(){
+	public ArrayList<PieceDeBase> getComposants(){
 		return composants;
 	}
-	public void setComposants(ArrayList<Piece> composants) {
+	public void setComposants(ArrayList<PieceDeBase> composants) {
 		this.composants = composants;
 	}
 	
-	@Override
-	public void setDureeGarantieBase(int dureeGarantie) {
-		super.dureeGarantieBase = (dureeGarantieBase>0 ? dureeGarantieBase : 12);
+	public int getDureeGarantieBase() {
+		return dureeGarantieBase;
+	}
+	public void setDureeGarantieBase(int dureeGarantieBase) {
+		this.dureeGarantieBase = dureeGarantieBase;
 	}
 	
-	@Override
+	public int getDureeFabrication() {
+		return dureeFabrication;
+	}
 	public void setDureeFabrication(int dureeFabrication) {
-		super.dureeFabrication = (dureeFabrication>0 ? dureeFabrication : 12);
+		this.dureeFabrication = dureeFabrication;
 	}
 	
 	/**
@@ -39,9 +45,9 @@ public abstract class PieceComposite extends Piece{
 	 */
 	private int garBaseComp() {
 		int min = Integer.MAX_VALUE;
-		for(Piece p : composants) {
-			if(p.getDureeGarantieBase()<min) {
-				min = p.getDureeGarantieBase();
+		for(PieceDeBase p : composants) {
+			if(p.getDureeGarantie()<min) {
+				min = p.getDureeGarantie();
 			}
 		}
 		return min;
@@ -53,7 +59,7 @@ public abstract class PieceComposite extends Piece{
 	 */
 	private int fabComp() {
 		int max = Integer.MIN_VALUE;
-		for(Piece p : composants) {
+		for(PieceDeBase p : composants) {
 			if(p.getDureeFabrication()>max) {
 				max = p.getDureeFabrication();
 			}
@@ -61,21 +67,12 @@ public abstract class PieceComposite extends Piece{
 		return max;
 	}
 	
-	/**
-	 * Calcule le prix total d'une pièce composite en fonction des prix des pièces qui la composent
-	 * @return {@link Integer} le prix total de la pièce composite
-	 */
-	protected double prixTotalComp() {
-		double s = 0;
-		for(Piece p : composants) {
-			s += p.getPrix();
-		}
-		return s;
-	}
+	
 	
 	@Override
 	public String toString() {
-		return super.toString() + "\nNombre de composants : " + composants.size();
+		return super.toString() + "\nNombre de composants : " + composants.size()
+								+ "\nDurée fabrication : " + getDureeFabrication() + (getDureeFabrication()>1 ? " heures" : " heure");
 	}
 	
 }

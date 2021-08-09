@@ -8,39 +8,51 @@ import java.util.regex.Pattern;
 //on peut l'afficher 
 public class PieceDeBase extends Piece{
 
+	private double prix;
+	private int dureeGarantie;
+	private int dureeFabrication;
+	
 	public PieceDeBase(String nom, String ref, double prix, int dureeGarantie, int dureeFabrication) {
 		super(nom);
 		setRef(ref);
 		setPrix(prix);
-		setDureeGarantieBase(dureeGarantie);
 		setDureeGarantie(dureeGarantie);
 		setDureeFabrication(dureeFabrication);
 	}
 	
-	@Override
 	public void setPrix(double prix) {
-		super.prix = prix;
+		this.prix = prix;
+	}
+	public double getPrix() {
+		return prix;
 	}
 	
-	@Override
-	public void setDureeGarantieBase(int dureeGarantie) {
-		super.dureeGarantieBase = (dureeGarantieBase>0 ? dureeGarantieBase : 12);
-	}
-	
-	@Override
 	public void setDureeGarantie(int dureeGarantie) {
-		super.dureeGarantie = dureeGarantie;
+		this.dureeGarantie = dureeGarantie;
+	}
+	public int getDureeGarantie() {
+		return dureeGarantie;
 	}
 	
-	@Override
 	public void setDureeFabrication(int dureeFabrication) {
-		super.dureeFabrication = (dureeFabrication>0 ? dureeFabrication : 12);
+		this.dureeFabrication = (dureeFabrication>0 ? dureeFabrication : 12);
+	}
+	public int getDureeFabrication() {
+		return dureeFabrication;
 	}
 	
 	@Override
 	public void setRef(String ref) {
-		super.ref = !Pattern.matches("00[A-Z]{2}[0-9]{2}", ref) ? "00AA00" : ref;
+		super.setRef(!Pattern.matches("00[A-Z]{2}[0-9]{2}", ref) ? "00AA00" : ref);
 		//exception plus tard si match false
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString()
+				+ "\nPrix : " + getPrix() + (getPrix()>1 ? " euros" : " euro")
+				+ "\nDurée garantie : " + getDureeGarantie() + " mois"
+				+ "\nDurée fabrication : " + getDureeFabrication() + (getDureeFabrication()>1 ? " heures" : " heure");
 	}
 	
 }

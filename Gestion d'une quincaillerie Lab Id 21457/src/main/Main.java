@@ -27,12 +27,12 @@ public class Main {
 	 Question 14: Afficher les fiches caractéristiques des 2 piièces composites jantes montée et brouette montée décrites dans l'énoncé.
 	 Question 27: Ajouter un client particulier et une entreprise et afficher le résultat.*/
 	    	//tu peut ici remplacer avec des Collections si tu trouve ça plus simple 
-	    	ArrayList<Piece> compRoueVelo = new ArrayList<>();
+	    	ArrayList<PieceDeBase> compRoueVelo = new ArrayList<>();
 	    	compRoueVelo.add(new PieceDeBase("rayon", "00OF48",1,20,1));
 	    	compRoueVelo.add(new PieceDeBase("pneu", "00BD41",12.5,60,2));
 	    	compRoueVelo.add(new PieceDeBase("disque de jante", "00DJ42",5.5,36,2));
 	    	
-	    	ArrayList<Piece> compAmpoule = new ArrayList<>();
+	    	ArrayList<PieceDeBase> compAmpoule = new ArrayList<>();
 	    	compAmpoule.add(new PieceDeBase("verre", "00KF48",2,24,1));
 	    	compAmpoule.add(new PieceDeBase("filament", "00FF92",5,24,1));
 	    	
@@ -66,23 +66,22 @@ public class Main {
 	    	System.out.println(stocks);
 
 	    	System.out.println("recherche piece ");
-	    	stocks.pieceExiste("pneu", "00BD41", true);
 	    	System.out.println("ajoute stock piece ");
-	    	stocks.ajoutePiece("pneu", "00BD41", 5);
+	    	//stocks.ajoutePiece("pneu", "00BD41", 5);
 	    	System.out.println(stocks);
 	    	System.out.println("recherche stocks piece");
-	    	stocks.afficheStocksPiece("pneu", "00BD41");
-	    	stocks.afficheStocksPiece("ddd", "00BD42");
+	    	//stocks.afficheStocksPiece("pneu", "00BD41");
+	    	//stocks.afficheStocksPiece("ddd", "00BD42");
 	    	System.out.println("retire stocks piece");
-	    	stocks.retirePieceStocks("disque de jante", "00DJ41", 19);
+	    	//stocks.retirePieceStocks("disque de jante", "00DJ41", 19);
 	    	System.out.println(stocks);
 	    	System.out.println("suppression piece stocks");
-	    	stocks.supprimePieceStocks("rayon", "00OF48");
+	    	//stocks.supprimePieceStocks("rayon", "00OF48");
 	    	System.out.println(stocks);
 	    	
-	    	Date date1 = new Date();
-	    	Facture fact1 = new Facture(1, date1, p1, compAmpoule);
-	    	System.out.println("Facture 1 : " + fact1);
+	    	//Date date1 = new Date();
+	    	//Facture fact1 = new Facture(1, date1, p1, compAmpoule);
+	    	//System.out.println("Facture 1 : " + fact1);
 	    }
 	
 }
