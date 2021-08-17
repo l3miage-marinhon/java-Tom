@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Random;
 
 import clients.Client;
 import commandes.Commande;
@@ -77,6 +78,31 @@ public class Quincaillerie {
 			nb += listesCommandes.size();
 		}
 		return nb+1;
+	}
+	
+	public String refNouveauClient(Boolean part) {
+		int nb = listeClientsCommandes.keySet().size() + 1;
+		String ref = "";
+		if(nb>0 && nb<1000) ref += String.format("%04d", nb);
+		if(part) {
+			ref += "PA";
+		}else {
+			ref += "EN";
+		}
+		Random rn = new Random();
+		int r = rn.nextInt(100);
+		ref += String.format("%02d", r);
+		System.out.println("ref " + ref);
+		return ref;
+	}
+	
+	public boolean mailDisponible(String mail) {
+		boolean disp = true;
+		Iterator<Client> it = listeClientsCommandes.keySet().iterator();
+		while(it.hasNext() && disp) {
+			if(mail.equals(it.next().getEmail())) disp = false;
+		}
+		return disp;
 	}
 	
 	/**

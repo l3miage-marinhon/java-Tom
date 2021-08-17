@@ -101,4 +101,42 @@ public class Main {
 	    	System.out.println(p1);
 	    }
 	
+	
+	
+	
+	
+	
+	/*
+	public void initialize() {
+		ArrayList<PieceDeBase> compRoueVelo = new ArrayList<>();
+    	compRoueVelo.add(new PieceDeBase("rayon", "00OF48",1,20,1));
+    	compRoueVelo.add(new PieceDeBase("pneu", "00BD41",12.5,60,2));
+    	compRoueVelo.add(new PieceDeBase("disque de jante", "00DJ42",5.5,36,2));
+    	
+    	ArrayList<PieceDeBase> compAmpoule = new ArrayList<>();
+    	compAmpoule.add(new PieceDeBase("verre", "00KF48",2,24,1));
+    	compAmpoule.add(new PieceDeBase("filament", "00FF92",5,24,1));
+    	
+    	ArrayList<PieceDeBase> compPommeauDouche = new ArrayList<>();
+    	compPommeauDouche.add(new PieceDeBase("jet", "00JT24", 3, 24, 3));
+    	compPommeauDouche.add(new PieceDeBase("joint", "00JN28", 0.5, 24, 1));
+    	compPommeauDouche.add(new PieceDeBase("molette", "00ML02", 2, 24, 2));
+    	
+    	Set<Piece> listePieces = new HashSet<Piece>();
+    	listePieces.add(new PieceDeBase("pneu", "00BD41",12.5,60,2));
+    	listePieces.add(new PieceDeBase("chambre à air", "00AA65",4.0,20,2));
+    	listePieces.add(new PieceDeBase("disque de jante", "00DJ41",4.5,60,2));
+    	listePieces.add(new PieceDeBase("rayon", "00OF48",1,20,1));
+    	listePieces.add(new PieceDeBase("rayon", "00OF49",4,23,2));
+    	listePieces.add(new PieceDeBase("vis", "00OVS01",0.1,24,1));
+    	listePieces.add(new PieceCompositeEnKit("roue de vélo", "01TY87", compRoueVelo, 2));
+    	listePieces.add(new PieceCompositeMontee("ampoule", "02AM33", compAmpoule, 2, 5));
+    	listePieces.add(new PieceCompositeMontee("pommeau de douche", "02PD77", compPommeauDouche, 1, 2.5));
+    	
+    	Catalogue catalogue = new Catalogue(listePieces);
+    	Stocks stocks = new Stocks(listePieces);
+    	
+		quincaillerie = new Quincaillerie("Ma quincaillerie", 1000, catalogue, stocks, new HashMap<>());
+	}
+	*/
 }

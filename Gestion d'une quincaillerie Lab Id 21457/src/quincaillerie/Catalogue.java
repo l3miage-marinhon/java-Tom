@@ -13,7 +13,7 @@ import java.util.Iterator;
 public class Catalogue{
 	
 	public Set<Piece> catalogue;
-
+	
 	public Catalogue(Set<Piece> catalogue) {
 		setCatalogue(catalogue);
 	}

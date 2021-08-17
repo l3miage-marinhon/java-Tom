@@ -1,12 +1,9 @@
 package clients;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.regex.*;
 
-import commandes.Commande;
 import pieces.*;
 // TODO Question 24: écrire la classe Client.
 // 

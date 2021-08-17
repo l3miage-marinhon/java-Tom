@@ -1,40 +1,37 @@
 package main;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.TextArea;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+
+import Interface.MenuPrincipal;
+import pieces.Piece;
+import pieces.PieceCompositeEnKit;
+import pieces.PieceCompositeMontee;
+import pieces.PieceDeBase;
+import quincaillerie.Catalogue;
+import quincaillerie.Quincaillerie;
+import quincaillerie.Stocks;
 
 
 public class Application {
 	
-	/*
-	public Application() {
-		super("Test première fenètre");
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
-		this.setSize(new Dimension(1000, 800));
-		this.setLocationRelativeTo(null);
-	}
+	public static Quincaillerie quincaillerie = initialize();
 	
 	public static void main(String[] args) {
-		Application appli = new Application();
-		appli.setVisible(true);
-	}
-	*/
-	private JFrame frmApplication;
-	
-	public static void main(String[] args) {
+		EventQueue.invokeLater(new MenuPrincipal());
+		/*
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -45,51 +42,102 @@ public class Application {
 				}
 			}
 		});
+		*/
 	}
 	
 	public Application() {
 		initialize();
 	}
 	
-	public void initialize() {
-		try {
-			UIManager.setLookAndFeel(new NimbusLookAndFeel());
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		frmApplication = new JFrame();
-		frmApplication.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frmApplication.setSize(new Dimension(1000, 800));
-		frmApplication.setLocationRelativeTo(null);
-		
+	private static Quincaillerie initialize() {
+		ArrayList<PieceDeBase> compRoueVelo = new ArrayList<>();
+    	compRoueVelo.add(new PieceDeBase("rayon", "00OF48",1,20,1));
+    	compRoueVelo.add(new PieceDeBase("pneu", "00BD41",12.5,60,2));
+    	compRoueVelo.add(new PieceDeBase("disque de jante", "00DJ42",5.5,36,2));
+    	
+    	ArrayList<PieceDeBase> compAmpoule = new ArrayList<>();
+    	compAmpoule.add(new PieceDeBase("verre", "00KF48",2,24,1));
+    	compAmpoule.add(new PieceDeBase("filament", "00FF92",5,24,1));
+    	
+    	ArrayList<PieceDeBase> compPommeauDouche = new ArrayList<>();
+    	compPommeauDouche.add(new PieceDeBase("jet", "00JT24", 3, 24, 3));
+    	compPommeauDouche.add(new PieceDeBase("joint", "00JN28", 0.5, 24, 1));
+    	compPommeauDouche.add(new PieceDeBase("molette", "00ML02", 2, 24, 2));
+    	
+    	Set<Piece> listePieces = new HashSet<Piece>();
+    	listePieces.add(new PieceDeBase("pneu", "00BD41",12.5,60,2));
+    	listePieces.add(new PieceDeBase("chambre à air", "00AA65",4.0,20,2));
+    	listePieces.add(new PieceDeBase("disque de jante", "00DJ41",4.5,60,2));
+    	listePieces.add(new PieceDeBase("rayon", "00OF48",1,20,1));
+    	listePieces.add(new PieceDeBase("rayon", "00OF49",4,23,2));
+    	listePieces.add(new PieceDeBase("vis", "00OVS01",0.1,24,1));
+    	listePieces.add(new PieceCompositeEnKit("roue de vélo", "01TY87", compRoueVelo, 2));
+    	listePieces.add(new PieceCompositeMontee("ampoule", "02AM33", compAmpoule, 2, 5));
+    	listePieces.add(new PieceCompositeMontee("pommeau de douche", "02PD77", compPommeauDouche, 1, 2.5));
+    	
+    	Catalogue catalogue = new Catalogue(listePieces);
+    	Stocks stocks = new Stocks(listePieces);
+    	
+		return new Quincaillerie("MaQuincaillerieGrenoble", 1000, catalogue, stocks, new HashMap<>());
+	}
+	
+	public void setMenuClientQuinc(JFrame frmApplication) {
 		JPanel content = (JPanel) frmApplication.getContentPane();
-		content.setLayout(new BoxLayout(content, BoxLayout.X_AXIS));
-		content.setBorder(new EmptyBorder(200, 200, 220, 200));
-		JPanel menu1 = new JPanel();
-		menu1.setLayout(new GridLayout(1, 2, 20, 20));
+		JPanel menu = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.insets = new Insets(0, 0, 4, 0);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		JButton btnClient = new JButton("CLIENT");
+		btnClient.addActionListener(ev->{setMenuClientKnownUnknown(frmApplication);});
+		menu.add(btnClient, gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 1;
 		JButton btnQuinc = new JButton("QUINCAILLERIE");
-		content.add(menu1);
-		menu1.add(btnClient);
-		menu1.add(btnQuinc);
+		btnQuinc.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 System.out.println("Quincaillerie cliquée");
+			}
+		});
+		menu.add(btnQuinc, gbc);
+
+		content.add(menu);
+	}
+	
+	public void setMenuClientKnownUnknown(JFrame frmApplication) {
+		JPanel content = (JPanel) frmApplication.getContentPane();
+		JPanel menu = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
 		
-		/*
-		content.setLayout(new FlowLayout(FlowLayout.CENTER));
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.insets = new Insets(0, 0, 4, 0);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		JButton btnInscription = new JButton("S'inscrire");
+		btnInscription.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("S'inscrire cliqué");
+				
+			}
+		});
+		menu.add(btnInscription, gbc);
 		
-		JPanel menu1 = new JPanel();
-		menu1.setLayout(new BoxLayout(menu1, BoxLayout.Y_AXIS));
-		//content.setBorder(new EmptyBorder(200, 200, 220, 200));
-		
-		
-		frmApplication.setTitle("Application Quincaillerie");
-		JButton btnClient = new JButton("CLIENT");
-		btnClient.setPreferredSize(new Dimension(300, 200));
-		JButton btnQuinc = new JButton("QUINCAILLERIE");
-		btnQuinc.setPreferredSize(new Dimension(300, 200));
-		menu1.add(btnClient);
-		menu1.add(btnQuinc);
-		content.add(menu1);
-	*/	
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		JButton btnConnecter = new JButton("Se connecter");
+		btnConnecter.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 System.out.println("Se connecter cliqué");
+			}
+		});
+		menu.add(btnConnecter, gbc);
+
+		content.add(menu);
 	}
 }
