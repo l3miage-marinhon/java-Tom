@@ -7,7 +7,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -32,7 +31,6 @@ import javax.swing.WindowConstants;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import clients.Civilite;
-import clients.Client;
 import clients.Particulier;
 import main.Application;
 
@@ -82,11 +80,11 @@ public class MenuNewClientPart implements Runnable{
 		JPanel content = (JPanel) frmNewClientPart.getContentPane();
 		content.setLayout(new BorderLayout());
 		content.add(createBtnReturn(), BorderLayout.NORTH);
-		content.add(version(), BorderLayout.SOUTH);
+		content.add(Application.version(), BorderLayout.SOUTH);
 		
 		
-		JLabel[] labels = {	new JLabel("Civilité"), new JLabel("Nom"), new JLabel("Prénom"), new JLabel("Adresse"), 
-							new JLabel("Téléphone"), new JLabel("Email"), new JLabel("Fidélité")};
+		JLabel[] labels = {	new JLabel("Civilité :"), new JLabel("Nom :"), new JLabel("Prénom :"), new JLabel("Adresse :"), 
+							new JLabel("Téléphone :"), new JLabel("Email :"), new JLabel("Fidélité :")};
 		JComponent[] fields = {	radioButtonPanel("Civilité"), inputField("Nom"), inputField("Prénom"), inputField("Adresse"), 
 								inputField("Téléphone"), inputField("Email"), radioButtonPanel("Fidélité")};
 		
@@ -112,7 +110,6 @@ public class MenuNewClientPart implements Runnable{
 			gbc.gridx = 0;
 			gbc.gridy = n;
 			gbc.anchor = GridBagConstraints.EAST;
-			gbc.insets = new Insets(0, 0, 0, 10);
 			panel.add(label, gbc);
 			n++;
 		}
@@ -150,28 +147,28 @@ public class MenuNewClientPart implements Runnable{
 				String email = null;
 				boolean fid = false;
 				
+				String value;
 				boolean correct = true;
+				
 				while(i < size && correct) {
-					
 					if(fields[i].getComponent(0) instanceof JTextField) {
-						String value = ((JTextField) fields[i].getComponent(0)).getText();
+						value = ((JTextField) fields[i].getComponent(0)).getText();
 						if(value.isBlank()) {
 							correct = false;
-						}else if(labels[i].getText().equals("Nom")) {
+						}else if(labels[i].getText().equals("Nom :")) {
 							nom = value;
-						}else if(labels[i].getText().equals("Prénom")) {
+						}else if(labels[i].getText().equals("Prénom :")) {
 							prenom = value;
-						}else if(labels[i].getText().equals("Adresse")) {
+						}else if(labels[i].getText().equals("Adresse :")) {
 							adresse = value;
-						}else if(labels[i].getText().equals("Téléphone")) {
+						}else if(labels[i].getText().equals("Téléphone :")) {
 							if(Pattern.matches("0\\d{9}", value)) {
 								tel = value;
 							}else {
 								correct = false;
 								JOptionPane.showMessageDialog(null, "Numéro de téléphone incorrect");
 							}
-							
-						}else if(labels[i].getText().equals("Email")) {
+						}else if(labels[i].getText().equals("Email :")) {
 							if(!Application.quincaillerie.mailDisponible(value)) {
 								correct = false;
 								JOptionPane.showMessageDialog(null, "Email indisponible");
@@ -183,7 +180,7 @@ public class MenuNewClientPart implements Runnable{
 							}
 						}
 					}else if(fields[i].getComponent(0) instanceof JRadioButton) {
-						if(labels[i].getText().equals("Civilité")) {
+						if(labels[i].getText().equals("Civilité :")) {
 							if(((JRadioButton) fields[i].getComponent(0)).isSelected()){
 								civilite = Civilite.MONSIEUR;
 							}else if(((JRadioButton) fields[i].getComponent(1)).isSelected()) {
@@ -192,7 +189,7 @@ public class MenuNewClientPart implements Runnable{
 								correct = false;
 								JOptionPane.showMessageDialog(null, "Veuillez renseigner votre civilité");
 							}
-						}else if(labels[i].getText().equals("Fidélité")) {
+						}else if(labels[i].getText().equals("Fidélité :")) {
 							if(((JRadioButton) fields[i].getComponent(0)).isSelected()) {
 								fid = true;
 							}else if(( (JRadioButton) fields[i].getComponent(1)).isSelected()) {
@@ -207,11 +204,10 @@ public class MenuNewClientPart implements Runnable{
 				}
 				
 				if(correct) {
-					String id = Application.quincaillerie.refNouveauClient(true);
+					System.out.println(tel);
+					String id = Application.quincaillerie.idNouveauClient(true);
 					Application.quincaillerie.ajouterClient(new Particulier(id, adresse, tel, email, 100, civilite, nom, prenom, fid));
-					for(Client c : Application.quincaillerie.getListeClientsCommandes().keySet()) {
-						System.out.println(c + "\n");
-					}
+					Application.quincaillerie.afficheClients();
 				}else {
 					System.out.println("Erreur saisie");
 				}
@@ -275,10 +271,5 @@ public class MenuNewClientPart implements Runnable{
 		
 		return radioPanel;
 	}
-	
-	private JPanel version() {
-		JPanel version = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		version.add(new JLabel("Version : Alpha-1")); 
-		return version;
-	}
+
 }

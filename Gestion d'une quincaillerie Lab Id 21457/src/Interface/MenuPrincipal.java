@@ -70,7 +70,7 @@ public class MenuPrincipal implements Runnable{
 		nomQuinc.add(new JLabel(Application.quincaillerie.getNom()));
 		content.add(nomQuinc, BorderLayout.NORTH);
 		content.add(createMenu(), BorderLayout.CENTER);
-		content.add(version(), BorderLayout.SOUTH);
+		content.add(Application.version(), BorderLayout.SOUTH);
 	}
 	
 	
@@ -95,12 +95,6 @@ public class MenuPrincipal implements Runnable{
 		menu.add(btnQuinc, gbc);
 
 		return menu;
-	}
-	
-	private JPanel version() {
-		JPanel version = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		version.add(new JLabel("Version : Alpha-1")); 
-		return version;
 	}
 	
 }

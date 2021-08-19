@@ -80,22 +80,31 @@ public class Quincaillerie {
 		return nb+1;
 	}
 	
-	public String refNouveauClient(Boolean part) {
+	/**
+	 * Retourne l'id du prochain client à créer, basé sur le nombre de clients déjà enregistrés et son type (particulier ou entreprise
+	 * @param part {@linkplain Boolean} true si le client est un particulier, faux sinon (ie si le client est une entreprise)
+	 * @return String l'id du prochain client
+	 */
+	public String idNouveauClient(Boolean part) {
 		int nb = listeClientsCommandes.keySet().size() + 1;
-		String ref = "";
-		if(nb>0 && nb<1000) ref += String.format("%04d", nb);
+		String id = "";
+		if(nb>0 && nb<1000) id += String.format("%04d", nb);
 		if(part) {
-			ref += "PA";
+			id += "PA";
 		}else {
-			ref += "EN";
+			id += "EN";
 		}
 		Random rn = new Random();
 		int r = rn.nextInt(100);
-		ref += String.format("%02d", r);
-		System.out.println("ref " + ref);
-		return ref;
+		id += String.format("%02d", r);
+		return id;
 	}
 	
+	/**
+	 * Vérifie si un email est déjà utilisé par un client de la quincaillerie
+	 * @param mail {@linkplain String} le mail à vérifier
+	 * @return true si le mail est disponible, false sinon
+	 */
 	public boolean mailDisponible(String mail) {
 		boolean disp = true;
 		Iterator<Client> it = listeClientsCommandes.keySet().iterator();
@@ -103,6 +112,16 @@ public class Quincaillerie {
 			if(mail.equals(it.next().getEmail())) disp = false;
 		}
 		return disp;
+	}
+	
+	public Client connexionClient(String mail) {
+		Client client = null;
+		Iterator<Client> it = listeClientsCommandes.keySet().iterator();
+		while(it.hasNext() && client == null) {
+			Client c = it.next();
+			if(mail.equals(c.getEmail())) client = c;
+		}
+		return client;
 	}
 	
 	/**
@@ -229,6 +248,12 @@ public class Quincaillerie {
 			ServiceBancaire.approvisionneTresorerieQuincaillerie(this, prixCommande);
 		}
 		return commande;
+	}
+	
+	public void afficheClients() {
+		for(Client c : listeClientsCommandes.keySet()) {
+			System.out.println(c + "\n");
+		}
 	}
 	
 }

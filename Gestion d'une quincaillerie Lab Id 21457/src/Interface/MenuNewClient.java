@@ -22,6 +22,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
+import main.Application;
+
 
 public class MenuNewClient implements Runnable{
 
@@ -77,7 +79,7 @@ public class MenuNewClient implements Runnable{
 		content.setLayout(new BorderLayout());
 		content.add(createBtnReturn(), BorderLayout.NORTH);
 		content.add(createInfoInputMenu(), BorderLayout.CENTER);
-		content.add(version(), BorderLayout.SOUTH);
+		content.add(Application.version(), BorderLayout.SOUTH);
 	}
 	
 	private JPanel createInfoInputMenu() {
@@ -107,12 +109,6 @@ public class MenuNewClient implements Runnable{
 		btnReturn.addActionListener(ev->{MenuClientKnownUnknown.demarrer(previousFrm, frmNewClient);});
 		pnlBtnReturn.add(btnReturn);
 		return pnlBtnReturn;
-	}
-	
-	private JPanel version() {
-		JPanel version = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		version.add(new JLabel("Version : Alpha-1")); 
-		return version;
 	}
 	
 	

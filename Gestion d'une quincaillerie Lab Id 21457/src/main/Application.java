@@ -1,21 +1,17 @@
 package main;
 
 import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Interface.MenuPrincipal;
+import clients.Client;
 import pieces.Piece;
 import pieces.PieceCompositeEnKit;
 import pieces.PieceCompositeMontee;
@@ -28,21 +24,11 @@ import quincaillerie.Stocks;
 public class Application {
 	
 	public static Quincaillerie quincaillerie = initialize();
+	public static Client clientCourant = null;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new MenuPrincipal());
-		/*
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Application window = new Application();
-					window.frmApplication.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		*/
+		
 	}
 	
 	public Application() {
@@ -81,63 +67,9 @@ public class Application {
 		return new Quincaillerie("MaQuincaillerieGrenoble", 1000, catalogue, stocks, new HashMap<>());
 	}
 	
-	public void setMenuClientQuinc(JFrame frmApplication) {
-		JPanel content = (JPanel) frmApplication.getContentPane();
-		JPanel menu = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0, 0, 4, 0);
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		JButton btnClient = new JButton("CLIENT");
-		btnClient.addActionListener(ev->{setMenuClientKnownUnknown(frmApplication);});
-		menu.add(btnClient, gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		JButton btnQuinc = new JButton("QUINCAILLERIE");
-		btnQuinc.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				 System.out.println("Quincaillerie cliquée");
-			}
-		});
-		menu.add(btnQuinc, gbc);
-
-		content.add(menu);
-	}
-	
-	public void setMenuClientKnownUnknown(JFrame frmApplication) {
-		JPanel content = (JPanel) frmApplication.getContentPane();
-		JPanel menu = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0, 0, 4, 0);
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		JButton btnInscription = new JButton("S'inscrire");
-		btnInscription.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("S'inscrire cliqué");
-				
-			}
-		});
-		menu.add(btnInscription, gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		JButton btnConnecter = new JButton("Se connecter");
-		btnConnecter.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				 System.out.println("Se connecter cliqué");
-			}
-		});
-		menu.add(btnConnecter, gbc);
-
-		content.add(menu);
+	public static JPanel version() {
+		JPanel version = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		version.add(new JLabel("Version : Alpha-1")); 
+		return version;
 	}
 }

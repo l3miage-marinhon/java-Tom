@@ -13,7 +13,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -21,6 +20,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+
+import main.Application;
 
 
 public class MenuClientKnownUnknown implements Runnable{
@@ -78,7 +79,7 @@ public class MenuClientKnownUnknown implements Runnable{
 		content.setLayout(new BorderLayout());
 		content.add(createBtnReturn(), BorderLayout.NORTH);
 		content.add(createMenu(), BorderLayout.CENTER);
-		content.add(version(), BorderLayout.SOUTH);
+		content.add(Application.version(), BorderLayout.SOUTH);
 	}
 	
 	private JPanel createBtnReturn() {
@@ -105,15 +106,10 @@ public class MenuClientKnownUnknown implements Runnable{
 		gbc.gridy = 0;
 		btnExistingClient = new JButton("Se connecter");
 		btnExistingClient.setPreferredSize(new Dimension(150, 50));
-		btnExistingClient.addActionListener(ev->{System.out.println("Se connecter cliqué");});
+		btnExistingClient.addActionListener(ev->{MenuClientConnexion.demarrer(frmClientKnUk);});
 		menu.add(btnExistingClient, gbc);
 
 		return menu;
 	}
-	
-	private JPanel version() {
-		JPanel version = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		version.add(new JLabel("Version : Alpha-1")); 
-		return version;
-	}
 }
+

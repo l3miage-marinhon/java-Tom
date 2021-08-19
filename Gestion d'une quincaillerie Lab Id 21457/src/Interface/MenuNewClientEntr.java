@@ -7,7 +7,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -32,7 +31,6 @@ import javax.swing.WindowConstants;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import clients.CategorieEntreprise;
-import clients.Client;
 import clients.Entreprise;
 import main.Application;
 
@@ -82,11 +80,11 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		JPanel content = (JPanel) frmNewClientEntr.getContentPane();
 		content.setLayout(new BorderLayout());
 		content.add(createBtnReturn(), BorderLayout.NORTH);
-		content.add(version(), BorderLayout.SOUTH);
+		content.add(Application.version(), BorderLayout.SOUTH);
 		
 		
-		JLabel[] labels = {	new JLabel("Siège social"), new JLabel("Nom commercial"), new JLabel("Catégorie"), new JLabel("Adresse"), 
-							new JLabel("Téléphone"), new JLabel("Email")};
+		JLabel[] labels = {	new JLabel("Siège social :"), new JLabel("Nom commercial :"), new JLabel("Catégorie :"), new JLabel("Adresse :"), 
+							new JLabel("Téléphone :"), new JLabel("Email :")};
 		JComponent[] fields = {	inputField("SiègeSocial"), inputField("NomCommercial"), radioButtonPanel("Catégorie"), inputField("Adresse"), 
 								inputField("Téléphone"), inputField("Email")};
 		
@@ -112,7 +110,6 @@ public static final String PATH_TO_ICONS = "src/icons/";
 			gbc.gridx = 0;
 			gbc.gridy = n;
 			gbc.anchor = GridBagConstraints.EAST;
-			gbc.insets = new Insets(0, 0, 0, 10);
 			panel.add(label, gbc);
 			n++;
 		}
@@ -156,20 +153,20 @@ public static final String PATH_TO_ICONS = "src/icons/";
 						String value = ((JTextField) fields[i].getComponent(0)).getText();
 						if(value.isBlank()) {
 							correct = false;
-						}else if(labels[i].getText().equals("Nom commercial")) {
+						}else if(labels[i].getText().equals("Nom commercial :")) {
 							nomComm = value;
-						}else if(labels[i].getText().equals("Siège social")) {
+						}else if(labels[i].getText().equals("Siège social :")) {
 							siegeSocial = value;
-						}else if(labels[i].getText().equals("Adresse")) {
+						}else if(labels[i].getText().equals("Adresse :")) {
 							adresse = value;
-						}else if(labels[i].getText().equals("Téléphone")) {
+						}else if(labels[i].getText().equals("Téléphone :")) {
 							if(Pattern.matches("0\\d{9}", value)) {
 								tel = value;
 							}else {
 								correct = false;
 								JOptionPane.showMessageDialog(null, "Numéro de téléphone incorrect");
 							}
-						}else if(labels[i].getText().equals("Email")) {
+						}else if(labels[i].getText().equals("Email :")) {
 							if(!Application.quincaillerie.mailDisponible(value)) {
 								correct = false;
 								JOptionPane.showMessageDialog(null, "Email indisponible");
@@ -181,7 +178,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 							}
 						}
 					}else if(fields[i].getComponent(0) instanceof JRadioButton) {
-						if(labels[i].getText().equals("Catégorie")) {
+						if(labels[i].getText().equals("Catégorie :")) {
 							if(((JRadioButton) fields[i].getComponent(0)).isSelected()){
 								categorie = CategorieEntreprise.GE;
 							}else if(((JRadioButton) fields[i].getComponent(1)).isSelected()) {
@@ -200,11 +197,9 @@ public static final String PATH_TO_ICONS = "src/icons/";
 				}
 				
 				if(correct) {
-					String id = Application.quincaillerie.refNouveauClient(false);
+					String id = Application.quincaillerie.idNouveauClient(false);
 					Application.quincaillerie.ajouterClient(new Entreprise(id, adresse, tel, email, 500, siegeSocial, nomComm, categorie));
-					for(Client c : Application.quincaillerie.getListeClientsCommandes().keySet()) {
-						System.out.println(c + "\n");
-					}
+					Application.quincaillerie.afficheClients();
 				}else {
 					System.out.println("Erreur saisie");
 				}
@@ -267,10 +262,5 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		
 		return radioPanel;
 	}
-	
-	private JPanel version() {
-		JPanel version = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		version.add(new JLabel("Version : Alpha-1")); 
-		return version;
-	}
+
 }

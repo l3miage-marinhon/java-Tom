@@ -49,8 +49,6 @@ public abstract class Client{
 	public void setTel(String tel) {
 		if(Pattern.matches("0\\d{9}", tel)) {
 			this.tel = tel;
-		}else {
-			this.tel = "0123456789";
 		}
 	}
 	
