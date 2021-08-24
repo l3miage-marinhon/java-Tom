@@ -21,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -29,8 +28,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
-import clients.Civilite;
-import clients.Particulier;
 import main.Application;
 
 public class MenuClientConnexion implements Runnable{
@@ -151,7 +148,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 				}else if(!Pattern.matches("[\\w_.-]+@[a-z]+.(fr|com)", value)) {
 					correct = false;
 					JOptionPane.showMessageDialog(null, "Email incorrect");
-				}else if(Application.quincaillerie.connexionClient(value) == null){
+				}else if(!Application.quincaillerie.mailConnu(value)){
 					correct = false;
 					JOptionPane.showMessageDialog(null, "Email inconnu");
 				}else {	
@@ -169,8 +166,12 @@ public static final String PATH_TO_ICONS = "src/icons/";
 				}
 				
 				if(correct) {
-					Application.clientCourant = Application.quincaillerie.connexionClient(email);
-					System.out.println("Le client \n" + Application.clientCourant + "\n est bien connecté");
+					Application.clientCourant = Application.quincaillerie.connexionClient(email, password);
+					if(Application.clientCourant == null) {
+						JOptionPane.showMessageDialog(null, "Mot de passe incorrect");
+					}else {
+						System.out.println("Le client \n" + Application.clientCourant.getEmail() + "\n est bien connecté");
+					}
 				}else {
 					System.out.println("Erreur saisie");
 				}

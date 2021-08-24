@@ -167,7 +167,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 								JOptionPane.showMessageDialog(null, "Numéro de téléphone incorrect");
 							}
 						}else if(labels[i].getText().equals("Email :")) {
-							if(!Application.quincaillerie.mailDisponible(value)) {
+							if(Application.quincaillerie.mailConnu(value)) {
 								correct = false;
 								JOptionPane.showMessageDialog(null, "Email indisponible");
 							}else if(!Pattern.matches("[\\w_.-]+@[a-z]+.(fr|com)", value)) {

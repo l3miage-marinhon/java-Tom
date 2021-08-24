@@ -88,7 +88,7 @@ public class Quincaillerie {
 	public String idNouveauClient(Boolean part) {
 		int nb = listeClientsCommandes.keySet().size() + 1;
 		String id = "";
-		if(nb>0 && nb<1000) id += String.format("%04d", nb);
+		if(nb>0 && nb<1000) id += String.format("%04d", nb);	//ici je suppose qu'on ne dépassera jamais 1000 clients, pas réaliste mais ça correspond aux demandes pour la ref client
 		if(part) {
 			id += "PA";
 		}else {
@@ -101,27 +101,32 @@ public class Quincaillerie {
 	}
 	
 	/**
-	 * Vérifie si un email est déjà utilisé par un client de la quincaillerie
+	 * Vérifie si un email est connu par la quincaillerie, i.e. si un client l'utilise déjà
 	 * @param mail {@linkplain String} le mail à vérifier
-	 * @return true si le mail est disponible, false sinon
+	 * @return true si le mail est connu (déjà utilisé), false sinon
 	 */
-	public boolean mailDisponible(String mail) {
-		boolean disp = true;
+	public boolean mailConnu(String mail) {
+		boolean connu = false;
 		Iterator<Client> it = listeClientsCommandes.keySet().iterator();
-		while(it.hasNext() && disp) {
-			if(mail.equals(it.next().getEmail())) disp = false;
+		while(it.hasNext() && !connu) {
+			if(mail.equals(it.next().getEmail())) connu = true;
 		}
-		return disp;
+		return connu;
 	}
 	
-	public Client connexionClient(String mail) {
+	/**
+	 * Permet à un client de se connecter 
+	 * @param mail
+	 * @return
+	 */
+	public Client connexionClient(String mail, String password) {
 		Client client = null;
 		Iterator<Client> it = listeClientsCommandes.keySet().iterator();
 		while(it.hasNext() && client == null) {
 			Client c = it.next();
 			if(mail.equals(c.getEmail())) client = c;
 		}
-		return client;
+		return (password.equals("root") ? client : null);
 	}
 	
 	/**

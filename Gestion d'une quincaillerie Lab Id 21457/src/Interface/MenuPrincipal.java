@@ -74,7 +74,6 @@ public class MenuPrincipal implements Runnable{
 	}
 	
 	
-	
 	private JPanel createMenu() {
 		JPanel menu = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
