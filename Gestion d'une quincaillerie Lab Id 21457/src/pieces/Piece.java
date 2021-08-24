@@ -17,10 +17,10 @@ public abstract class Piece {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	
 	public String getRef() {
 		return ref;
 	}
+	//TODO la definition de set ref ne doit pas etre écrit ici car tu ne sais pas ce qu'a une piece comme ref... 
 	public void setRef(String ref) {
 		this.ref = ref;
 	}
@@ -30,6 +30,8 @@ public abstract class Piece {
 		return "Reference : " + getRef()
 			+ "\nNom : " + getNom();
 	}
+	
+	//TODO ensuite toutes les pièces vont avoir certiain foncton de base , donc il manque des fonction abstraite ...
 	
 }
 

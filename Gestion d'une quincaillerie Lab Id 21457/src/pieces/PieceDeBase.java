@@ -41,6 +41,7 @@ public class PieceDeBase extends Piece{
 		return dureeFabrication;
 	}
 	
+	//inutile ici car poas besion d'appeler super car ellen e doit pas etre defini avant....
 	@Override
 	public void setRef(String ref) {
 		super.setRef(!Pattern.matches("00[A-Z]{2}[0-9]{2}", ref) ? "00AA00" : ref);
