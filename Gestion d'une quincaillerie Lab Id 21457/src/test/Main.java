@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
 public class Main extends JPanel {
+	
    private static final Dimension THUMB_SIZE = new Dimension(170, 150);
    private Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
    private JPanel thumbPanel = new JPanel(new GridLayout(0, 6, 5, 5));

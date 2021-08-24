@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
@@ -46,7 +47,9 @@ public static final String PATH_TO_ICONS = "src/icons/";
 	JButton btnPanier;
 	JPanel listePieces;
 	JScrollPane jsp;
-	
+	JPanel westMenu;
+	JPanel centerMenu;
+	int nbOnLineScrollPane;
 	JButton btnValider;
 			
 	public MenuClientCatalogue(JFrame previousFrm) {
@@ -72,10 +75,10 @@ public static final String PATH_TO_ICONS = "src/icons/";
 			e.printStackTrace();
 		}
 		frmClientCatalogue = new JFrame();
-		frmClientCatalogue.setSize(new Dimension(800, 600));
+		frmClientCatalogue.setSize(new Dimension(600, 600));
 		frmClientCatalogue.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frmClientCatalogue.setLocationRelativeTo(null);
-		frmClientCatalogue.setMinimumSize(new Dimension(400, 275));
+		frmClientCatalogue.setMinimumSize(new Dimension(500, 300));
 		frmClientCatalogue.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -97,25 +100,28 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		JPanel northMenu = northPanelClient();
 		content.add(northMenu, BorderLayout.NORTH);
 		
-		JPanel centerMenu = catalogueMenu();
-		content.add(centerMenu, BorderLayout.CENTER);
-		
-		JPanel westMenu = westPanelPieces();
+		westMenu = westPanelPieces();
 		content.add(westMenu, BorderLayout.WEST);
 		
 		JPanel southMenu = Application.version();
 		content.add(southMenu, BorderLayout.SOUTH);
 		
+		centerMenu = catalogueMenu();
+		content.add(centerMenu, BorderLayout.CENTER);
+		
 		frmClientCatalogue.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent componentEvent) {
-				Dimension windowDim = frmClientCatalogue.getSize();
-				Dimension newDimCenter = new Dimension( ((int) windowDim.getWidth() - westMenu.getWidth()), ((int) windowDim.getHeight() - northMenu.getHeight() - southMenu.getHeight()));
-				listePieces.setMaximumSize(newDimCenter);
-				listePieces.setPreferredSize(newDimCenter);
-				listePieces.setSize(newDimCenter);
-				System.out.println("nouvelle dim " + newDimCenter);
-				System.out.println("dim centre " + listePieces.getSize());
-				
+				int width = (int) (frmClientCatalogue.getSize().getWidth() - westMenu.getWidth());
+				int numOnLine = width / 150;
+				int res = (width - (numOnLine)*10 - 20) / 150 ;	// 20 correction scrollbar's width
+				if(res != nbOnLineScrollPane) {
+					System.out.println("resize");
+					content.remove(centerMenu);
+					centerMenu = catalogueMenu();
+					content.add(centerMenu, BorderLayout.CENTER);
+					centerMenu.repaint();
+					centerMenu.revalidate();
+				}
 			}
 		});
 		
@@ -124,10 +130,23 @@ public static final String PATH_TO_ICONS = "src/icons/";
 	private JPanel catalogueMenu() {
 		JPanel panel = new JPanel(new BorderLayout());
 		
-		listePieces = new JPanel(new FlowLayout(FlowLayout.LEADING));
-		//listePieces.setPreferredSize(new Dimension(200, 200));
+		listePieces = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		int n = 0;
+		int width = (int) (frmClientCatalogue.getSize().getWidth() - westMenu.getWidth());
+		//System.out.println("width " + width);
+		int numOnLine = width / 150 ;
+		//System.out.println("numOnLine " + numOnLine);
+		int res = (width - (numOnLine)*10 - 20) / 150 ;	// 20 correction scrollbar's width
+		//System.out.println("res : " + res);
+		nbOnLineScrollPane = res;
 		
 		for(Piece piece : Application.quincaillerie.getCatalogue().getCatalogue()) {
+			gbc.gridx = n % res;
+			gbc.gridy = (int) n / res;
+			//System.out.println( " y " + (int) n/res);
+			gbc.insets = new Insets(5, 5, 5, 5);
 			JPanel panelPiece = new JPanel();
 			panelPiece.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			panelPiece.setPreferredSize(new Dimension(150, 120));
@@ -138,14 +157,12 @@ public static final String PATH_TO_ICONS = "src/icons/";
 			String t[] = piece.getClass().getName().split("\\.");
 			
 			panelPiece.add(new JLabel(t[1]));
-			listePieces.add(panelPiece);
+			listePieces.add(panelPiece, gbc);
+			n++;
 		}
-		
 		jsp = new JScrollPane(listePieces, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//jsp.setPreferredSize(new Dimension(200, 200));
 		jsp.getVerticalScrollBar().setUnitIncrement(10);
 		panel.add(jsp, BorderLayout.CENTER);
-		//panel.add(listePieces, BorderLayout.CENTER);
 		
 		return panel;
 	}
