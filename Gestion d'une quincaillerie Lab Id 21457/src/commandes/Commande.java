@@ -4,12 +4,14 @@ import java.util.Date;
 import java.util.Map;
 
 import clients.Client;
+import clients.Entreprise;
+import clients.Particulier;
 import pieces.Piece;
 
 public class Commande {
 	
 	private int num;
-	private String nomQuinc;
+	private String nomQuincaillerie;
 	private Client client;
 	private Date date;
 	private Map<Piece, Integer> listePieces;
@@ -17,9 +19,9 @@ public class Commande {
 	private Facture facture;
 	private EtatCommande etat;
 		
-	public Commande(int num, String nomQuinc, Client client, Date date, Map<Piece, Integer> listePieces, double prixCommande) {
+	public Commande(int num, String nomQuincaillerie, Client client, Date date, Map<Piece, Integer> listePieces, double prixCommande) {
 		setNum(num);
-		setNomQuinc(nomQuinc);
+		setNomQuincaillerie(nomQuincaillerie);
 		setClient(client);
 		setDate(date);
 		setListePieces(listePieces);
@@ -34,11 +36,11 @@ public class Commande {
 		this.num = num;
 	}
 
-	public String getNomQuinc() {
-		return nomQuinc;
+	public String getNomQuincaillerie() {
+		return nomQuincaillerie;
 	}
-	public void setNomQuinc(String nomQuinc) {
-		this.nomQuinc = nomQuinc;
+	public void setNomQuincaillerie(String nomQuincaillerie) {
+		this.nomQuincaillerie = nomQuincaillerie;
 	}
 
 	public Client getClient() {
@@ -88,7 +90,7 @@ public class Commande {
 	 * @return {@link Facture} la facture éditée
 	 */
 	public Facture editionFacture() {
-		return new Facture(num, nomQuinc, client, new Date(), listePieces, prix);
+		return new Facture(num, nomQuincaillerie, client, new Date(), listePieces, prix);
 	}
 	
 	/**
@@ -120,4 +122,24 @@ public class Commande {
 		return getEtat() == EtatCommande.Acceptation || getEtat() == EtatCommande.Preparation;
 	}
 	
+	@Override
+	public String toString() {
+		String s = "";
+		s += 	"\nNuméro commande : " + getNum()
+				+ "\nFacture : " + getFacture().getNum()
+				+ "\nMagasin : " + getNomQuincaillerie()
+				+ "\nDate : " + getDate()
+				+ "\nClient : " + 	(getClient() instanceof Particulier ? 
+									"Particulier, " + ((Particulier) getClient()).getNom() + ", " + ((Particulier) getClient()).getPrenom() :
+									"Entreprise, " + ((Entreprise) getClient()).getNomCommercial() )
+				+ "\nPièces :";
+		
+		for(Piece p : getListePieces().keySet()) {
+			s += "\n   * \"" + p.getNom() + "\", \"" + p.getRef() + "\" : " + listePieces.get(p);
+		}
+		
+		s += "\nPrix : " + (getPrix()>1 ? getPrix() + " euros" : getPrix() + " euro") 
+			+ "\nEtat commande : " + getEtat();
+		return s;
+	}
 }

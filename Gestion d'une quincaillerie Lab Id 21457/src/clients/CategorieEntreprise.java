@@ -1,7 +1,7 @@
 package clients;
 
 public enum CategorieEntreprise { 
-	GrandeEntreprise("GE"), EntrepriseTailleIntermediaire("ETI"), PetiteMoyenneEntreprise("PME"), ToutePetiteEntreprise("TPE");
+	GE("Grande entreprise"), ETI("Entreprise taille intermédiaire"), PME("Petite et moyenne entreprise"), TPE("Toute petite entreprise");
 	
 	private String nom;
 	

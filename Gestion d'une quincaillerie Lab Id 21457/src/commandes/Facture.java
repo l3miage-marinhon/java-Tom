@@ -8,7 +8,7 @@ import pieces.Piece;
 
 public class Facture {
 	
-	private int num;
+	private String num;
 	private String nomQuincaillerie;
 	private Client client;
 	private Date date;
@@ -25,11 +25,11 @@ public class Facture {
 		setPrix(prix);
 	}
 
-	public int getNum() {
+	public String getNum() {
 		return num;
 	}
 	public void setNum(int num) {
-		this.num = num;
+		this.num = "f" + num;
 	}
 
 	public String getNomQuincaillerie() {
@@ -71,6 +71,7 @@ public class Facture {
 	public String toString() {
 		String s = "";
 		s += 	"\nNuméro facture : " + getNum()
+				+ "\nMagasin : " + getNomQuincaillerie()
 				+ "\nDate : " + getDate()
 				+ "\nClient : " + 	(getClient() instanceof Particulier ? 
 									"Particulier, " + ((Particulier) getClient()).getNom() + ", " + ((Particulier) getClient()).getPrenom() :

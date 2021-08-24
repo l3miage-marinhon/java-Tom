@@ -1,12 +1,9 @@
 package clients;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.regex.*;
 
-import commandes.Commande;
 import pieces.*;
 // TODO Question 24: écrire la classe Client.
 // 
@@ -52,8 +49,6 @@ public abstract class Client{
 	public void setTel(String tel) {
 		if(Pattern.matches("0\\d{9}", tel)) {
 			this.tel = tel;
-		}else {
-			this.tel = "0123456789";
 		}
 	}
 	

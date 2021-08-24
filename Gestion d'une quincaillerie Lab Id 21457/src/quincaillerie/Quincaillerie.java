@@ -3,15 +3,18 @@ package quincaillerie;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Random;
 
 import clients.Client;
 import commandes.Commande;
 import commandes.Facture;
 import pieces.Piece;
+import pieces.PieceCompositeEnKit;
+import pieces.PieceCompositeMontee;
+import pieces.PieceDeBase;
 import servicesBancaires.ServiceBancaire;
 
 public class Quincaillerie {
@@ -74,7 +77,56 @@ public class Quincaillerie {
 		for(LinkedHashSet<Commande> listesCommandes : listeClientsCommandes.values()) {
 			nb += listesCommandes.size();
 		}
-		return nb;
+		return nb+1;
+	}
+	
+	/**
+	 * Retourne l'id du prochain client à créer, basé sur le nombre de clients déjà enregistrés et son type (particulier ou entreprise
+	 * @param part {@linkplain Boolean} true si le client est un particulier, faux sinon (ie si le client est une entreprise)
+	 * @return String l'id du prochain client
+	 */
+	public String idNouveauClient(Boolean part) {
+		int nb = listeClientsCommandes.keySet().size() + 1;
+		String id = "";
+		if(nb>0 && nb<1000) id += String.format("%04d", nb);	//ici je suppose qu'on ne dépassera jamais 1000 clients, pas réaliste mais ça correspond aux demandes pour la ref client
+		if(part) {
+			id += "PA";
+		}else {
+			id += "EN";
+		}
+		Random rn = new Random();
+		int r = rn.nextInt(100);
+		id += String.format("%02d", r);
+		return id;
+	}
+	
+	/**
+	 * Vérifie si un email est connu par la quincaillerie, i.e. si un client l'utilise déjà
+	 * @param mail {@linkplain String} le mail à vérifier
+	 * @return true si le mail est connu (déjà utilisé), false sinon
+	 */
+	public boolean mailConnu(String mail) {
+		boolean connu = false;
+		Iterator<Client> it = listeClientsCommandes.keySet().iterator();
+		while(it.hasNext() && !connu) {
+			if(mail.equals(it.next().getEmail())) connu = true;
+		}
+		return connu;
+	}
+	
+	/**
+	 * Permet à un client de se connecter 
+	 * @param mail
+	 * @return
+	 */
+	public Client connexionClient(String mail, String password) {
+		Client client = null;
+		Iterator<Client> it = listeClientsCommandes.keySet().iterator();
+		while(it.hasNext() && client == null) {
+			Client c = it.next();
+			if(mail.equals(c.getEmail())) client = c;
+		}
+		return (password.equals("root") ? client : null);
 	}
 	
 	/**
@@ -85,7 +137,13 @@ public class Quincaillerie {
 	public double calculPrixCommande(Map<Piece, Integer> listePiecesExemplaires) {
 		double prix = 0;
 		for(Piece p : listePiecesExemplaires.keySet()) {
-			prix += p.getPrix() * listePiecesExemplaires.get(p);
+			if(p instanceof PieceCompositeEnKit) {
+				prix += ((PieceCompositeEnKit) p).getPrix() * listePiecesExemplaires.get(p);
+			}else if(p instanceof PieceCompositeMontee) {
+				prix += ((PieceCompositeMontee) p).getPrix() * listePiecesExemplaires.get(p);
+			}else if(p instanceof PieceDeBase) {
+				prix += ((PieceDeBase) p).getPrix() * listePiecesExemplaires.get(p);
+			}
 		}
 		return prix;
 	}
@@ -195,6 +253,12 @@ public class Quincaillerie {
 			ServiceBancaire.approvisionneTresorerieQuincaillerie(this, prixCommande);
 		}
 		return commande;
+	}
+	
+	public void afficheClients() {
+		for(Client c : listeClientsCommandes.keySet()) {
+			System.out.println(c + "\n");
+		}
 	}
 	
 }

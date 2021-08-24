@@ -3,7 +3,8 @@ package commandes;
 public enum EtatCommande {
 	
 	Acceptation("En cours d'acceptation"), Preparation("En cours de préparation"), 
-	Livraison("En cours de livraison"), Terminee("Commande terminée");
+	Livraison("En cours de livraison"), Terminee("Commande terminée"),
+	Annulee("Commande annulée");
 	
 	private String nom;
 	
