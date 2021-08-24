@@ -13,7 +13,7 @@ public abstract class Client{
 	private String adresse;
 	private String tel;
 	private String email;
-	//private Map<Piece, Integer> piecesPossedees;
+	private Map<Piece, Integer> piecesPossedees;
 	private double credit;
 	
 	public Client(String id, String adresse, String tel, String email, double credit) {
@@ -22,6 +22,7 @@ public abstract class Client{
 		setTel(tel);
 		setEmail(email);
 		setCredit(credit);
+		setPiecesPossedees();
 	}
 	
 	public String getId() {
@@ -63,12 +64,14 @@ public abstract class Client{
 		}
 	}
 	
+	
 	public Map<Piece, Integer> getPiecesPossedees(){
 		return piecesPossedees;
 	}
 	public void setPiecesPossedees() {
 		piecesPossedees = new HashMap<>();
 	}
+	
 	
 	public double getCredit() {
 		return credit;

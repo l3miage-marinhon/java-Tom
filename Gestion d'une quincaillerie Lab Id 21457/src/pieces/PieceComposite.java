@@ -9,14 +9,10 @@ import java.util.ArrayList;
 public abstract class PieceComposite extends Piece{
 	
 	private ArrayList<PieceDeBase> composants;
-	private int dureeGarantieBase;
-	private int dureeFabrication;
-	
+
 	public PieceComposite(String nom, ArrayList<PieceDeBase> composants) {
 		super(nom);
 		setComposants(composants);
-		setDureeGarantieBase(garBaseComp());
-		setDureeFabrication(fabComp());
 	}
 
 	public ArrayList<PieceDeBase> getComposants(){
@@ -25,44 +21,31 @@ public abstract class PieceComposite extends Piece{
 	public void setComposants(ArrayList<PieceDeBase> composants) {
 		this.composants = composants;
 	}
-	
-	public int getDureeGarantieBase() {
-		return dureeGarantieBase;
-	}
-	public void setDureeGarantieBase(int dureeGarantieBase) {
-		this.dureeGarantieBase = dureeGarantieBase;
-	}
-	
-	public int getDureeFabrication() {
-		return dureeFabrication;
-	}
-	public void setDureeFabrication(int dureeFabrication) {
-		this.dureeFabrication = dureeFabrication;
-	}
-	
+
 	/**
 	 * Calcule la durée de la garantie de base d'une pièce composite en fonction des garanties de base des pièces qui la composent
 	 * @return {@link Integer} la garantie de base de la pièce composite
 	 */
-	private int garBaseComp() {
+	public int dureeGarantieBase() {
 		int min = Integer.MAX_VALUE;
 		for(PieceDeBase p : composants) {
-			if(p.getDureeGarantie()<min) {
-				min = p.getDureeGarantie();
+			if(p.dureeGarantieBase()<min) {
+				min = p.dureeGarantieBase();
 			}
 		}
 		return min;
 	}
-	
+
 	/**
 	 * Calcule la durée de fabrication d'une pièce composite en fonction des durées de fabrication des pièces qui la composent
 	 * @return {@link Integer} la durée de fabrication de la pièce composite
 	 */
-	private int fabComp() {
+	@Override
+	public int dureeFabrication() {
 		int max = Integer.MIN_VALUE;
 		for(PieceDeBase p : composants) {
-			if(p.getDureeFabrication()>max) {
-				max = p.getDureeFabrication();
+			if(p.dureeFabrication()>max) {
+				max = p.dureeFabrication();
 			}
 		}
 		return max;
@@ -71,7 +54,7 @@ public abstract class PieceComposite extends Piece{
 	@Override
 	public String toString() {
 		return super.toString() + "\nNombre de composants : " + composants.size()
-								+ "\nDurée fabrication : " + getDureeFabrication() + (getDureeFabrication()>1 ? " heures" : " heure");
+								+ "\nDurée fabrication : " + dureeFabrication() + (dureeFabrication()>1 ? " heures" : " heure");
 	}
 	
 }

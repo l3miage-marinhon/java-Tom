@@ -10,6 +10,7 @@ public class PieceDeBase extends Piece{
 
 	private double prix;
 	private int dureeGarantie;
+	private int dureeGarantieBase;
 	private int dureeFabrication;
 	
 	public PieceDeBase(String nom, String ref, double prix, int dureeGarantie, int dureeFabrication) {
@@ -17,42 +18,58 @@ public class PieceDeBase extends Piece{
 		setRef(ref);
 		setPrix(prix);
 		setDureeGarantie(dureeGarantie);
+		setDureeGarantieBase(dureeGarantie);
 		setDureeFabrication(dureeFabrication);
 	}
 	
 	public void setPrix(double prix) {
 		this.prix = prix;
 	}
-	public double getPrix() {
+	
+	@Override
+	public double prix() {
 		return prix;
 	}
 	
 	public void setDureeGarantie(int dureeGarantie) {
 		this.dureeGarantie = dureeGarantie;
 	}
-	public int getDureeGarantie() {
+	
+	@Override
+	public int dureeGarantie() {
 		return dureeGarantie;
+	}
+	
+	public void setDureeGarantieBase(int dureeGarantieBase) {
+		this.dureeGarantieBase = dureeGarantieBase;
+	}
+	
+	@Override
+	public int dureeGarantieBase() {
+		return dureeGarantieBase;
 	}
 	
 	public void setDureeFabrication(int dureeFabrication) {
 		this.dureeFabrication = (dureeFabrication>0 ? dureeFabrication : 12);
 	}
-	public int getDureeFabrication() {
+	
+	@Override
+	public int dureeFabrication() {
 		return dureeFabrication;
 	}
 	
+	//inutile ici car poas besion d'appeler super car ellen e doit pas etre defini avant....
 	@Override
 	public void setRef(String ref) {
-		super.setRef(!Pattern.matches("00[A-Z]{2}[0-9]{2}", ref) ? "00AA00" : ref);
-		//exception plus tard si match false
+		super.ref = (!Pattern.matches("00[A-Z]{2}[0-9]{2}", ref) ? "00AA00" : ref);
 	}
 	
 	@Override
 	public String toString() {
 		return super.toString()
-				+ "\nPrix : " + getPrix() + (getPrix()>1 ? " euros" : " euro")
-				+ "\nDurée garantie : " + getDureeGarantie() + " mois"
-				+ "\nDurée fabrication : " + getDureeFabrication() + (getDureeFabrication()>1 ? " heures" : " heure");
+				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro")
+				+ "\nDurée garantie : " + dureeGarantie() + " mois"
+				+ "\nDurée fabrication : " + dureeFabrication() + (dureeFabrication()>1 ? " heures" : " heure");
 	}
 	
 }

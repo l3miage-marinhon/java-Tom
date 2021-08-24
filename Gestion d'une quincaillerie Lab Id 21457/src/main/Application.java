@@ -67,7 +67,7 @@ public class Application {
     	Stocks stocks = new Stocks(listePieces);
     	
     	Quincaillerie quinc = new Quincaillerie("MaQuincaillerieGrenoble", 1000, catalogue, stocks, new HashMap<>());
-    	Particulier p = new Particulier("0001PA54", "12 rue marcel porte", "0629713873", "tom.frances97@yahoo.fr", 120, Civilite.MONSIEUR, "Frances", "Tom", true); 
+    	Particulier p = new Particulier("0001PA54", "12 rue marcel porte", "0629713873", "tom@yahoo.fr", 120, Civilite.MONSIEUR, "Frances", "Tom", true); 
     	quinc.ajouterClient(p);
     	
     	return quinc;

@@ -139,11 +139,11 @@ public class Quincaillerie {
 		double prix = 0;
 		for(Piece p : listePiecesExemplaires.keySet()) {
 			if(p instanceof PieceCompositeEnKit) {
-				prix += ((PieceCompositeEnKit) p).getPrix() * listePiecesExemplaires.get(p);
+				prix += ((PieceCompositeEnKit) p).prix() * listePiecesExemplaires.get(p);
 			}else if(p instanceof PieceCompositeMontee) {
-				prix += ((PieceCompositeMontee) p).getPrix() * listePiecesExemplaires.get(p);
+				prix += ((PieceCompositeMontee) p).prix() * listePiecesExemplaires.get(p);
 			}else if(p instanceof PieceDeBase) {
-				prix += ((PieceDeBase) p).getPrix() * listePiecesExemplaires.get(p);
+				prix += ((PieceDeBase) p).prix() * listePiecesExemplaires.get(p);
 			}
 		}
 		return prix;
