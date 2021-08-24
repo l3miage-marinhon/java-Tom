@@ -116,8 +116,9 @@ public class Quincaillerie {
 	
 	/**
 	 * Permet à un client de se connecter 
-	 * @param mail
-	 * @return
+	 * @param mail {@linkplain String} l'email du client souhaitant se connecter
+	 * @param password {@linkplain String} le mot de passe du client (ici le password root permet de se connecter
+	 * @return {@linkplain Client} le client si celui-çi a réussi à se connecter, null sinon
 	 */
 	public Client connexionClient(String mail, String password) {
 		Client client = null;
@@ -126,7 +127,7 @@ public class Quincaillerie {
 			Client c = it.next();
 			if(mail.equals(c.getEmail())) client = c;
 		}
-		return (password.equals("root") ? client : null);
+		return (client != null && password.equals("root") ? client : null);
 	}
 	
 	/**
