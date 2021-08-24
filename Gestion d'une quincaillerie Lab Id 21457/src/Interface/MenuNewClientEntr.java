@@ -200,6 +200,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 					String id = Application.quincaillerie.idNouveauClient(false);
 					Application.quincaillerie.ajouterClient(new Entreprise(id, adresse, tel, email, 500, siegeSocial, nomComm, categorie));
 					Application.quincaillerie.afficheClients();
+					JOptionPane.showMessageDialog(null, "Enregistrement réussi !");
 				}else {
 					System.out.println("Erreur saisie");
 				}

@@ -11,7 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Interface.MenuPrincipal;
+import clients.Civilite;
 import clients.Client;
+import clients.Particulier;
 import pieces.Piece;
 import pieces.PieceCompositeEnKit;
 import pieces.PieceCompositeMontee;
@@ -64,7 +66,11 @@ public class Application {
     	Catalogue catalogue = new Catalogue(listePieces);
     	Stocks stocks = new Stocks(listePieces);
     	
-		return new Quincaillerie("MaQuincaillerieGrenoble", 1000, catalogue, stocks, new HashMap<>());
+    	Quincaillerie quinc = new Quincaillerie("MaQuincaillerieGrenoble", 1000, catalogue, stocks, new HashMap<>());
+    	Particulier p = new Particulier("0001PA54", "12 rue marcel porte", "0629713873", "tom.frances97@yahoo.fr", 120, Civilite.MONSIEUR, "Frances", "Tom", true); 
+    	quinc.ajouterClient(p);
+    	
+    	return quinc;
 	}
 	
 	public static JPanel version() {

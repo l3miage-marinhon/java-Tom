@@ -32,7 +32,7 @@ import main.Application;
 
 public class MenuClientConnexion implements Runnable{
 	
-public static final String PATH_TO_ICONS = "src/icons/";
+	public static final String PATH_TO_ICONS = "src/icons/";
 	
 	JFrame frmClientConn;
 	JFrame previousFrm;
@@ -145,21 +145,12 @@ public static final String PATH_TO_ICONS = "src/icons/";
 				String value = ((JTextField) fields[0].getComponent(0)).getText();
 				if(value.isBlank()) {
 					correct = false;
-				}else if(!Pattern.matches("[\\w_.-]+@[a-z]+.(fr|com)", value)) {
-					correct = false;
-					JOptionPane.showMessageDialog(null, "Email incorrect");
-				}else if(!Application.quincaillerie.mailConnu(value)){
-					correct = false;
-					JOptionPane.showMessageDialog(null, "Email inconnu");
 				}else {	
 					email = value;
 					
 					value = new String( ((JPasswordField) fields[1].getComponent(0)).getPassword());
 					if(value.isBlank()) {
 						correct = false;
-					}else if(!value.equals("root")) {
-						correct = false;
-						JOptionPane.showMessageDialog(null, "Mot de passe incorrect");
 					}else {
 						password = value;
 					}
@@ -168,9 +159,10 @@ public static final String PATH_TO_ICONS = "src/icons/";
 				if(correct) {
 					Application.clientCourant = Application.quincaillerie.connexionClient(email, password);
 					if(Application.clientCourant == null) {
-						JOptionPane.showMessageDialog(null, "Mot de passe incorrect");
+						JOptionPane.showMessageDialog(null, "Echec de connexion");
 					}else {
 						System.out.println("Le client \n" + Application.clientCourant.getEmail() + "\n est bien connecté");
+						MenuClientCatalogue.demarrer(frmClientConn);
 					}
 				}else {
 					System.out.println("Erreur saisie");

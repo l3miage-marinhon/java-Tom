@@ -106,7 +106,7 @@ public class MenuClientKnownUnknown implements Runnable{
 		gbc.gridy = 0;
 		btnExistingClient = new JButton("Se connecter");
 		btnExistingClient.setPreferredSize(new Dimension(150, 50));
-		btnExistingClient.addActionListener(ev->{/*MenuClientConnexion.demarrer(frmClientKnUk)*/ System.out.println("menu co");;});
+		btnExistingClient.addActionListener(ev->{MenuClientConnexion.demarrer(frmClientKnUk);});
 		menu.add(btnExistingClient, gbc);
 
 		return menu;

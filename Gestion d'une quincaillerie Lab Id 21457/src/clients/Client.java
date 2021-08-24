@@ -13,7 +13,7 @@ public abstract class Client{
 	private String adresse;
 	private String tel;
 	private String email;
-	private Map<Piece, Integer> piecesPossedees;
+	//private Map<Piece, Integer> piecesPossedees;
 	private double credit;
 	
 	public Client(String id, String adresse, String tel, String email, double credit) {

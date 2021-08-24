@@ -208,6 +208,7 @@ public class MenuNewClientPart implements Runnable{
 					String id = Application.quincaillerie.idNouveauClient(true);
 					Application.quincaillerie.ajouterClient(new Particulier(id, adresse, tel, email, 100, civilite, nom, prenom, fid));
 					Application.quincaillerie.afficheClients();
+					JOptionPane.showMessageDialog(null, "Enregistrement réussi !");
 				}else {
 					System.out.println("Erreur saisie");
 				}
