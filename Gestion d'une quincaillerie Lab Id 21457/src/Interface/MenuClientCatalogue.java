@@ -25,6 +25,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -75,7 +77,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 			e.printStackTrace();
 		}
 		frmClientCatalogue = new JFrame();
-		frmClientCatalogue.setSize(new Dimension(600, 600));
+		frmClientCatalogue.setSize(new Dimension(900, 600));
 		frmClientCatalogue.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frmClientCatalogue.setLocationRelativeTo(null);
 		frmClientCatalogue.setMinimumSize(new Dimension(500, 300));
@@ -130,23 +132,26 @@ public static final String PATH_TO_ICONS = "src/icons/";
 	private JPanel catalogueMenu() {
 		JPanel panel = new JPanel(new BorderLayout());
 		
+		
+		
 		listePieces = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		
 		int n = 0;
 		int width = (int) (frmClientCatalogue.getSize().getWidth() - westMenu.getWidth());
-		//System.out.println("width " + width);
 		int numOnLine = width / 150 ;
-		//System.out.println("numOnLine " + numOnLine);
 		int res = (width - (numOnLine)*10 - 20) / 150 ;	// 20 correction scrollbar's width
-		//System.out.println("res : " + res);
 		nbOnLineScrollPane = res;
 		
 		for(Piece piece : Application.quincaillerie.getCatalogue().getCatalogue()) {
+			
+			JPanel panelPiece = panelPiece(piece);
+			
 			gbc.gridx = n % res;
 			gbc.gridy = (int) n / res;
-			//System.out.println( " y " + (int) n/res);
 			gbc.insets = new Insets(5, 5, 5, 5);
+			
+			/*
 			JPanel panelPiece = new JPanel();
 			panelPiece.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			panelPiece.setPreferredSize(new Dimension(150, 120));
@@ -157,6 +162,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 			String t[] = piece.getClass().getName().split("\\.");
 			
 			panelPiece.add(new JLabel(t[1]));
+			*/
 			listePieces.add(panelPiece, gbc);
 			n++;
 		}
@@ -165,6 +171,36 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		panel.add(jsp, BorderLayout.CENTER);
 		
 		return panel;
+	}
+	
+	private JPanel panelPiece(Piece piece) {
+		JPanel panelPiece = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		panelPiece.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		panelPiece.setPreferredSize(new Dimension(150, 120));
+		panelPiece.setMinimumSize(new Dimension(150, 120));
+		panelPiece.setMaximumSize(new Dimension(150, 120));
+		
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		panelPiece.add(new JLabel(piece.getNom()), gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		panelPiece.add(new JLabel(Double.toString(piece.prix())), gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		JButton btnDetail = new JButton("Détail");
+		btnDetail.addActionListener(ev->{System.out.println("détail piece");});
+		panelPiece.add(btnDetail, gbc);
+		
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		JLabel image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "image_vis.jpeg").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
+		panelPiece.add(image, gbc);
+		
+		return panelPiece;
 	}
 	
 	private JPanel northPanelClient() {
@@ -257,7 +293,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 	private JPanel createBtnOrder() {
 		JPanel pnlBtnOrder = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnCommandes = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "order_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
-		btnCommandes.addActionListener(ev->{System.out.println("Commandes");;});
+		btnCommandes.addActionListener(ev->{ System.out.println("Commandes"); });
 		pnlBtnOrder.add(btnCommandes);
 		return pnlBtnOrder;
 	}
