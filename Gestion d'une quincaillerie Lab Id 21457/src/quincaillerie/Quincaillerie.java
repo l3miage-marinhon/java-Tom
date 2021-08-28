@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Random;
 
 import clients.Client;
+import clients.Particulier;
 import commandes.Commande;
 import commandes.Facture;
 import pieces.Piece;
@@ -244,6 +245,7 @@ public class Quincaillerie {
 	public Commande creationCommande(Client client, Map<Piece, Integer> listePiecesExemplaires) {
 		Commande commande = null;
 		double prixCommande = calculPrixCommande(listePiecesExemplaires);
+		prixCommande *= (client instanceof Particulier && ((Particulier) client).isFidelite() ? 0.9 : 1); 
 		if(!clientConnu(client)) {
 			System.out.println("Vous devez vous enregistrer avant de passer commande");
 		}else if(!stocksSuffisants(listePiecesExemplaires)) {

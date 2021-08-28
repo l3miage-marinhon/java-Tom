@@ -2,9 +2,11 @@ package main;
 
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Panel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JLabel;
@@ -13,6 +15,7 @@ import javax.swing.JPanel;
 import Interface.MenuPrincipal;
 import clients.Civilite;
 import clients.Client;
+import clients.Panier;
 import clients.Particulier;
 import pieces.Piece;
 import pieces.PieceCompositeEnKit;
@@ -27,6 +30,7 @@ public class Application {
 	
 	public static Quincaillerie quincaillerie = initialize();
 	public static Client clientCourant = null;
+	public static Panier panier = new Panier();
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new MenuPrincipal());

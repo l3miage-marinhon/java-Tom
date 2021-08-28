@@ -39,16 +39,14 @@ public class MenuNewClientEntr implements Runnable{
 public static final String PATH_TO_ICONS = "src/icons/";
 	
 	JFrame frmNewClientEntr;
-	JFrame previousFrm;
 	JButton btnReturn;
 	
 	public MenuNewClientEntr(JFrame previousFrm) {
-		this.previousFrm = previousFrm;
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
 		SwingUtilities.invokeLater(new MenuNewClientEntr(previousFrm));
-		previousFrm.setVisible(false);
+		previousFrm.dispose();
 	}
 	
 	@Override
@@ -201,6 +199,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 					Application.quincaillerie.ajouterClient(new Entreprise(id, adresse, tel, email, 500, siegeSocial, nomComm, categorie));
 					Application.quincaillerie.afficheClients();
 					JOptionPane.showMessageDialog(null, "Enregistrement réussi !");
+					MenuClientConnexion.demarrer(frmNewClientEntr);
 				}else {
 					System.out.println("Erreur saisie");
 				}
@@ -213,7 +212,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 	private JPanel createBtnReturn() {
 		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
-		btnReturn.addActionListener(ev->{MenuNewClient.demarrer(previousFrm, frmNewClientEntr);});
+		btnReturn.addActionListener(ev->{MenuNewClient.demarrer(frmNewClientEntr);});
 		pnlBtnReturn.add(btnReturn);
 		return pnlBtnReturn;
 	}

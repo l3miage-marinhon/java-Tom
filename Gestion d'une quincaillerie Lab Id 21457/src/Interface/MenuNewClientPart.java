@@ -39,16 +39,14 @@ public class MenuNewClientPart implements Runnable{
 	public static final String PATH_TO_ICONS = "src/icons/";
 	
 	JFrame frmNewClientPart;
-	JFrame previousFrm;
 	JButton btnReturn;
 	
 	public MenuNewClientPart(JFrame previousFrm) {
-		this.previousFrm = previousFrm;
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
 		SwingUtilities.invokeLater(new MenuNewClientPart(previousFrm));
-		previousFrm.setVisible(false);
+		previousFrm.dispose();
 	}
 	
 	@Override
@@ -209,6 +207,7 @@ public class MenuNewClientPart implements Runnable{
 					Application.quincaillerie.ajouterClient(new Particulier(id, adresse, tel, email, 100, civilite, nom, prenom, fid));
 					Application.quincaillerie.afficheClients();
 					JOptionPane.showMessageDialog(null, "Enregistrement réussi !");
+					MenuClientConnexion.demarrer(frmNewClientPart);
 				}else {
 					System.out.println("Erreur saisie");
 				}
@@ -221,7 +220,7 @@ public class MenuNewClientPart implements Runnable{
 	private JPanel createBtnReturn() {
 		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
-		btnReturn.addActionListener(ev->{MenuNewClient.demarrer(previousFrm, frmNewClientPart);});
+		btnReturn.addActionListener(ev->{MenuNewClient.demarrer(frmNewClientPart);});
 		pnlBtnReturn.add(btnReturn);
 		return pnlBtnReturn;
 	}
@@ -239,8 +238,6 @@ public class MenuNewClientPart implements Runnable{
 			t = new JTextField(20);
 		}else if(s.equals("Prénom")) {
 			t = new JTextField(20);
-		}else {
-			System.out.println("aaaaaaaaaaaaa");
 		}
 		
 		field.add(t);
@@ -254,14 +251,10 @@ public class MenuNewClientPart implements Runnable{
 		JRadioButton b2 = null;
 		if(s.equals("Civilité")) {
 			b1 = new JRadioButton("Monsieur");
-			//b1.addActionListener(ev->{civilite = Civilite.MONSIEUR;});
 			b2 = new JRadioButton("Madame");
-			//b2.addActionListener(ev->{civilite = Civilite.MADAME;});
 		}else if(s.equals("Fidélité")) {
 			b1 = new JRadioButton("Oui");
-			//b1.addActionListener(ev->{fid = true;});
 			b2 = new JRadioButton("Non");
-			//b2.addActionListener(ev->{fid = false;});
 		}
 		
 		btnGrp.add(b1);

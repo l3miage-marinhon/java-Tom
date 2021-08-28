@@ -24,13 +24,20 @@ import main.Application;
 
 public class MenuPrincipal implements Runnable{
 
-	JFrame frmMenuPrinc;
+	static JFrame frmMenuPrinc;
 	JButton btnClient;
 	JButton btnQuinc;
 	
+	//pour remonter, faire une liste des fenetres ouvertes à chaque descente, et pour remonter rapidement methode qui dispose les fenetre et affiche la menu principale
 	
 	public static void demarrer() {
 		SwingUtilities.invokeLater(new MenuPrincipal());
+	}
+	
+	public static void demarrer(JFrame frmPrevious) {
+		frmPrevious.dispose();
+		MenuPrincipal.demarrer();
+		
 	}
 	
 	public static void demarrer(JFrame frmMenuPrinc, JFrame previousFrm) {

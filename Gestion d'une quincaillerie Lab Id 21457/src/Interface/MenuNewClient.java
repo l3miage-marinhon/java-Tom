@@ -29,18 +29,17 @@ public class MenuNewClient implements Runnable{
 	public static final String PATH_TO_ICONS = "src/icons/";
 	
 	JFrame frmNewClient;
-	JFrame previousFrm;
 	JButton btnReturn;
 	JButton btnNewClient;
 	JButton btnExistingClient;
 			
 	public MenuNewClient(JFrame previousFrm) {
-		this.previousFrm = previousFrm;
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
+		previousFrm.dispose();
 		SwingUtilities.invokeLater(new MenuNewClient(previousFrm));
-		previousFrm.setVisible(false);
+		
 	}
 	
 	public static void demarrer(JFrame frmNewClient, JFrame previousFrm) {
@@ -105,7 +104,7 @@ public class MenuNewClient implements Runnable{
 	private JPanel createBtnReturn() {
 		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
-		btnReturn.addActionListener(ev->{MenuClientKnownUnknown.demarrer(previousFrm, frmNewClient);});
+		btnReturn.addActionListener(ev->{MenuClientKnownUnknown.demarrer(frmNewClient);});
 		pnlBtnReturn.add(btnReturn);
 		return pnlBtnReturn;
 	}
