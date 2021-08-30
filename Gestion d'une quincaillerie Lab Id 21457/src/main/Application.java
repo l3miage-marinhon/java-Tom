@@ -13,8 +13,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Interface.MenuPrincipal;
+import clients.CategorieEntreprise;
 import clients.Civilite;
 import clients.Client;
+import clients.Entreprise;
 import clients.Panier;
 import clients.Particulier;
 import pieces.Piece;
@@ -71,8 +73,10 @@ public class Application {
     	Stocks stocks = new Stocks(listePieces);
     	
     	Quincaillerie quinc = new Quincaillerie("MaQuincaillerieGrenoble", 1000, catalogue, stocks, new HashMap<>());
-    	Particulier p = new Particulier("0001PA54", "12 rue marcel porte", "0629713873", "tom@yahoo.fr", 120, Civilite.MONSIEUR, "Frances", "Tom", true); 
+    	Particulier p = new Particulier("0001PA54", "12 rue Marcel Porte", "0629713873", "tom@yahoo.fr", 120, Civilite.MONSIEUR, "Frances", "Tom", true); 
+    	Entreprise e = new Entreprise("0002EN12", "30 rue Fernand Leger", "0623547899", "resto@gmail.com", 1000, "Grenoble", "O'Resto", CategorieEntreprise.TPE);
     	quinc.ajouterClient(p);
+    	quinc.ajouterClient(e);
     	
     	return quinc;
 	}

@@ -130,80 +130,17 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		JPanel p = new JPanel(layout);
 		JButton btnValider = new JButton("Valider");
 		p.add(btnValider);
-		btnValider.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int size = fields.length;
-				int i=0;
-				
-				CategorieEntreprise categorie = null;
-				String nomComm = null;
-				String siegeSocial = null;
-				String adresse = null;
-				String tel = null;
-				String email = null;
-				
-				boolean correct = true;
-				while(i < size && correct) {
-					
-					if(fields[i].getComponent(0) instanceof JTextField) {
-						String value = ((JTextField) fields[i].getComponent(0)).getText();
-						if(value.isBlank()) {
-							correct = false;
-						}else if(labels[i].getText().equals("Nom commercial :")) {
-							nomComm = value;
-						}else if(labels[i].getText().equals("Siège social :")) {
-							siegeSocial = value;
-						}else if(labels[i].getText().equals("Adresse :")) {
-							adresse = value;
-						}else if(labels[i].getText().equals("Téléphone :")) {
-							if(Pattern.matches("0\\d{9}", value)) {
-								tel = value;
-							}else {
-								correct = false;
-								JOptionPane.showMessageDialog(null, "Numéro de téléphone incorrect");
-							}
-						}else if(labels[i].getText().equals("Email :")) {
-							if(Application.quincaillerie.mailConnu(value)) {
-								correct = false;
-								JOptionPane.showMessageDialog(null, "Email indisponible");
-							}else if(!Pattern.matches("[\\w_.-]+@[a-z]+.(fr|com)", value)) {
-								correct = false;
-								JOptionPane.showMessageDialog(null, "Email incorrect");
-							}else {
-								email = value;
-							}
-						}
-					}else if(fields[i].getComponent(0) instanceof JRadioButton) {
-						if(labels[i].getText().equals("Catégorie :")) {
-							if(((JRadioButton) fields[i].getComponent(0)).isSelected()){
-								categorie = CategorieEntreprise.GE;
-							}else if(((JRadioButton) fields[i].getComponent(1)).isSelected()) {
-								categorie = CategorieEntreprise.ETI;
-							}else if(((JRadioButton) fields[i].getComponent(2)).isSelected()) {
-								categorie = CategorieEntreprise.PME;
-							}else if(((JRadioButton) fields[i].getComponent(3)).isSelected()) {
-								categorie = CategorieEntreprise.TPE;
-							}else {
-								correct = false;
-								JOptionPane.showMessageDialog(null, "Veuillez renseigner votre catégorie d'entreprise");
-							}
-						}
-					}
-					i++;
-				}
-				
-				if(correct) {
-					String id = Application.quincaillerie.idNouveauClient(false);
-					Application.quincaillerie.ajouterClient(new Entreprise(id, adresse, tel, email, 500, siegeSocial, nomComm, categorie));
+		btnValider.addActionListener(ev->{
+
+				Object entr = FormValidation.validerInfosEntreprise(labels, fields, true);
+				if(entr instanceof Entreprise && entr != null) {
+					Application.quincaillerie.ajouterClient((Entreprise) entr);
 					Application.quincaillerie.afficheClients();
 					JOptionPane.showMessageDialog(null, "Enregistrement réussi !");
 					MenuClientConnexion.demarrer(frmNewClientEntr);
 				}else {
 					System.out.println("Erreur saisie");
 				}
-			}
 		});
 		
 		return p;

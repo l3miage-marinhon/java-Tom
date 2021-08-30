@@ -28,9 +28,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import clients.Civilite;
+import clients.Entreprise;
 import clients.Particulier;
 import main.Application;
 
@@ -130,87 +132,16 @@ public class MenuNewClientPart implements Runnable{
 		JPanel p = new JPanel(layout);
 		JButton btnValider = new JButton("Valider");
 		p.add(btnValider);
-		btnValider.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int size = fields.length;
-				int i=0;
+		btnValider.addActionListener(ev->{
 				
-				Civilite civilite = null;
-				String nom = null;
-				String prenom = null;
-				String adresse = null;
-				String tel = null;
-				String email = null;
-				boolean fid = false;
-				
-				String value;
-				boolean correct = true;
-				
-				while(i < size && correct) {
-					if(fields[i].getComponent(0) instanceof JTextField) {
-						value = ((JTextField) fields[i].getComponent(0)).getText();
-						if(value.isBlank()) {
-							correct = false;
-						}else if(labels[i].getText().equals("Nom :")) {
-							nom = value;
-						}else if(labels[i].getText().equals("Prénom :")) {
-							prenom = value;
-						}else if(labels[i].getText().equals("Adresse :")) {
-							adresse = value;
-						}else if(labels[i].getText().equals("Téléphone :")) {
-							if(Pattern.matches("0\\d{9}", value)) {
-								tel = value;
-							}else {
-								correct = false;
-								JOptionPane.showMessageDialog(null, "Numéro de téléphone incorrect");
-							}
-						}else if(labels[i].getText().equals("Email :")) {
-							if(Application.quincaillerie.mailConnu(value)) {
-								correct = false;
-								JOptionPane.showMessageDialog(null, "Email indisponible");
-							}else if(!Pattern.matches("[\\w_.-]+@[a-z]+.(fr|com)", value)) {
-								correct = false;
-								JOptionPane.showMessageDialog(null, "Email incorrect");
-							}else {
-								email = value;
-							}
-						}
-					}else if(fields[i].getComponent(0) instanceof JRadioButton) {
-						if(labels[i].getText().equals("Civilité :")) {
-							if(((JRadioButton) fields[i].getComponent(0)).isSelected()){
-								civilite = Civilite.MONSIEUR;
-							}else if(((JRadioButton) fields[i].getComponent(1)).isSelected()) {
-								civilite = Civilite.MADAME;
-							}else {
-								correct = false;
-								JOptionPane.showMessageDialog(null, "Veuillez renseigner votre civilité");
-							}
-						}else if(labels[i].getText().equals("Fidélité :")) {
-							if(((JRadioButton) fields[i].getComponent(0)).isSelected()) {
-								fid = true;
-							}else if(( (JRadioButton) fields[i].getComponent(1)).isSelected()) {
-								fid = false;
-							}else {
-								correct = false;
-								JOptionPane.showMessageDialog(null, "Veuillez renseigner votre fidélisation");
-							}
-						}
-					}
-					i++;
-				}
-				
-				if(correct) {
-					System.out.println(tel);
-					String id = Application.quincaillerie.idNouveauClient(true);
-					Application.quincaillerie.ajouterClient(new Particulier(id, adresse, tel, email, 100, civilite, nom, prenom, fid));
-					Application.quincaillerie.afficheClients();
-					JOptionPane.showMessageDialog(null, "Enregistrement réussi !");
-					MenuClientConnexion.demarrer(frmNewClientPart);
-				}else {
-					System.out.println("Erreur saisie");
-				}
+			Object part = FormValidation.validerInfosEntreprise(labels, fields, true);
+			if(part instanceof Particulier && part != null) {
+				Application.quincaillerie.ajouterClient((Particulier) part);
+				Application.quincaillerie.afficheClients();
+				JOptionPane.showMessageDialog(null, "Enregistrement réussi !");
+				MenuClientConnexion.demarrer(frmNewClientPart);
+			}else {
+				System.out.println("Erreur saisie");
 			}
 		});
 		
@@ -239,7 +170,6 @@ public class MenuNewClientPart implements Runnable{
 		}else if(s.equals("Prénom")) {
 			t = new JTextField(20);
 		}
-		
 		field.add(t);
 		return field;
 	}

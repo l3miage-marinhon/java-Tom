@@ -13,14 +13,14 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.ArrayList;
+import java.util.Vector;
+import java.util.stream.IntStream;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -34,8 +34,6 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.Popup;
-import javax.swing.PopupFactory;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
@@ -45,10 +43,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-import javax.swing.plaf.synth.SynthStyleFactory;
 
-import clients.Client;
+import clients.CategorieEntreprise;
 import clients.Civilite;
+import clients.Client;
+import clients.Entreprise;
 import clients.Particulier;
 import main.Application;
 import pieces.Piece;
@@ -96,6 +95,8 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		} catch (UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
+		System.out.println(Application.clientCourant);
+		
 		frmClientCatalogue = new JFrame();
 		frmClientCatalogue.setSize(new Dimension(1200, 800));
 		frmClientCatalogue.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -249,9 +250,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		String s = "<html><font color=\"red\">"+nbArt+"</font></html>";
 		pnlBtnCart.setBorder(BorderFactory.createTitledBorder(null, s, TitledBorder.CENTER, TitledBorder.TOP));
 		pnlBtnCart.revalidate();
-		pnlBtnCart.repaint();	
 		detailPanier.revalidate();
-		detailPanier.repaint();		
 	}
 	
 	private void detailPiecesPanier(JDialog detailPanier) {
@@ -272,28 +271,40 @@ public static final String PATH_TO_ICONS = "src/icons/";
 			
 			JPanel piece = new JPanel(new BorderLayout());
 			piece.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			piece.setPreferredSize(new Dimension(300, 25));
+			piece.setPreferredSize(new Dimension(350, 40));
 			GridBagConstraints gbcPiece = new GridBagConstraints();
 			
 			gbcPiece.gridx = 0;
 			gbcPiece.gridy = 0;
 			gbcPiece.fill = GridBagConstraints.HORIZONTAL;
 			JPanel pP = new JPanel(new FlowLayout(FlowLayout.CENTER));
-			pP.add(new JLabel(p.getRef() + " : " + p.getNom() + " x"+Integer.toString(Application.panier.getPanier().get(p))+" "));
+			pP.add(new JLabel(p.getRef() + " : " + p.getNom()));
 			piece.add(pP, BorderLayout.WEST);
 			
 			gbcPiece.gridx = 1;
 			JPanel pB = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			JButton btnSuppr = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "delete_icon.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH)));
 			btnSuppr.addActionListener(ev->{
-				Application.panier.supprimePanier(p);
+				Application.panier.supprimePiecePanier(p);
 				refreshPanier();
 			});
-			pB.setSize(new Dimension(30, 30));
-			pB.setPreferredSize(new Dimension(30, 30));
-			pB.setMaximumSize(new Dimension(30, 30));
+			
+			
+			Vector<Integer> nbs1 = new Vector<>(){{for(int i : IntStream.range(0,Application.quincaillerie.getStocks().stocksPiece(p)+1).toArray()) add(i);}};
+			JComboBox<Integer> nbValues = new JComboBox<>(nbs1);
+			nbValues.setSelectedIndex(Application.panier.getPanier().get(p));
+			nbValues.addActionListener(ev->{
+				int newNb = nbValues.getSelectedIndex();
+				if(newNb == 0) {
+					Application.panier.supprimePiecePanier(p);
+				}else {
+					Application.panier.modifiePiecePanier(p, nbValues.getSelectedIndex());
+				}
+				refreshPanier();
+			});
+			pB.add(nbValues);
 			pB.add(btnSuppr);
-			piece.add(btnSuppr, BorderLayout.EAST);
+			piece.add(pB, BorderLayout.EAST);
 			
 			listeArticles.add(piece, gbc);
 			
@@ -337,16 +348,19 @@ public static final String PATH_TO_ICONS = "src/icons/";
 			pNTot.add(montantNT, BorderLayout.EAST);
 			listeArticles.add(pNTot, gbc);
 			
-			gbc.gridy = n+3;
-			JPanel pComm = new JPanel(new BorderLayout());
-			JButton btnCommander = new JButton("Commander");
-			btnCommander.addActionListener(ev->{
-				System.out.println("Passer la commande");
-			});
-			pComm.add(btnCommander, BorderLayout.EAST);
 			
-			listeArticles.add(pComm, gbc);
 		}	
+		
+		gbc.gridy = n+3;
+		JPanel pComm = new JPanel(new BorderLayout());
+		JButton btnCommander = new JButton("Commander");
+		if(Application.panier.nbArticles() == 0) btnCommander.setEnabled(false);
+		btnCommander.addActionListener(ev->{
+			System.out.println("Passer la commande");
+		});
+		pComm.add(btnCommander, BorderLayout.EAST);
+		
+		listeArticles.add(pComm, gbc);
 				
 		jsp = new JScrollPane(listeArticles, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		jsp.getVerticalScrollBar().setUnitIncrement(10);
@@ -382,7 +396,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		JButton ajoutPanier = new JButton("Ajouter au panier");
 		ajoutPanier.addActionListener(ev->{
 			System.out.println("Ajout de " + spNb.getValue());
-			Application.panier.ajoutPanier(piece, (Integer) spNb.getValue());
+			Application.panier.ajoutPiecePanier(piece, (Integer) spNb.getValue());
 			String nbArt = Integer.toString(Application.panier.nbArticles());
 			String s = "<html><font color=\"red\">"+nbArt+"</font></html>";
 			pnlBtnCart.setBorder(BorderFactory.createTitledBorder(null, s, TitledBorder.CENTER, TitledBorder.TOP));
@@ -460,6 +474,52 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		return panel;
 	}
 	
+	private JPanel pnlBtnModifier(JLabel[] labels, JComponent[] fields, JPanel pnlButtons) {
+		JButton btnModifierInfos = new JButton("Modifier");
+		JPanel pnlBtnModif = new JPanel();
+		btnModifierInfos.addActionListener(ev->{
+			pnlButtons.removeAll();
+			pnlButtons.add(pnlBtnsValiderAnnuler(labels, fields, pnlButtons), BorderLayout.CENTER);
+			setFieldsEnablingState(fields, true);
+			pnlButtons.revalidate();
+		});
+		pnlBtnModif.add(btnModifierInfos);
+		
+		return pnlBtnModif;
+	}
+	
+	private JPanel pnlBtnsValiderAnnuler(JLabel[] labels, JComponent[] fields, JPanel pnlButtons) {
+		JButton btnValider = new JButton("Valider");
+		JButton btnAnnuler = new JButton("Annuler");
+		JPanel pnlBtns = new JPanel(new BorderLayout());
+		JPanel pnlBtnVA = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		
+		btnValider.addActionListener(ev->{
+			System.out.println("valider");
+			Object b = 	Application.clientCourant instanceof Particulier ? 
+						FormValidation.validerInfosParticulier(labels, fields, false) : 
+						FormValidation.validerInfosEntreprise(labels, fields, false);
+			if((Boolean) b) {
+				pnlButtons.removeAll();
+				pnlButtons.add(pnlBtnModifier(labels, fields, pnlButtons), BorderLayout.CENTER);
+				setFieldsEnablingState(fields, false);
+				pnlButtons.revalidate();
+				Application.quincaillerie.afficheClients();
+			}
+		});
+		
+		btnAnnuler.addActionListener(ev->{
+			System.out.println("annuler");
+			modifInfos.dispose();
+		});
+		
+		pnlBtnVA.add(btnAnnuler);
+		pnlBtnVA.add(btnValider);
+		pnlBtns.add(pnlBtnVA, BorderLayout.CENTER);
+		
+		return pnlBtnVA;
+	}
+	
 	private JDialog modifInfosPart() {
 		modifInfos = new JDialog(frmModifInfos, "Mes informations");
 		JPanel content = (JPanel) modifInfos.getContentPane();
@@ -494,7 +554,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		}
 		
 		JPanel pnlButtons = new JPanel(new BorderLayout());
-		pnlButtons.add(pnlBtnModifier(fields, pnlButtons), BorderLayout.CENTER);
+		pnlButtons.add(pnlBtnModifier(labels, fields, pnlButtons), BorderLayout.CENTER);
 		
 		p.add(panelFields, BorderLayout.CENTER);		
 		p.add(pnlButtons, BorderLayout.SOUTH);
@@ -504,70 +564,19 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		return modifInfos;
 	}
 	
-	private JPanel pnlBtnModifier(JComponent[] fields, JPanel pnlButtons) {
-		JButton btnModifierInfos = new JButton("Modifier");
-		JPanel pnlBtnModif = new JPanel();
-		btnModifierInfos.addActionListener(ev->{
-			for(JComponent jc : fields) {
-				if(jc.getComponent(0) instanceof JTextField) {
-					((JTextField) jc.getComponent(0)).setEnabled(true);
-				}else if(jc.getComponent(0) instanceof JRadioButton){
-					((JRadioButton) jc.getComponent(0)).setEnabled(true);
-					((JRadioButton) jc.getComponent(1)).setEnabled(true);
-
-				}
-				System.out.println(jc.getComponent(0).getClass().getName());
-				
-
-			}
-			pnlButtons.removeAll();
-			pnlButtons.add(pnlBtnsValiderAnnuler(fields, pnlButtons), BorderLayout.CENTER);
-			pnlButtons.repaint();
-			pnlButtons.revalidate();
-		});
-		pnlBtnModif.add(btnModifierInfos);
-		
-		return pnlBtnModif;
-	}
-	
-	private JPanel pnlBtnsValiderAnnuler(JComponent[] fields, JPanel pnlButtons) {
-		JButton btnValider = new JButton("Valider");
-		JButton btnAnnuler = new JButton("Annuler");
-		JPanel pnlBtnVA = new JPanel(new BorderLayout());
-		
-		btnValider.addActionListener(ev->{
-			System.out.println("valider");
-			pnlButtons.removeAll();
-			pnlButtons.add(pnlBtnModifier(fields, pnlButtons), BorderLayout.CENTER);
-			pnlButtons.repaint();
-			pnlButtons.revalidate();
-		});
-		
-		btnAnnuler.addActionListener(ev->{
-			System.out.println("annuler");
-			pnlButtons.removeAll();
-			pnlButtons.add(pnlBtnModifier(fields, pnlButtons), BorderLayout.CENTER);
-			pnlButtons.repaint();
-			pnlButtons.revalidate();
-		});
-		
-		
-		pnlBtnVA.add(btnValider, BorderLayout.WEST);
-		pnlBtnVA.add(btnAnnuler, BorderLayout.EAST);
-		
-		return pnlBtnVA;
-	}
-	
 	private JDialog modifInfosEntr() {
+		
 		modifInfos = new JDialog(frmModifInfos, "Mes informations");
 		JPanel content = (JPanel) modifInfos.getContentPane();
+		JPanel p = new JPanel(new BorderLayout());
+		content.add(p);
 		
 		JLabel[] labels = {	new JLabel("Siège social :"), new JLabel("Nom commercial :"), new JLabel("Catégorie :"), new JLabel("Adresse :"), 
-							new JLabel("Téléphone :"), new JLabel("Email :")};
+				new JLabel("Téléphone :"), new JLabel("Email :")};
 		JComponent[] fields = {	inputFieldInfosEntr("SiègeSocial"), inputFieldInfosEntr("NomCommercial"), radioButtonPanelInfosEntr("Catégorie"), 
-								inputFieldInfosEntr("Adresse"), inputFieldInfosEntr("Téléphone"), inputFieldInfosEntr("Email")};
+					inputFieldInfosEntr("Adresse"), inputFieldInfosEntr("Téléphone"), inputFieldInfosEntr("Email")};
 		
-		JPanel panel = new JPanel(new GridBagLayout());
+		JPanel panelFields = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		
 		int n = 0;
@@ -575,7 +584,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 			gbc.gridx = 0;
 			gbc.gridy = n;
 			gbc.anchor = GridBagConstraints.EAST;
-			panel.add(label, gbc);
+			panelFields.add(label, gbc);
 			n++;
 		}
 		
@@ -584,11 +593,31 @@ public static final String PATH_TO_ICONS = "src/icons/";
 			gbc.gridx = 1;
 			gbc.gridy = n;
 			gbc.anchor = GridBagConstraints.WEST;
-			panel.add(field, gbc);
+			panelFields.add(field, gbc);
 			n++;
 		}
 		
+		JPanel pnlButtons = new JPanel(new BorderLayout());
+		pnlButtons.add(pnlBtnModifier(labels, fields, pnlButtons), BorderLayout.CENTER);
+		
+		p.add(panelFields, BorderLayout.CENTER);		
+		p.add(pnlButtons, BorderLayout.SOUTH);
+		
+		content.add(p);
+		
 		return modifInfos;
+	}
+	
+	private void setFieldsEnablingState(JComponent[] fields, Boolean state) {
+		for(JComponent jc : fields) {
+			if(jc.getComponent(0) instanceof JTextField) {
+				((JTextField) jc.getComponent(0)).setEnabled(state);
+			}else if(jc.getComponent(0) instanceof JRadioButton){
+				for(int i=0; i<jc.getComponentCount(); i++) {
+					((JRadioButton) jc.getComponent(i)).setEnabled(state);
+				}
+			}
+		}
 	}
 	
 	private JPanel inputFieldFilter(String s) {
@@ -635,18 +664,25 @@ public static final String PATH_TO_ICONS = "src/icons/";
 	private JPanel inputFieldInfosEntr(String s) {
 		JPanel field = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JTextField t = null;
+		Client c = Application.clientCourant;
 		if(s.equals("Adresse")) {
 			t = new JTextField(30);
+			t.setText( ((Entreprise) c).getAdresse() );
 		}else if(s.equals("Téléphone")) {
 			t = new JTextField(10);
+			t.setText( ((Entreprise) c).getTel() );
 		}else if(s.equals("Email")) {
 			t = new JTextField(30);
+			t.setText( ((Entreprise) c).getEmail());
 		}else if(s.equals("NomCommercial")) {
 			t = new JTextField(20);
+			t.setText( ((Entreprise) c).getNomCommercial());
 		}else if(s.equals("SiègeSocial")) {
 			t = new JTextField(30);
+			t.setText( ((Entreprise) c).getSiegeSocial());
 		}
 		
+		t.setEnabled(false);
 		field.add(t);
 		return field;
 	}
@@ -692,7 +728,6 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		
 		return radioPanel;
 	}
-	
 
 	private JPanel radioButtonPanelInfosEntr(String s) {
 		JPanel radioPanel = new JPanel(new GridLayout(1,4));
@@ -701,12 +736,31 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		JRadioButton b2 = null;
 		JRadioButton b3 = null;
 		JRadioButton b4 = null;
+		
+		Client c = Application.clientCourant;
+		
 		if(s.equals("Catégorie")) {
 			b1 = new JRadioButton("GE");
 			b2 = new JRadioButton("ETI");
 			b3 = new JRadioButton("PME");
 			b4 = new JRadioButton("TPE");
 		}
+		
+		if(c instanceof Entreprise) {
+			if(((Entreprise) c).getCategorie() == CategorieEntreprise.GE) {
+				b1.setSelected(true);
+			}else if(((Entreprise) c).getCategorie() == CategorieEntreprise.ETI) {
+				b2.setSelected(true);
+			}else if(((Entreprise) c).getCategorie() == CategorieEntreprise.PME) {
+				b3.setSelected(true);
+			}else {
+				b4.setSelected(true);
+			}	
+		}
+		b1.setEnabled(false);
+		b2.setEnabled(false);
+		b3.setEnabled(false);
+		b4.setEnabled(false);
 		
 		btnGrp.add(b1);
 		btnGrp.add(b2);
@@ -731,6 +785,11 @@ public static final String PATH_TO_ICONS = "src/icons/";
 				modifInfos.setSize(new Dimension(500, 500));
 				modifInfos.setLocationRelativeTo(null);
 				modifInfos.setVisible(true);
+			}else {
+				modifInfos = modifInfosEntr();
+				modifInfos.setSize(new Dimension(500, 500));
+				modifInfos.setLocationRelativeTo(null);
+				modifInfos.setVisible(true);
 			}
 				
 		});
@@ -752,7 +811,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		btnPanier.addActionListener(ev->{
 			System.out.println(Application.panier);
 			JDialog detailPanier = detailPanier();
-			detailPanier.setSize(400, 400);
+			detailPanier.setSize(500, 400);
 			detailPanier.setLocationRelativeTo(null);
 			detailPanier.setVisible(true);
 		});

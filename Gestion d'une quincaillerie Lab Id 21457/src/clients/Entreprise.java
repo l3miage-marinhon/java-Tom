@@ -15,6 +15,16 @@ public class Entreprise extends Client{
 		setCategorie(categorie);
 	}
 	
+	public void modifierInfos(String adresse, String tel, String email, String siegeSocial, String nomCommercial,
+			CategorieEntreprise categorie) {
+		super.setAdresse(adresse);
+		super.setTel(tel);
+		super.setEmail(email);
+		this.setSiegeSocial(siegeSocial);
+		this.setNomCommercial(nomCommercial);
+		this.setCategorie(categorie);
+	}
+	
 	public String getSiegeSocial() {
 		return siegeSocial;
 	}

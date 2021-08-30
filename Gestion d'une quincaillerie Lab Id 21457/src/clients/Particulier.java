@@ -17,6 +17,17 @@ public class Particulier extends Client{
 		setFidelite(fidelite);
 	}
 	
+	public void modifierInfos(String adresse, String tel, String email, Civilite civilite, String nom,
+			String prenom, boolean fidelite) {
+		super.setAdresse(adresse);
+		super.setTel(tel);
+		super.setEmail(email);
+		this.setCivilite(civilite);
+		this.setNom(nom);
+		this.setPrenom(prenom);
+		this.setFidelite(fidelite);
+	}
+	
 	public Civilite getCivilite() {
 		return civilite;
 	}

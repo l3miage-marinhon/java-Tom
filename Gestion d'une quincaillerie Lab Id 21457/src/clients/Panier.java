@@ -12,14 +12,13 @@ public class Panier {
 
 	public Panier() {
 		panier = new HashMap<>();
-		//panier.put(new PieceDeBase("test", "00AZ00", 10, 2, 2), 3);
 	}
 	
 	public Map<Piece, Integer> getPanier(){
 		return panier;
 	}
 	
-	public void ajoutPanier(Piece p, int n) {
+	public void ajoutPiecePanier(Piece p, int n) {
 		if(!panier.containsKey(p)) {
 			panier.put(p, n);
 		}else {
@@ -27,7 +26,7 @@ public class Panier {
 		}
 	}
 	
-	public void supprimePanier(Piece p, int n) {
+	public void supprimePiecePanier(Piece p, int n) {
 		int reste = panier.get(p)-n;
 		if(reste > 0) {
 			panier.replace(p, reste);
@@ -36,8 +35,16 @@ public class Panier {
 		}
 	}
 	
-	public void supprimePanier(Piece p) {
+	public void supprimePiecePanier(Piece p) {
 		panier.remove(p);
+	}
+	
+	public void modifiePiecePanier(Piece p, int n) {
+		panier.replace(p, n);
+	}
+	
+	public void viderPanier() {
+		panier.clear();
 	}
 	
 	public int nbArticles() {
