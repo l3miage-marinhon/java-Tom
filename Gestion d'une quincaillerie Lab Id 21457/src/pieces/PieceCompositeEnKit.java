@@ -55,4 +55,11 @@ public class PieceCompositeEnKit extends PieceComposite{
 				+ "\nDurée garantie : " + dureeGarantie() + " mois";
 	}
 	
+	public String toStringHTML() {
+		return super.toStringHTML() 
+				+ "\nTemps de montage : " + getTempsMontage() + (getTempsMontage()>1 ? " jours" : " jour") + "<br>"
+				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro") + "<br>"
+				+ "\nDurée garantie : " + dureeGarantie() + " mois" + "<br>";
+	}
+	
 }

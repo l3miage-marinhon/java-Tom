@@ -72,4 +72,11 @@ public class PieceDeBase extends Piece{
 				+ "\nDurée fabrication : " + dureeFabrication() + (dureeFabrication()>1 ? " heures" : " heure");
 	}
 	
+	public String toStringHTML() {
+		return super.toStringHTML()
+				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro") + "<br>"
+				+ "\nDurée garantie : " + dureeGarantie() + " mois" + "<br>"
+				+ "\nDurée fabrication : " + dureeFabrication() + (dureeFabrication()>1 ? " heures" : " heure") + "<br>";
+	}
+	
 }

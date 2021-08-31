@@ -33,6 +33,11 @@ public abstract class Piece {
 			+ "\nNom : " + getNom();
 	}
 	
+	public String toStringHTML() {
+		return "Reference : " + getRef() + "<br>"
+			+ "\nNom : " + getNom() + "<br>";
+	}
+	
 	//TODO ensuite toutes les pièces vont avoir certiain foncton de base , donc il manque des fonction abstraite ...
 	
 }

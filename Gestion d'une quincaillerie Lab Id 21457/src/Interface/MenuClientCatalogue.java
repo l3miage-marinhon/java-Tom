@@ -54,7 +54,7 @@ import pieces.Piece;
 
 public class MenuClientCatalogue implements Runnable{
 
-public static final String PATH_TO_ICONS = "src/icons/";
+	public static final String PATH_TO_ICONS = "src/icons/";
 	
 	JFrame frmClientCatalogue;
 	JFrame frmDetailPiece;
@@ -112,13 +112,12 @@ public static final String PATH_TO_ICONS = "src/icons/";
 				}
 			}
 		});
-		
-		frmClientCatalogue.setVisible(true);
-		
-		frmClientCatalogue.setTitle("Catalogue");
 		JPanel content = (JPanel) frmClientCatalogue.getContentPane();
 		content.setLayout(new BorderLayout());
 		
+		//content.add(new JLabel("Chargement"), BorderLayout.CENTER);
+		frmClientCatalogue.setVisible(true);
+		frmClientCatalogue.setTitle("Catalogue");
 
 		JPanel northMenu = northPanelClient();
 		content.add(northMenu, BorderLayout.NORTH);
@@ -135,8 +134,8 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		frmClientCatalogue.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent componentEvent) {
 				int width = (int) (frmClientCatalogue.getSize().getWidth() - westMenu.getWidth());
-				int numOnLine = width / 160;
-				int res = (width - (numOnLine)*10 - 20) / 160 ;	// 20 correction scrollbar's width
+				int numOnLine = width / 180;
+				int res = (width - (numOnLine)*10 - 20) / 180 ;	// 20 correction scrollbar's width
 				if(res != nbOnLineScrollPane) {
 					System.out.println("resize");
 					content.remove(centerMenu);
@@ -155,14 +154,12 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		
 		int n = 0;
 		int width = (int) (frmClientCatalogue.getSize().getWidth() - westMenu.getWidth());
-		int numOnLine = width / 160 ;
-		int res = (width - (numOnLine)*10 - 20) / 160 ;	// 20 correction scrollbar's width
+		int numOnLine = width / 180 ;
+		int res = (width - (numOnLine)*10 - 20) / 180 ;	// 20 correction scrollbar's width
 		nbOnLineScrollPane = res;
 		
 		for(Piece piece : Application.quincaillerie.getCatalogue().getCatalogue()) {
-			
 			JPanel panelPiece = panelPiece(piece);
-			
 			gbc.gridx = n % res;
 			gbc.gridy = (int) n / res;
 			gbc.insets = new Insets(5, 5, 5, 5);
@@ -181,9 +178,9 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		JPanel panelPiece = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		panelPiece.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		panelPiece.setPreferredSize(new Dimension(160, 180));
-		panelPiece.setMinimumSize(new Dimension(160, 180));
-		panelPiece.setMaximumSize(new Dimension(160, 180));
+		panelPiece.setPreferredSize(new Dimension(180, 200));
+		panelPiece.setMinimumSize(new Dimension(180, 200));
+		panelPiece.setMaximumSize(new Dimension(180, 200));
 		
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -200,19 +197,29 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		
 		gbc.gridx = 0;
 		gbc.gridy = 3;
-		JButton btnDetail = new JButton("Détail");
-		btnDetail.addActionListener(ev->{
-			
-			System.out.println("détail piece");
-			JDialog detailPiece = detailPiece(piece);
-
-			detailPiece.setSize(new Dimension(250, 230));
-			detailPiece.setLocationRelativeTo(null);
-			detailPiece.setVisible(true);
-			
+		JPanel pnlAddInfos = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel pnlAdd = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		Vector<Integer> nbs1 = new Vector<>(){{for(int i : IntStream.range(1,Application.quincaillerie.getStocks().stocksPiece(piece)+1).toArray()) add(i);}};
+		JComboBox<Integer> nbValues = new JComboBox<>(nbs1);
+		nbValues.setSelectedIndex(0);
+		pnlAdd.add(nbValues);
 		
+		JButton ajoutPanier = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "addcart_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
+		ajoutPanier.addActionListener(ev->{
+			System.out.println("Ajout de " + (nbValues.getSelectedIndex()+1));
+			Application.panier.ajoutPiecePanier(piece, nbValues.getSelectedIndex()+1);
+			refreshPanier(false);		
 		});
-		panelPiece.add(btnDetail, gbc);
+		pnlAdd.add(ajoutPanier);
+		
+		JPanel pnlInfos = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pnlInfos.setToolTipText("<html>"+ piece.toStringHTML() +"</html>");
+		pnlInfos.add(new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "detail_icon.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH))));
+		
+		pnlAddInfos.add(pnlAdd);
+		pnlAddInfos.add(pnlInfos);
+		
+		panelPiece.add(pnlAddInfos, gbc);
 	
 		return panelPiece;
 	}
@@ -243,14 +250,16 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		return panel;
 	}
 	
-	private void refreshPanier() {
-		detailPanier.getContentPane().removeAll();
-		detailPiecesPanier(detailPanier);
+	private void refreshPanier(Boolean inCart) {
+		if(inCart) {
+			detailPanier.getContentPane().removeAll();
+			detailPiecesPanier(detailPanier);
+			detailPanier.revalidate();
+		}
 		String nbArt = Integer.toString(Application.panier.nbArticles());
 		String s = "<html><font color=\"red\">"+nbArt+"</font></html>";
 		pnlBtnCart.setBorder(BorderFactory.createTitledBorder(null, s, TitledBorder.CENTER, TitledBorder.TOP));
 		pnlBtnCart.revalidate();
-		detailPanier.revalidate();
 	}
 	
 	private void detailPiecesPanier(JDialog detailPanier) {
@@ -285,8 +294,9 @@ public static final String PATH_TO_ICONS = "src/icons/";
 			JPanel pB = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			JButton btnSuppr = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "delete_icon.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH)));
 			btnSuppr.addActionListener(ev->{
-				Application.panier.supprimePiecePanier(p);
-				refreshPanier();
+				int clickedButton = JOptionPane.showConfirmDialog(detailPanier, "Supprimer l'article ?", "", JOptionPane.YES_NO_OPTION);
+				if(clickedButton == JOptionPane.YES_OPTION) Application.panier.supprimePiecePanier(p);
+				refreshPanier(true);
 			});
 			
 			
@@ -296,11 +306,13 @@ public static final String PATH_TO_ICONS = "src/icons/";
 			nbValues.addActionListener(ev->{
 				int newNb = nbValues.getSelectedIndex();
 				if(newNb == 0) {
-					Application.panier.supprimePiecePanier(p);
+					nbValues.setFocusable(false);
+					int clickedButton = JOptionPane.showConfirmDialog(detailPanier, "Supprimer l'article ?", "", JOptionPane.YES_NO_OPTION);
+					if(clickedButton == JOptionPane.YES_OPTION) Application.panier.supprimePiecePanier(p);
 				}else {
 					Application.panier.modifiePiecePanier(p, nbValues.getSelectedIndex());
 				}
-				refreshPanier();
+				refreshPanier(true);
 			});
 			pB.add(nbValues);
 			pB.add(btnSuppr);
@@ -397,12 +409,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		ajoutPanier.addActionListener(ev->{
 			System.out.println("Ajout de " + spNb.getValue());
 			Application.panier.ajoutPiecePanier(piece, (Integer) spNb.getValue());
-			String nbArt = Integer.toString(Application.panier.nbArticles());
-			String s = "<html><font color=\"red\">"+nbArt+"</font></html>";
-			pnlBtnCart.setBorder(BorderFactory.createTitledBorder(null, s, TitledBorder.CENTER, TitledBorder.TOP));
-			pnlBtnCart.revalidate();
-			pnlBtnCart.repaint();			
-			
+			refreshPanier(false);		
 		});
 		
 		spinnerBtn.add(ajoutPanier);

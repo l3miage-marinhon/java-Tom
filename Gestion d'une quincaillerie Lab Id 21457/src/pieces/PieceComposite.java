@@ -57,4 +57,9 @@ public abstract class PieceComposite extends Piece{
 								+ "\nDurée fabrication : " + dureeFabrication() + (dureeFabrication()>1 ? " heures" : " heure");
 	}
 	
+	public String toStringHTML() {
+		return super.toStringHTML() + "\nNombre de composants : " + composants.size() + "<br>"
+								+ "\nDurée fabrication : " + dureeFabrication() + (dureeFabrication()>1 ? " heures" : " heure") + "<br>";
+	}
+	
 }
