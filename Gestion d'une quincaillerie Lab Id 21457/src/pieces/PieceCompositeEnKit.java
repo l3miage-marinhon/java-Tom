@@ -50,14 +50,14 @@ public class PieceCompositeEnKit extends PieceComposite{
 	@Override
 	public String toString() {
 		return super.toString() 
-				+ "\nTemps de montage : " + getTempsMontage() + (getTempsMontage()>1 ? " jours" : " jour")
+				+ "\nTemps de montage : " + getTempsMontage() + (getTempsMontage()>1 ? " heure" : " heure")
 				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro")
 				+ "\nDurée garantie : " + dureeGarantie() + " mois";
 	}
 	
 	public String toStringHTML() {
 		return super.toStringHTML() 
-				+ "\nTemps de montage : " + getTempsMontage() + (getTempsMontage()>1 ? " jours" : " jour") + "<br>"
+				+ "\nTemps de montage : " + getTempsMontage() + (getTempsMontage()>1 ? " heures" : " heure") + "<br>"
 				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro") + "<br>"
 				+ "\nDurée garantie : " + dureeGarantie() + " mois" + "<br>";
 	}

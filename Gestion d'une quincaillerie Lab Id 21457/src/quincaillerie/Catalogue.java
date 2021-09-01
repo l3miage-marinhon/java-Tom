@@ -2,7 +2,7 @@ package quincaillerie;
 
 import java.util.Set;
 
-import pieces.Piece;
+import pieces.*;
 
 import java.util.Iterator;
 
@@ -43,17 +43,18 @@ public class Catalogue{
 	 */
 	public Piece pieceExiste(String nom, String ref, boolean affichePiece) {
 		boolean f = false;
-		Piece p = null;
+		Piece piece = null;
 		Iterator<Piece> it = catalogue.iterator();
 		while(it.hasNext() && !f) {
-			p = it.next();
-			if(p.getNom()==nom && p.getRef()==ref) {
+			Piece ptemp = it.next();
+			if(ptemp.getNom().equals(nom) && ptemp.getRef().equals(ref)) {
 				f=true;
-				if(affichePiece) System.out.println("\nPiece nom \"" + nom + "\", ref \"" + ref + "\" : \n" + p + "\n");;
+				piece = ptemp;
+				if(affichePiece) System.out.println("\nPiece nom \"" + nom + "\", ref \"" + ref + "\" : \n" + piece + "\n");;
 			}
 		}
 		if(!f) System.out.println("\nLa piece de nom \"" + nom + "\" et de ref \"" + ref + "\" n'est pas dans le catalogue\n");
-		return p;
+		return piece;
 	}
 	
 	/**
@@ -89,6 +90,14 @@ public class Catalogue{
 	 */
 	public void affichePieceCatalogue(String nom, String ref) {
 		pieceExiste(nom, ref, true);
+	}
+	
+	public PieceCompositeMontee pieceMonteeFromKit(PieceCompositeEnKit piece) {	
+		return (PieceCompositeMontee) pieceExiste(piece.getNom(), ("02" + piece.getRef().substring(2)), false);
+	}
+	
+	public PieceCompositeEnKit pieceKitFromMontee(PieceCompositeMontee piece) {	
+		return (PieceCompositeEnKit) pieceExiste(piece.getNom(), ("01" + piece.getRef().substring(2)), false);
 	}
 	
 	@Override

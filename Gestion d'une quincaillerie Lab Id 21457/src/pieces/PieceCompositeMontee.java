@@ -62,7 +62,7 @@ public class PieceCompositeMontee extends PieceComposite{
 	@Override
 	public String toString() {
 		return super.toString() 
-				+ "\nDurée de montage : " + getDureeMontage() + (getDureeMontage()>1 ? " jours" : " jour")
+				+ "\nDurée de montage : " + getDureeMontage() + (getDureeMontage()>1 ? " heures" : " heure")
 				+ "\nPrix de montage : " + getPrixMontage() + (getPrixMontage()>1 ? " euros" : " euro")
 				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro")
 				+ "\nDurée garantie : " + dureeGarantie() + " mois";
@@ -70,7 +70,7 @@ public class PieceCompositeMontee extends PieceComposite{
 	
 	public String toStringHTML() {
 		return super.toStringHTML() 
-				+ "\nDurée de montage : " + getDureeMontage() + (getDureeMontage()>1 ? " jours" : " jour") + "<br>"
+				+ "\nDurée de montage : " + getDureeMontage() + (getDureeMontage()>1 ? " heures" : " heure") + "<br>"
 				+ "\nPrix de montage : " + getPrixMontage() + (getPrixMontage()>1 ? " euros" : " euro") + "<br>"
 				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro") + "<br>"
 				+ "\nDurée garantie : " + dureeGarantie() + " mois" + "<br>";

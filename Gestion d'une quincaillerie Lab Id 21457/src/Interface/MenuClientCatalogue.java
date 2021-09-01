@@ -31,13 +31,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -50,7 +47,7 @@ import clients.Client;
 import clients.Entreprise;
 import clients.Particulier;
 import main.Application;
-import pieces.Piece;
+import pieces.*;
 
 public class MenuClientCatalogue implements Runnable{
 
@@ -74,6 +71,11 @@ public class MenuClientCatalogue implements Runnable{
 	int nbOnLineScrollPane;
 	JButton btnValider;
 			
+	protected static void initUI() {
+        ToolTipManager.sharedInstance().setInitialDelay(500);
+        ToolTipManager.sharedInstance().setDismissDelay(60000);
+    }
+	
 	public MenuClientCatalogue(JFrame previousFrm) {
 	}
 	
@@ -96,7 +98,7 @@ public class MenuClientCatalogue implements Runnable{
 			e.printStackTrace();
 		}
 		System.out.println(Application.clientCourant);
-		
+		initUI();
 		frmClientCatalogue = new JFrame();
 		frmClientCatalogue.setSize(new Dimension(1200, 800));
 		frmClientCatalogue.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -159,12 +161,14 @@ public class MenuClientCatalogue implements Runnable{
 		nbOnLineScrollPane = res;
 		
 		for(Piece piece : Application.quincaillerie.getCatalogue().getCatalogue()) {
-			JPanel panelPiece = panelPiece(piece);
-			gbc.gridx = n % res;
-			gbc.gridy = (int) n / res;
-			gbc.insets = new Insets(5, 5, 5, 5);
-			listePieces.add(panelPiece, gbc);
-			n++;
+			if(piece instanceof PieceDeBase || piece instanceof PieceCompositeEnKit) {
+				JPanel panelPiece = panelPiece(piece);
+				gbc.gridx = n % res;
+				gbc.gridy = (int) n / res;
+				gbc.insets = new Insets(5, 5, 5, 5);
+				listePieces.add(panelPiece, gbc);
+				n++;
+			}
 		}
 		jsp = new JScrollPane(listePieces, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		jsp.getVerticalScrollBar().setUnitIncrement(10);
@@ -207,7 +211,22 @@ public class MenuClientCatalogue implements Runnable{
 		JButton ajoutPanier = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "addcart_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
 		ajoutPanier.addActionListener(ev->{
 			System.out.println("Ajout de " + (nbValues.getSelectedIndex()+1));
-			Application.panier.ajoutPiecePanier(piece, nbValues.getSelectedIndex()+1);
+			PieceCompositeMontee pcm = null;
+			if(piece instanceof PieceCompositeEnKit) {
+				pcm = Application.quincaillerie.getCatalogue().pieceMonteeFromKit((PieceCompositeEnKit) piece);
+				if(pcm != null) {
+					int clickedButton = JOptionPane.showConfirmDialog(frmClientCatalogue, "Acheter la version montée ?\nPrix montage : "+pcm.getPrixMontage()+" €\nDurée montage : "+pcm.getDureeMontage()+" heure(s)", "", JOptionPane.YES_NO_OPTION);
+					if(clickedButton == JOptionPane.YES_OPTION) {
+						Application.panier.ajoutPiecePanier(pcm, nbValues.getSelectedIndex()+1);
+					}else {
+						Application.panier.ajoutPiecePanier(piece, nbValues.getSelectedIndex()+1);
+					}
+				}else {
+					Application.panier.ajoutPiecePanier(piece, nbValues.getSelectedIndex()+1);
+				}
+			}else {
+				Application.panier.ajoutPiecePanier(piece, nbValues.getSelectedIndex()+1);
+			}
 			refreshPanier(false);		
 		});
 		pnlAdd.add(ajoutPanier);
@@ -280,14 +299,14 @@ public class MenuClientCatalogue implements Runnable{
 			
 			JPanel piece = new JPanel(new BorderLayout());
 			piece.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			piece.setPreferredSize(new Dimension(350, 40));
+			piece.setPreferredSize(new Dimension(420, 40));
 			GridBagConstraints gbcPiece = new GridBagConstraints();
 			
 			gbcPiece.gridx = 0;
 			gbcPiece.gridy = 0;
 			gbcPiece.fill = GridBagConstraints.HORIZONTAL;
 			JPanel pP = new JPanel(new FlowLayout(FlowLayout.CENTER));
-			pP.add(new JLabel(p.getRef() + " : " + p.getNom()));
+			pP.add(new JLabel(p.getRef() + " : " + p.getNom() + (p instanceof PieceCompositeEnKit ? " (kit) | " : (p instanceof PieceCompositeMontee ? " (montée) | " : " | ")) + p.prix() + (" €")));
 			piece.add(pP, BorderLayout.WEST);
 			
 			gbcPiece.gridx = 1;
@@ -300,7 +319,13 @@ public class MenuClientCatalogue implements Runnable{
 			});
 			
 			
-			Vector<Integer> nbs1 = new Vector<>(){{for(int i : IntStream.range(0,Application.quincaillerie.getStocks().stocksPiece(p)+1).toArray()) add(i);}};
+			Vector<Integer> nbs1 = null;
+			if(p instanceof PieceCompositeMontee) {
+				nbs1 = new Vector<>(){{for(int i : IntStream.range(0,Application.quincaillerie.getStocks().stocksPiece(Application.quincaillerie.getCatalogue().pieceKitFromMontee((PieceCompositeMontee) p))+1).toArray()) add(i);}};
+			}else {
+				nbs1 = new Vector<>(){{for(int i : IntStream.range(0, Application.quincaillerie.getStocks().stocksPiece(p)+1).toArray()) add(i);}};
+			}
+			
 			JComboBox<Integer> nbValues = new JComboBox<>(nbs1);
 			nbValues.setSelectedIndex(Application.panier.getPanier().get(p));
 			nbValues.addActionListener(ev->{
@@ -384,39 +409,6 @@ public class MenuClientCatalogue implements Runnable{
 		detailPiecesPanier(detailPanier);
 		return detailPanier;
 	}	
-	
-	private JDialog detailPiece(Piece piece) {
-		JDialog detailPiece = new JDialog(frmDetailPiece, piece.getNom());
-		
-		JPanel content = (JPanel) detailPiece.getContentPane();
-		content.setLayout(new BorderLayout());
-		
-		JTextArea dp = new JTextArea(piece.toString());
-		content.add(dp, BorderLayout.CENTER);
-		
-		JPanel spinnerBtn = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		int max = Application.quincaillerie.getStocks().stocksPiece(piece);
-		SpinnerModel model = new SpinnerNumberModel(1, 0, max, 1);
-		JSpinner spNb = new JSpinner(model);
-		spinnerBtn.add(spNb);
-		
-		gbc.gridy = 1;
-		JButton ajoutPanier = new JButton("Ajouter au panier");
-		ajoutPanier.addActionListener(ev->{
-			System.out.println("Ajout de " + spNb.getValue());
-			Application.panier.ajoutPiecePanier(piece, (Integer) spNb.getValue());
-			refreshPanier(false);		
-		});
-		
-		spinnerBtn.add(ajoutPanier);
-		content.add(spinnerBtn, BorderLayout.SOUTH);
-		
-		return detailPiece;
-	}
 	
 	private JPanel northPanelClient() {
 		JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -818,7 +810,7 @@ public class MenuClientCatalogue implements Runnable{
 		btnPanier.addActionListener(ev->{
 			System.out.println(Application.panier);
 			JDialog detailPanier = detailPanier();
-			detailPanier.setSize(500, 400);
+			detailPanier.setSize(600, 400);
 			detailPanier.setLocationRelativeTo(null);
 			detailPanier.setVisible(true);
 		});

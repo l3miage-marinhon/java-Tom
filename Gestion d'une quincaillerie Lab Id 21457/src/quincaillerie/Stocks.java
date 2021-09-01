@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pieces.Piece;
+import pieces.PieceCompositeEnKit;
+import pieces.PieceDeBase;
 
 /**
  * 
@@ -25,7 +27,7 @@ public class Stocks {
 	}
 	private void setStocks(Collection<Piece> l) {
 		for(Piece p : l) {
-			stocks.put(p, 20);
+			if(p instanceof PieceDeBase || p instanceof PieceCompositeEnKit) stocks.put(p, 20);
 		}
 	}
 	

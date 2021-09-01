@@ -2,11 +2,9 @@ package main;
 
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
-import java.awt.Panel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JLabel;
@@ -36,7 +34,6 @@ public class Application {
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new MenuPrincipal());
-		
 	}
 	
 	public Application() {
@@ -66,8 +63,10 @@ public class Application {
     	listePieces.add(new PieceDeBase("rayon", "00OF49",4,23,2));
     	listePieces.add(new PieceDeBase("vis", "00OVS01",0.1,24,1));
     	listePieces.add(new PieceCompositeEnKit("roue de vélo", "01TY87", compRoueVelo, 2));
+    	listePieces.add(new PieceCompositeMontee("roue de vélo", "02TY87", compRoueVelo, 1, 5));
+    	listePieces.add(new PieceCompositeEnKit("ampoule", "01AM33", compAmpoule, 1));
     	listePieces.add(new PieceCompositeMontee("ampoule", "02AM33", compAmpoule, 2, 5));
-    	listePieces.add(new PieceCompositeMontee("pommeau de douche", "02PD77", compPommeauDouche, 1, 2.5));
+    	listePieces.add(new PieceCompositeEnKit("pommeau de douche", "01PD77", compPommeauDouche, 1));
     	
     	Catalogue catalogue = new Catalogue(listePieces);
     	Stocks stocks = new Stocks(listePieces);
