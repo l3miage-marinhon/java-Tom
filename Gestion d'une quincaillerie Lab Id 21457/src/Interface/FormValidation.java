@@ -2,6 +2,7 @@ package Interface;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import javax.swing.JComponent;
@@ -16,6 +17,7 @@ import clients.Client;
 import clients.Entreprise;
 import clients.Particulier;
 import main.Application;
+import pieces.PieceDeBase;
 
 public final class FormValidation{
 	
@@ -190,6 +192,43 @@ public final class FormValidation{
 		
 		return e;
 	}	
+	
+	protected static PieceDeBase validerNouvellePieceBase(ArrayList<JComponent> fields) {
+		PieceDeBase pb = null;
+		
+		String nom = ((JTextField) fields.get(0)).getText();
+		
+		Double prix = null;
+		try {
+			prix = Double.parseDouble(((JTextField) fields.get(1)).getText());
+		} catch(NumberFormatException e) {
+			System.out.println("Erreur format prix");
+		}
+		
+		Integer dFab = null;
+		try {
+			dFab = Integer.parseInt(((JTextField) fields.get(2)).getText());
+		} catch(NumberFormatException e) {
+			System.out.println("Erreur format durée fabrication");
+		}
+		
+		Integer dGar = null;
+		try {
+			dGar = Integer.parseInt(((JTextField) fields
+					
+					.get(3)).getText());
+		} catch(NumberFormatException e) {
+			System.out.println("Erreur format durée garantie");
+		}
+		
+		if(!nom.isBlank() && prix != null && dFab != null && dGar != null) {
+			System.out.println( nom + " " + prix + " " + dFab + " " + dGar);
+			String ref = Application.quincaillerie.refNewPiece(nom, 0);
+			pb = new PieceDeBase(nom, ref, prix, dGar, dFab);
+		}
+		
+		return pb;
+	}
 	
 	
 }

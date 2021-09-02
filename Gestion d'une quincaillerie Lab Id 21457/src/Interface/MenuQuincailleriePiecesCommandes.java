@@ -32,19 +32,14 @@ public static final String PATH_TO_ICONS = "src/icons/";
 	JButton btnPieces;
 	JButton btnCommandes;
 			
-	public MenuQuincailleriePiecesCommandes(JFrame previousFrm) {
+	public MenuQuincailleriePiecesCommandes() {
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
-		SwingUtilities.invokeLater(new MenuQuincailleriePiecesCommandes(previousFrm));
+		SwingUtilities.invokeLater(new MenuQuincailleriePiecesCommandes());
 		previousFrm.dispose();
 	}
-	
-	public static void demarrer(JFrame frmQuincPiecesCommandes, JFrame previousFrm) {
-		frmQuincPiecesCommandes.setVisible(true);
-		previousFrm.dispose();
-	}
-	
+
 	@Override
 	public void run() {
 		

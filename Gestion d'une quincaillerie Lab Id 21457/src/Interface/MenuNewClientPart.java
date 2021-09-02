@@ -43,11 +43,11 @@ public class MenuNewClientPart implements Runnable{
 	JFrame frmNewClientPart;
 	JButton btnReturn;
 	
-	public MenuNewClientPart(JFrame previousFrm) {
+	public MenuNewClientPart() {
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
-		SwingUtilities.invokeLater(new MenuNewClientPart(previousFrm));
+		SwingUtilities.invokeLater(new MenuNewClientPart());
 		previousFrm.dispose();
 	}
 	

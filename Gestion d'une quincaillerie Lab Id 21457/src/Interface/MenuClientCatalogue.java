@@ -76,16 +76,11 @@ public class MenuClientCatalogue implements Runnable{
         ToolTipManager.sharedInstance().setDismissDelay(60000);
     }
 	
-	public MenuClientCatalogue(JFrame previousFrm) {
+	public MenuClientCatalogue() {
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
-		SwingUtilities.invokeLater(new MenuClientCatalogue(previousFrm));
-		previousFrm.dispose();
-	}
-	
-	public static void demarrer(JFrame frmClientCatalogue, JFrame previousFrm) {
-		frmClientCatalogue.setVisible(true);
+		SwingUtilities.invokeLater(new MenuClientCatalogue());
 		previousFrm.dispose();
 	}
 	

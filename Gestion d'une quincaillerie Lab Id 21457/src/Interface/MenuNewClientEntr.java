@@ -41,11 +41,11 @@ public static final String PATH_TO_ICONS = "src/icons/";
 	JFrame frmNewClientEntr;
 	JButton btnReturn;
 	
-	public MenuNewClientEntr(JFrame previousFrm) {
+	public MenuNewClientEntr() {
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
-		SwingUtilities.invokeLater(new MenuNewClientEntr(previousFrm));
+		SwingUtilities.invokeLater(new MenuNewClientEntr());
 		previousFrm.dispose();
 	}
 	

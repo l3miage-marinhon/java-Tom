@@ -1,6 +1,7 @@
 package Interface;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -13,13 +14,17 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
@@ -28,21 +33,33 @@ import javax.swing.WindowConstants;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import main.Application;
+import pieces.PieceDeBase;
 
 public class MenuNewPiece implements Runnable {
 
 	JFrame frmNewPiece;
 	JButton btnValider;
 	JButton btnAnnuler;
+	JButton btnBaseConnue;
+	JButton btnNvlBase;
+	JCheckBox ckbMontable;
+	JSpinner spnExemplairesPiece;
 	JPanel content;
 	JPanel pnlInfosPiece;
+	JPanel pnlListeComposants = new JPanel();
 	JPanel pnlBtnType;
 	
 	JLabel[] labels = {	new JLabel("Nom : "), new JLabel("Prix : "), new JLabel("Durée fabrication : "), new JLabel("Durée garantie : ")};
 	JComponent[] fields = { new JTextField(14), new JTextField(14), new JTextField(14), new JTextField(14)};
 	
-	ArrayList<JLabel> labelsA = new ArrayList<>();
-	ArrayList<JComponent> fieldsA = new ArrayList<>();
+	ArrayList<JLabel> labelsBase = new ArrayList<>();
+	ArrayList<JComponent> fieldsBase = new ArrayList<>();
+	ArrayList<JLabel> labelsComp = new ArrayList<>();
+	ArrayList<JComponent> fieldsComp = new ArrayList<>();
+	ArrayList<JLabel> labelsMontable = new ArrayList<>();
+	ArrayList<JComponent> fieldsMontable = new ArrayList<>();
+	
+	ArrayList<JPanel> listeComposants = new ArrayList<>();
 	
 	public static final String PATH_TO_ICONS = "src/icons/";
 	
@@ -51,16 +68,11 @@ public class MenuNewPiece implements Runnable {
         ToolTipManager.sharedInstance().setDismissDelay(60000);
     }
 	
-	public MenuNewPiece(JFrame previousFrm) {
+	public MenuNewPiece() {
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
-		SwingUtilities.invokeLater(new MenuNewPiece(previousFrm));
-		previousFrm.dispose();
-	}
-	
-	public static void demarrer(JFrame frmNewPiece, JFrame previousFrm) {
-		frmNewPiece.setVisible(true);
+		SwingUtilities.invokeLater(new MenuNewPiece());
 		previousFrm.dispose();
 	}
 	
@@ -74,6 +86,7 @@ public class MenuNewPiece implements Runnable {
 		}
 		System.out.println(Application.clientCourant);
 		initUI();
+		initLabelsFields();
 		frmNewPiece = new JFrame();
 		frmNewPiece.setSize(new Dimension(600, 500));
 		frmNewPiece.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -100,13 +113,99 @@ public class MenuNewPiece implements Runnable {
 		content.add(typePiece(true), BorderLayout.NORTH);
 		
 		pnlInfosPiece = new JPanel();
-		pnlInfosPiece.add(infosPiece(true));
+		pnlInfosPiece.add(infosPieceType(true));
 		content.add(pnlInfosPiece, BorderLayout.CENTER);
 
 		frmNewPiece.setVisible(true);
 		frmNewPiece.setTitle("Nouvelle pièce");
 
 		content.add(createPanelValiderAnnuler(labels, fields, true), BorderLayout.SOUTH);		
+	}
+	
+	private void initLabelsFields() {
+		SpinnerModel model = new SpinnerNumberModel(1, 1, 1000, 1);
+		spnExemplairesPiece = new JSpinner(model);
+		
+		labelsBase.add(new JLabel("Nom : "));
+		labelsBase.add(new JLabel("Prix : "));
+		labelsBase.add(new JLabel("Durée fabrication : "));
+		labelsBase.add(new JLabel("Durée garantie : "));
+		labelsBase.add(new JLabel("Exemplaires : "));
+		
+		fieldsBase.add(new JTextField(13));
+		fieldsBase.add(new JTextField(13));
+		fieldsBase.add(new JTextField(13));
+		fieldsBase.add(new JTextField(13));
+		fieldsBase.add(spnExemplairesPiece);
+		
+		
+		labelsComp.add(new JLabel("Nom : "));
+		labelsComp.add(new JLabel("Composants : "));
+		labelsComp.add(new JLabel());
+		labelsComp.add(new JLabel("Temps assemblage : "));
+		labelsComp.add(new JLabel("Montable : "));
+		
+		fieldsComp.add(new JTextField(13));
+		JPanel pnlBtnComp = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		btnBaseConnue = new JButton("Known");
+		pnlBtnComp.add(btnBaseConnue, gbc);
+		gbc.gridx = 1;
+		btnNvlBase = new JButton("New");
+		btnNvlBase.addActionListener(ev->{
+			JPanel recapComposant = new JPanel(new GridBagLayout());
+			GridBagConstraints g = new GridBagConstraints();
+			g.gridx = 0;
+			g.gridy = 0;
+			recapComposant.add(new JLabel("pièce"), g);
+			g.gridx = 1;
+			JButton suppr = new JButton("suppr");
+			recapComposant.add(suppr, g);
+			listeComposants.add(recapComposant);
+			System.out.println(listeComposants.size());
+			suppr.addActionListener(ev2->{
+				listeComposants.remove(recapComposant);
+				pnlListeComposants.removeAll();
+				pnlListeComposants.add(createDetailListeComposants());
+				pnlListeComposants.revalidate();
+				refreshFrame(false);
+				System.out.println(listeComposants.size());
+			});
+			pnlListeComposants.add(createDetailListeComposants());
+			pnlListeComposants.revalidate();
+			refreshFrame(false);
+			
+		});
+		pnlBtnComp.add(btnNvlBase, gbc);
+		fieldsComp.add(pnlBtnComp);
+		//pnlListeComposants.add(createDetailListeComposants());
+		fieldsComp.add(pnlListeComposants);
+		fieldsComp.add(new JTextField(13));
+		ckbMontable = new JCheckBox();
+		ckbMontable.addActionListener(ev->{
+			System.out.println("checkbox clicked");
+			
+		});
+		fieldsComp.add(ckbMontable);
+		
+		labelsMontable.add(new JLabel("Prix montage : "));
+		labelsMontable.add(new JLabel("Durée montage : "));
+		
+		fieldsMontable.add(new JTextField(13));
+		fieldsMontable.add(new JTextField(13));
+		
+	}
+	
+	private JPanel createDetailListeComposants() {
+		JPanel pnl = new JPanel();
+		pnl.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		pnl.setLayout(new BoxLayout(pnl, BoxLayout.Y_AXIS));
+		for(JPanel l : listeComposants) {
+			pnl.add(l);
+		}
+		return pnl;
 	}
 	
 	private void refreshFrame(boolean isTypeBase) {
@@ -117,7 +216,7 @@ public class MenuNewPiece implements Runnable {
 		content.add(typePiece(isTypeBase), BorderLayout.NORTH);
 		
 		pnlInfosPiece = new JPanel();
-		pnlInfosPiece.add(infosPiece(isTypeBase));
+		pnlInfosPiece.add(infosPieceType(isTypeBase));
 		content.add(pnlInfosPiece, BorderLayout.CENTER);
 		content.add(createPanelValiderAnnuler(labels, fields, isTypeBase), BorderLayout.SOUTH);
 	}
@@ -126,14 +225,14 @@ public class MenuNewPiece implements Runnable {
 		JPanel typePiece = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		ButtonGroup btnGrp = new ButtonGroup();
 		JRadioButton b1 = new JRadioButton("Pièce de base");
-		b1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
+		b1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		b1.addActionListener(ev->{
 			System.out.println("base");
 			refreshFrame(true);
 			frmNewPiece.revalidate();
 		});
 		JRadioButton b2 = new JRadioButton("Pièce composite");
-		b2.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
+		b2.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		b2.addActionListener(ev->{
 			System.out.println("composite");
 			refreshFrame(false);
@@ -150,24 +249,25 @@ public class MenuNewPiece implements Runnable {
 		return typePiece;
 	}
 	
-	private JPanel infosPiece(Boolean base) {
+	private JPanel infosPieceType(Boolean isTypeBase) {
 		JPanel infosPiece = new JPanel();
 		infosPiece.setLayout(new BoxLayout(infosPiece, BoxLayout.Y_AXIS));
 		
-		if(base) {
+		if(isTypeBase) {
 			infosPiece.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
-			infosPiece.add(partMenu(labels, fields));
+			infosPiece.add(infosPiece(labelsBase, fieldsBase));
 			
 		}else {
-			infosPiece.add(new JLabel(" kjh"));
+			infosPiece.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+			infosPiece.add(infosPiece(labelsComp, fieldsComp));
 		}
 		
 		return infosPiece;
 	}
 	
-	private JPanel partMenu(JLabel[] labels, JComponent[] fields) {
-		if (labels.length != fields.length) {
-	    	String s = labels.length + " labels supplied for " + fields.length + " fields!";
+	private JPanel infosPiece(ArrayList<JLabel> labels, ArrayList<JComponent> fields) {
+		if (labels.size() != fields.size()) {
+			String s = labels.size() + " labels supplied for " + fields.size() + " fields!";
 	        throw new IllegalArgumentException(s);
 		}
 		JPanel panel = new JPanel(new GridBagLayout());
@@ -200,8 +300,7 @@ public class MenuNewPiece implements Runnable {
 		
 		btnValider = createBtnValider(isTypeBase);
 		
-		btnAnnuler = new JButton("Annuler");
-		btnAnnuler.addActionListener(ev->{System.out.println("annuler");});
+		btnAnnuler = createBtnAnnuler();
 		pnlValCan.add(btnAnnuler);
 		pnlValCan.add(btnValider);
 		
@@ -213,32 +312,12 @@ public class MenuNewPiece implements Runnable {
 		if(isTypeBase) {
 			btnValider.addActionListener(ev->{
 				System.out.println("valider base");
-				
-				String nom = ((JTextField) fields[0]).getText();
-				
-				Double prix = null;
-				try {
-					prix = Double.parseDouble(((JTextField) fields[1]).getText());
-				} catch(NumberFormatException e) {
-					System.out.println("Erreur format prix");
+				PieceDeBase pb = FormValidation.validerNouvellePieceBase(fieldsBase);
+				if(pb != null) {
+					Application.quincaillerie.getCatalogue().ajoutePiece(pb);
+					Application.quincaillerie.getStocks().nouvellePieceStocks(pb, (Integer) spnExemplairesPiece.getValue());
+					MenuQuincailleriePieces.demarrer(frmNewPiece);
 				}
-				
-				Integer dFab = null;
-				try {
-					dFab = Integer.parseInt(((JTextField) fields[2]).getText());
-				} catch(NumberFormatException e) {
-					System.out.println("Erreur format durée fabrication");
-				}
-				
-				Integer dGar = null;
-				try {
-					dGar = Integer.parseInt(((JTextField) fields[3]).getText());
-				} catch(NumberFormatException e) {
-					System.out.println("Erreur format durée garantie");
-				}
-				
-				System.out.println( nom + " " + prix + " " + dFab + " " + dGar);
-				
 			});
 		}else {
 			btnValider.addActionListener(ev->{
@@ -246,6 +325,18 @@ public class MenuNewPiece implements Runnable {
 			});
 		}
 		return btnValider;
+	}
+	
+	private JButton createBtnAnnuler() {
+		JButton btnAnnuler = new JButton("Annuler");
+		btnAnnuler.addActionListener(ev->{
+			int clickedButton = JOptionPane.showConfirmDialog(frmNewPiece, "Annuler l'ajout d'une nouvelle pièce ?", "Quitter", JOptionPane.YES_NO_OPTION);
+			if(clickedButton == JOptionPane.YES_OPTION) {
+				MenuQuincailleriePieces.demarrer(frmNewPiece);
+			}
+		});
+		
+		return btnAnnuler;
 	}
 	
 }

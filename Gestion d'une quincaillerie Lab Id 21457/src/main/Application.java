@@ -56,17 +56,19 @@ public class Application {
     	compPommeauDouche.add(new PieceDeBase("molette", "00ML02", 2, 24, 2));
     	
     	Set<Piece> listePieces = new HashSet<Piece>();
-    	listePieces.add(new PieceDeBase("pneu", "00BD41",12.5,60,2));
-    	listePieces.add(new PieceDeBase("chambre à air", "00AA65",4.0,20,2));
-    	listePieces.add(new PieceDeBase("disque de jante", "00DJ41",4.5,60,2));
-    	listePieces.add(new PieceDeBase("rayon", "00OF48",1,20,1));
-    	listePieces.add(new PieceDeBase("rayon", "00OF49",4,23,2));
-    	listePieces.add(new PieceDeBase("vis", "00OVS01",0.1,24,1));
-    	listePieces.add(new PieceCompositeEnKit("roue de vélo", "01TY87", compRoueVelo, 2));
-    	listePieces.add(new PieceCompositeMontee("roue de vélo", "02TY87", compRoueVelo, 1, 5));
-    	listePieces.add(new PieceCompositeEnKit("ampoule", "01AM33", compAmpoule, 1));
-    	listePieces.add(new PieceCompositeMontee("ampoule", "02AM33", compAmpoule, 2, 5));
-    	listePieces.add(new PieceCompositeEnKit("pommeau de douche", "01PD77", compPommeauDouche, 1));
+    	listePieces.add(new PieceDeBase("pneu", "00PN01",12.5,60,2));
+    	listePieces.add(new PieceDeBase("chambre à air", "00CA01",4.0,20,2));
+    	listePieces.add(new PieceDeBase("disque de jante", "00DJ01",4.5,60,2));
+    	listePieces.add(new PieceDeBase("rayon", "00RA01",1,20,1));
+    	listePieces.add(new PieceDeBase("rayon", "00RA02",4,23,2));
+    	listePieces.add(new PieceDeBase("vis", "00VI01",0.1,24,1));
+    	listePieces.add(new PieceDeBase("vis", "00VI02",0.2,36,1));
+    	listePieces.add(new PieceDeBase("vis", "00VI03",0.15,12,2));
+    	listePieces.add(new PieceCompositeEnKit("roue de vélo", "01RV01", compRoueVelo, 2));
+    	listePieces.add(new PieceCompositeMontee("roue de vélo", "02RV01", compRoueVelo, 1, 5));
+    	listePieces.add(new PieceCompositeEnKit("ampoule", "01AM01", compAmpoule, 1));
+    	listePieces.add(new PieceCompositeMontee("ampoule", "02AM01", compAmpoule, 2, 5));
+    	listePieces.add(new PieceCompositeEnKit("pommeau de douche", "01PD01", compPommeauDouche, 1));
     	
     	Catalogue catalogue = new Catalogue(listePieces);
     	Stocks stocks = new Stocks(listePieces);

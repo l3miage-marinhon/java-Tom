@@ -63,16 +63,11 @@ public class MenuQuincailleriePieces implements Runnable {
     }
 	
 	
-	public MenuQuincailleriePieces(JFrame previousFrm) {
+	public MenuQuincailleriePieces() {
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
-		SwingUtilities.invokeLater(new MenuQuincailleriePieces(previousFrm));
-		previousFrm.dispose();
-	}
-	
-	public static void demarrer(JFrame frmQuincailleriePieces, JFrame previousFrm) {
-		frmQuincailleriePieces.setVisible(true);
+		SwingUtilities.invokeLater(new MenuQuincailleriePieces());
 		previousFrm.dispose();
 	}
 	
