@@ -189,7 +189,7 @@ public class MenuNewPiece implements Runnable {
 			
 		});
 		fieldsComp.add(ckbMontable);
-		//commentaire
+		//commaire
 		labelsMontable.add(new JLabel("Prix montage : "));
 		labelsMontable.add(new JLabel("Durée montage : "));
 		
