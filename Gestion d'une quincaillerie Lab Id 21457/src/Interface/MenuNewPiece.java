@@ -16,6 +16,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,6 +34,7 @@ import javax.swing.WindowConstants;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import main.Application;
+import pieces.Piece;
 import pieces.PieceDeBase;
 
 public class MenuNewPiece implements Runnable {
@@ -44,13 +46,11 @@ public class MenuNewPiece implements Runnable {
 	JButton btnNvlBase;
 	JCheckBox ckbMontable;
 	JSpinner spnExemplairesPiece;
+	JDialog dlgListePieceBase;
 	JPanel content;
 	JPanel pnlInfosPiece;
 	JPanel pnlListeComposants = new JPanel();
 	JPanel pnlBtnType;
-	
-	JLabel[] labels = {	new JLabel("Nom : "), new JLabel("Prix : "), new JLabel("Durée fabrication : "), new JLabel("Durée garantie : ")};
-	JComponent[] fields = { new JTextField(14), new JTextField(14), new JTextField(14), new JTextField(14)};
 	
 	ArrayList<JLabel> labelsBase = new ArrayList<>();
 	ArrayList<JComponent> fieldsBase = new ArrayList<>();
@@ -60,6 +60,7 @@ public class MenuNewPiece implements Runnable {
 	ArrayList<JComponent> fieldsMontable = new ArrayList<>();
 	
 	ArrayList<JPanel> listeComposants = new ArrayList<>();
+	ArrayList<PieceDeBase> listePieceBase = new ArrayList<>();
 	
 	public static final String PATH_TO_ICONS = "src/icons/";
 	
@@ -119,7 +120,7 @@ public class MenuNewPiece implements Runnable {
 		frmNewPiece.setVisible(true);
 		frmNewPiece.setTitle("Nouvelle pièce");
 
-		content.add(createPanelValiderAnnuler(labels, fields, true), BorderLayout.SOUTH);		
+		content.add(createPanelValiderAnnuler(labelsBase, fieldsBase, true), BorderLayout.SOUTH);		
 	}
 	
 	private void initLabelsFields() {
@@ -151,6 +152,18 @@ public class MenuNewPiece implements Runnable {
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		btnBaseConnue = new JButton("Known");
+		btnBaseConnue.addActionListener(ev->{
+			for(Piece p : Application.quincaillerie.getCatalogue().catalogue) {
+				if(p instanceof PieceDeBase) listePieceBase.add((PieceDeBase) p);
+			}
+			System.out.println("liste piece de base");
+			/*
+			//JDialog detailPanier = detailPanier();
+			detailPanier.setSize(600, 400);
+			detailPanier.setLocationRelativeTo(null);
+			detailPanier.setVisible(true);
+			*/
+		});
 		pnlBtnComp.add(btnBaseConnue, gbc);
 		gbc.gridx = 1;
 		btnNvlBase = new JButton("New");
@@ -164,7 +177,6 @@ public class MenuNewPiece implements Runnable {
 			JButton suppr = new JButton("suppr");
 			recapComposant.add(suppr, g);
 			listeComposants.add(recapComposant);
-			System.out.println(listeComposants.size());
 			suppr.addActionListener(ev2->{
 				listeComposants.remove(recapComposant);
 				pnlListeComposants.removeAll();
@@ -173,6 +185,7 @@ public class MenuNewPiece implements Runnable {
 				refreshFrame(false);
 				System.out.println(listeComposants.size());
 			});
+			pnlListeComposants.removeAll();
 			pnlListeComposants.add(createDetailListeComposants());
 			pnlListeComposants.revalidate();
 			refreshFrame(false);
@@ -180,7 +193,7 @@ public class MenuNewPiece implements Runnable {
 		});
 		pnlBtnComp.add(btnNvlBase, gbc);
 		fieldsComp.add(pnlBtnComp);
-		//pnlListeComposants.add(createDetailListeComposants());
+		pnlListeComposants.add(createDetailListeComposants());
 		fieldsComp.add(pnlListeComposants);
 		fieldsComp.add(new JTextField(13));
 		ckbMontable = new JCheckBox();
@@ -198,9 +211,15 @@ public class MenuNewPiece implements Runnable {
 		
 	}
 	
+	private JDialog detailPieceBase() {
+		dlgListePieceBase = new JDialog(frmNewPiece, "Pièces de base");
+		//detailPiecesPanier(detailPanier);
+		return dlgListePieceBase;
+	}	
+	
+	
 	private JPanel createDetailListeComposants() {
 		JPanel pnl = new JPanel();
-		pnl.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		pnl.setLayout(new BoxLayout(pnl, BoxLayout.Y_AXIS));
 		for(JPanel l : listeComposants) {
 			pnl.add(l);
@@ -218,7 +237,11 @@ public class MenuNewPiece implements Runnable {
 		pnlInfosPiece = new JPanel();
 		pnlInfosPiece.add(infosPieceType(isTypeBase));
 		content.add(pnlInfosPiece, BorderLayout.CENTER);
-		content.add(createPanelValiderAnnuler(labels, fields, isTypeBase), BorderLayout.SOUTH);
+		if(isTypeBase) {
+			content.add(createPanelValiderAnnuler(labelsBase, fieldsBase, isTypeBase), BorderLayout.SOUTH);
+		}else {
+			content.add(createPanelValiderAnnuler(labelsComp, fieldsComp, isTypeBase), BorderLayout.SOUTH);
+		}
 	}
 	
 	private JPanel typePiece(boolean isTypeBase) {
@@ -294,7 +317,7 @@ public class MenuNewPiece implements Runnable {
 		return panel;
 	}	
 	
-	private JPanel createPanelValiderAnnuler(JLabel[] labels, JComponent[] fields, boolean isTypeBase) {
+	private JPanel createPanelValiderAnnuler(ArrayList<JLabel> labels, ArrayList<JComponent> fields, boolean isTypeBase) {
 		JPanel pnlValCan = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		//btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
 		

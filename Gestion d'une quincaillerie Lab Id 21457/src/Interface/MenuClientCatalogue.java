@@ -804,7 +804,7 @@ public class MenuClientCatalogue implements Runnable{
 		btnPanier = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "cart_icon.png").getImage().getScaledInstance(30, 22, Image.SCALE_SMOOTH)));
 		btnPanier.addActionListener(ev->{
 			System.out.println(Application.panier);
-			JDialog detailPanier = detailPanier();
+			detailPanier = detailPanier();
 			detailPanier.setSize(600, 400);
 			detailPanier.setLocationRelativeTo(null);
 			detailPanier.setVisible(true);
