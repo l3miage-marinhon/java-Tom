@@ -47,10 +47,19 @@ public class MenuNewPiece implements Runnable {
 	JCheckBox ckbMontable;
 	JSpinner spnExemplairesPiece;
 	JDialog dlgListePieceBase;
-	JPanel content;
+	JDialog dlgNewPieceBaseComp;
+	JPanel contentFrmNewPiece;
+	JPanel typeNouvellePiece;
+	JPanel infosPiece;
+	JPanel pnlPiece;
 	JPanel pnlInfosPiece;
 	JPanel pnlListeComposants = new JPanel();
 	JPanel pnlBtnType;
+	JPanel pnlBtnComp;
+	JPanel pnlInfoPieceBaseComposant;
+	JPanel pnlDetailListeComposants;
+	JPanel pnlBtnsValAnn;
+	JPanel contentDlgNewComposantBase;
 	
 	ArrayList<JLabel> labelsBase = new ArrayList<>();
 	ArrayList<JComponent> fieldsBase = new ArrayList<>();
@@ -60,7 +69,8 @@ public class MenuNewPiece implements Runnable {
 	ArrayList<JComponent> fieldsMontable = new ArrayList<>();
 	
 	ArrayList<JPanel> listeComposants = new ArrayList<>();
-	ArrayList<PieceDeBase> listePieceBase = new ArrayList<>();
+	
+	ArrayList<PieceDeBase> listePieceBaseCat = new ArrayList<>();
 	
 	public static final String PATH_TO_ICONS = "src/icons/";
 	
@@ -103,24 +113,24 @@ public class MenuNewPiece implements Runnable {
 				}
 			}
 		});
-		content = (JPanel) frmNewPiece.getContentPane();
-		content.setLayout(new BorderLayout());
+		contentFrmNewPiece = (JPanel) frmNewPiece.getContentPane();
+		contentFrmNewPiece.setLayout(new BorderLayout());
 		ArrayList<Integer> kj = new ArrayList<>();
 		kj.add(3);
 		kj.add(4);
 		System.out.println(kj);
 		kj.clear();
 		System.out.println(kj);
-		content.add(typePiece(true), BorderLayout.NORTH);
+		contentFrmNewPiece.add(typeNouvellePiece(true), BorderLayout.NORTH);
 		
-		pnlInfosPiece = new JPanel();
-		pnlInfosPiece.add(infosPieceType(true));
-		content.add(pnlInfosPiece, BorderLayout.CENTER);
+		pnlPiece = new JPanel();
+		pnlPiece.add(infosPieceType(true));
+		contentFrmNewPiece.add(pnlPiece, BorderLayout.CENTER);
 
 		frmNewPiece.setVisible(true);
 		frmNewPiece.setTitle("Nouvelle pièce");
 
-		content.add(createPanelValiderAnnuler(labelsBase, fieldsBase, true), BorderLayout.SOUTH);		
+		contentFrmNewPiece.add(createPanelValiderAnnuler(labelsBase, fieldsBase, true, 1), BorderLayout.SOUTH);		
 	}
 	
 	private void initLabelsFields() {
@@ -147,14 +157,14 @@ public class MenuNewPiece implements Runnable {
 		labelsComp.add(new JLabel("Montable : "));
 		
 		fieldsComp.add(new JTextField(13));
-		JPanel pnlBtnComp = new JPanel(new GridBagLayout());
+		pnlBtnComp = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		btnBaseConnue = new JButton("Known");
 		btnBaseConnue.addActionListener(ev->{
 			for(Piece p : Application.quincaillerie.getCatalogue().catalogue) {
-				if(p instanceof PieceDeBase) listePieceBase.add((PieceDeBase) p);
+				if(p instanceof PieceDeBase) listePieceBaseCat.add((PieceDeBase) p);
 			}
 			System.out.println("liste piece de base");
 			/*
@@ -168,26 +178,11 @@ public class MenuNewPiece implements Runnable {
 		gbc.gridx = 1;
 		btnNvlBase = new JButton("New");
 		btnNvlBase.addActionListener(ev->{
-			JPanel recapComposant = new JPanel(new GridBagLayout());
-			GridBagConstraints g = new GridBagConstraints();
-			g.gridx = 0;
-			g.gridy = 0;
-			recapComposant.add(new JLabel("pièce"), g);
-			g.gridx = 1;
-			JButton suppr = new JButton("suppr");
-			recapComposant.add(suppr, g);
-			listeComposants.add(recapComposant);
-			suppr.addActionListener(ev2->{
-				listeComposants.remove(recapComposant);
-				pnlListeComposants.removeAll();
-				pnlListeComposants.add(createDetailListeComposants());
-				pnlListeComposants.revalidate();
-				refreshFrame(false);
-				System.out.println(listeComposants.size());
-			});
-			pnlListeComposants.removeAll();
-			pnlListeComposants.add(createDetailListeComposants());
-			pnlListeComposants.revalidate();
+			dlgNewPieceBaseComp = saisieNewComposantPieceBase();
+			dlgNewPieceBaseComp.setSize(new Dimension(300, 300));
+			dlgNewPieceBaseComp.setLocationRelativeTo(null);
+			dlgNewPieceBaseComp.setVisible(true);
+			
 			refreshFrame(false);
 			
 		});
@@ -202,78 +197,90 @@ public class MenuNewPiece implements Runnable {
 			
 		});
 		fieldsComp.add(ckbMontable);
-		//commaire
 		labelsMontable.add(new JLabel("Prix montage : "));
 		labelsMontable.add(new JLabel("Durée montage : "));
 		
 		fieldsMontable.add(new JTextField(13));
 		fieldsMontable.add(new JTextField(13));
-		
 	}
 	
-	private JDialog detailPieceBase() {
-		dlgListePieceBase = new JDialog(frmNewPiece, "Pièces de base");
-		//detailPiecesPanier(detailPanier);
-		return dlgListePieceBase;
+	private JDialog saisieNewComposantPieceBase() {
+		dlgNewPieceBaseComp = new JDialog(frmNewPiece, "Nouvelle pièce de base");
+
+		contentDlgNewComposantBase = (JPanel) dlgNewPieceBaseComp.getContentPane();
+		contentDlgNewComposantBase.setLayout(new BorderLayout());
+		
+		pnlInfoPieceBaseComposant = new JPanel();
+		pnlInfoPieceBaseComposant.setLayout(new BoxLayout(pnlInfoPieceBaseComposant, BoxLayout.Y_AXIS));
+		pnlInfoPieceBaseComposant.add(infosPiece(labelsBase, fieldsBase));
+		
+		contentDlgNewComposantBase.add(pnlInfoPieceBaseComposant, BorderLayout.CENTER);
+		contentDlgNewComposantBase.add(createPanelValiderAnnuler(labelsBase, fieldsBase, true, 2), BorderLayout.SOUTH);
+		
+		return dlgNewPieceBaseComp;
 	}	
 	
 	
 	private JPanel createDetailListeComposants() {
-		JPanel pnl = new JPanel();
-		pnl.setLayout(new BoxLayout(pnl, BoxLayout.Y_AXIS));
+		pnlDetailListeComposants = new JPanel();
+		pnlDetailListeComposants.setLayout(new BoxLayout(pnlDetailListeComposants, BoxLayout.Y_AXIS));
 		for(JPanel l : listeComposants) {
-			pnl.add(l);
+			pnlDetailListeComposants.add(l);
 		}
-		return pnl;
+		return pnlDetailListeComposants;
 	}
 	
 	private void refreshFrame(boolean isTypeBase) {
 		frmNewPiece.getContentPane().removeAll();
-		content = (JPanel) frmNewPiece.getContentPane();
-		content.setLayout(new BorderLayout());
+		contentFrmNewPiece = (JPanel) frmNewPiece.getContentPane();
+		contentFrmNewPiece.setLayout(new BorderLayout());
 		
-		content.add(typePiece(isTypeBase), BorderLayout.NORTH);
+		contentFrmNewPiece.add(typeNouvellePiece(isTypeBase), BorderLayout.NORTH);
 		
-		pnlInfosPiece = new JPanel();
-		pnlInfosPiece.add(infosPieceType(isTypeBase));
-		content.add(pnlInfosPiece, BorderLayout.CENTER);
+		pnlListeComposants.removeAll();
+		pnlListeComposants.add(createDetailListeComposants());
+		pnlListeComposants.revalidate();
+		
+		pnlPiece = new JPanel();
+		pnlPiece.add(infosPieceType(isTypeBase));
+		contentFrmNewPiece.add(pnlPiece, BorderLayout.CENTER);
 		if(isTypeBase) {
-			content.add(createPanelValiderAnnuler(labelsBase, fieldsBase, isTypeBase), BorderLayout.SOUTH);
+			contentFrmNewPiece.add(createPanelValiderAnnuler(labelsBase, fieldsBase, isTypeBase, 1), BorderLayout.SOUTH);
 		}else {
-			content.add(createPanelValiderAnnuler(labelsComp, fieldsComp, isTypeBase), BorderLayout.SOUTH);
+			contentFrmNewPiece.add(createPanelValiderAnnuler(labelsComp, fieldsComp, isTypeBase, 1), BorderLayout.SOUTH);
 		}
+		
+		frmNewPiece.revalidate();
 	}
 	
-	private JPanel typePiece(boolean isTypeBase) {
-		JPanel typePiece = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	private JPanel typeNouvellePiece(boolean isTypeBase) {
+		typeNouvellePiece = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		ButtonGroup btnGrp = new ButtonGroup();
 		JRadioButton b1 = new JRadioButton("Pièce de base");
 		b1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		b1.addActionListener(ev->{
 			System.out.println("base");
 			refreshFrame(true);
-			frmNewPiece.revalidate();
 		});
 		JRadioButton b2 = new JRadioButton("Pièce composite");
 		b2.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		b2.addActionListener(ev->{
 			System.out.println("composite");
 			refreshFrame(false);
-			frmNewPiece.revalidate();
 		});
 		(isTypeBase ? b1 : b2).setSelected(true);
 		
 		btnGrp.add(b1);
 		btnGrp.add(b2);
 
-		typePiece.add(b1);
-		typePiece.add(b2);
+		typeNouvellePiece.add(b1);
+		typeNouvellePiece.add(b2);
 		
-		return typePiece;
+		return typeNouvellePiece;
 	}
 	
 	private JPanel infosPieceType(Boolean isTypeBase) {
-		JPanel infosPiece = new JPanel();
+		infosPiece = new JPanel();
 		infosPiece.setLayout(new BoxLayout(infosPiece, BoxLayout.Y_AXIS));
 		
 		if(isTypeBase) {
@@ -293,7 +300,7 @@ public class MenuNewPiece implements Runnable {
 			String s = labels.size() + " labels supplied for " + fields.size() + " fields!";
 	        throw new IllegalArgumentException(s);
 		}
-		JPanel panel = new JPanel(new GridBagLayout());
+		pnlInfosPiece = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		
 		int n = 0;
@@ -301,7 +308,7 @@ public class MenuNewPiece implements Runnable {
 			gbc.gridx = 0;
 			gbc.gridy = n;
 			gbc.anchor = GridBagConstraints.WEST;
-			panel.add(label, gbc);
+			pnlInfosPiece.add(label, gbc);
 			n++;
 		}
 		
@@ -310,38 +317,63 @@ public class MenuNewPiece implements Runnable {
 			gbc.gridx = 1;
 			gbc.gridy = n;
 			gbc.anchor = GridBagConstraints.WEST;
-			panel.add(field, gbc);
+			pnlInfosPiece.add(field, gbc);
 			n++;
 		}
 		 
-		return panel;
+		return pnlInfosPiece;
 	}	
 	
-	private JPanel createPanelValiderAnnuler(ArrayList<JLabel> labels, ArrayList<JComponent> fields, boolean isTypeBase) {
-		JPanel pnlValCan = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		//btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
+	private JPanel createPanelValiderAnnuler(ArrayList<JLabel> labels, ArrayList<JComponent> fields, boolean isTypeBase, int catOrComp) {
+		pnlBtnsValAnn = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
-		btnValider = createBtnValider(isTypeBase);
+		btnValider = createBtnValider(isTypeBase, catOrComp);
 		
 		btnAnnuler = createBtnAnnuler();
-		pnlValCan.add(btnAnnuler);
-		pnlValCan.add(btnValider);
+		pnlBtnsValAnn.add(btnAnnuler);
+		pnlBtnsValAnn.add(btnValider);
 		
-		return pnlValCan;
+		return pnlBtnsValAnn;
 	}
 	
-	private JButton createBtnValider(boolean isTypeBase) {
+	private JButton createBtnValider(boolean isTypeBase, int catOrComp) {
 		JButton btnValider = new JButton("Valider");
 		if(isTypeBase) {
-			btnValider.addActionListener(ev->{
-				System.out.println("valider base");
-				PieceDeBase pb = FormValidation.validerNouvellePieceBase(fieldsBase);
-				if(pb != null) {
-					Application.quincaillerie.getCatalogue().ajoutePiece(pb);
-					Application.quincaillerie.getStocks().nouvellePieceStocks(pb, (Integer) spnExemplairesPiece.getValue());
-					MenuQuincailleriePieces.demarrer(frmNewPiece);
-				}
-			});
+			if(catOrComp == 1) {
+				btnValider.addActionListener(ev->{
+					System.out.println("valider base catalogue");
+					PieceDeBase pb = FormValidation.validerNouvellePieceBase(fieldsBase);
+					if(pb != null) {
+						Application.quincaillerie.getCatalogue().ajoutePiece(pb);
+						Application.quincaillerie.getStocks().nouvellePieceStocks(pb, (Integer) spnExemplairesPiece.getValue());
+						MenuQuincailleriePieces.demarrer(frmNewPiece);
+					}
+				});
+			}else {
+				btnValider.addActionListener(ev->{
+					System.out.println("valider base composant");
+					PieceDeBase pb = FormValidation.validerNouvellePieceBase(fieldsBase);
+					if(pb != null) {
+						
+						JPanel recapComposant = new JPanel(new GridBagLayout());
+						GridBagConstraints g = new GridBagConstraints();
+						g.gridx = 0;
+						g.gridy = 0;
+						recapComposant.add(new JLabel(pb.getNom() + " : " + pb.getRef() + " "), g);
+						g.gridx = 1;
+						JButton suppr = new JButton("suppr");
+						recapComposant.add(suppr, g);
+						listeComposants.add(recapComposant);
+						suppr.addActionListener(ev2->{
+							listeComposants.remove(recapComposant);
+							refreshFrame(false);
+							System.out.println(listeComposants.size());
+						});
+						
+						refreshFrame(false);
+					}
+				});
+			}
 		}else {
 			btnValider.addActionListener(ev->{
 				System.out.println("valider comp");
