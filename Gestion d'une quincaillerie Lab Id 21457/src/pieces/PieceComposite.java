@@ -2,24 +2,33 @@
 package pieces;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 // TODO Question 4: écrire la classe PieceComposite.
 // une pieces composite est composé d'un ensemble de pieces , ça duree de garantie de base et celle de la pieces la plus basse 
 // et la dureer de fabircation et correspond a la pieces la plus longue a fabriquer
 public abstract class PieceComposite extends Piece{
 	
-	private ArrayList<PieceDeBase> composants;
+	private Map<PieceDeBase, Integer> composants;
 
-	public PieceComposite(String nom, ArrayList<PieceDeBase> composants) {
+	public PieceComposite(String nom, Map<PieceDeBase, Integer> composants) {
 		super(nom);
 		setComposants(composants);
 	}
 
-	public ArrayList<PieceDeBase> getComposants(){
+	public Map<PieceDeBase, Integer> getComposants(){
 		return composants;
 	}
-	public void setComposants(ArrayList<PieceDeBase> composants) {
+	public void setComposants(Map<PieceDeBase, Integer> composants) {
 		this.composants = composants;
+	}
+	
+	public int nbComposants() {
+		int nb = 0;
+		for(PieceDeBase p : composants.keySet()) {
+			nb += composants.get(p);
+		}
+		return nb;
 	}
 
 	/**
@@ -28,7 +37,7 @@ public abstract class PieceComposite extends Piece{
 	 */
 	public int dureeGarantieBase() {
 		int min = Integer.MAX_VALUE;
-		for(PieceDeBase p : composants) {
+		for(PieceDeBase p : composants.keySet()) {
 			if(p.dureeGarantieBase()<min) {
 				min = p.dureeGarantieBase();
 			}
@@ -43,7 +52,7 @@ public abstract class PieceComposite extends Piece{
 	@Override
 	public int dureeFabrication() {
 		int max = Integer.MIN_VALUE;
-		for(PieceDeBase p : composants) {
+		for(PieceDeBase p : composants.keySet()) {
 			if(p.dureeFabrication()>max) {
 				max = p.dureeFabrication();
 			}
@@ -53,12 +62,13 @@ public abstract class PieceComposite extends Piece{
 	
 	@Override
 	public String toString() {
-		return super.toString() + "\nNombre de composants : " + composants.size()
+		
+		return super.toString() + "\nNombre de composants : " + nbComposants()
 								+ "\nDurée fabrication : " + dureeFabrication() + (dureeFabrication()>1 ? " heures" : " heure");
 	}
 	
 	public String toStringHTML() {
-		return super.toStringHTML() + "\nNombre de composants : " + composants.size() + "<br>"
+		return super.toStringHTML() + "\nNombre de composants : " + nbComposants() + "<br>"
 								+ "\nDurée fabrication : " + dureeFabrication() + (dureeFabrication()>1 ? " heures" : " heure") + "<br>";
 	}
 	

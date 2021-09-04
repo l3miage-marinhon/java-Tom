@@ -1,6 +1,7 @@
 package pieces;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 // TODO Question 5: écrire la classe PieceCompositeEnKit.
@@ -15,7 +16,7 @@ public class PieceCompositeEnKit extends PieceComposite{
 	
 	private int tempsMontage;
 	
-	public PieceCompositeEnKit(String nom, String ref, ArrayList<PieceDeBase> composants, int tempsMontage) {
+	public PieceCompositeEnKit(String nom, String ref, Map<PieceDeBase, Integer> composants, int tempsMontage) {
 		super(nom, composants);
 		setRef(ref);
 		setTempsMontage(tempsMontage);
@@ -36,8 +37,8 @@ public class PieceCompositeEnKit extends PieceComposite{
 	@Override
 	public double prix() {
 		double s = 0;
-		for(PieceDeBase p : super.getComposants()) {
-			s += p.prix();
+		for(PieceDeBase p : super.getComposants().keySet()) {
+			s += p.prix() * super.getComposants().get(p);
 		}
 		return s;
 	}

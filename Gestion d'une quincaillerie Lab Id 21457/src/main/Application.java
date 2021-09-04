@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JLabel;
@@ -41,19 +42,19 @@ public class Application {
 	}
 	
 	private static Quincaillerie initialize() {
-		ArrayList<PieceDeBase> compRoueVelo = new ArrayList<>();
-    	compRoueVelo.add(new PieceDeBase("rayon", "00OF48",1,20,1));
-    	compRoueVelo.add(new PieceDeBase("pneu", "00BD41",12.5,60,2));
-    	compRoueVelo.add(new PieceDeBase("disque de jante", "00DJ42",5.5,36,2));
+		Map<PieceDeBase, Integer> compRoueVelo = new HashMap<>();
+    	compRoueVelo.put(new PieceDeBase("rayon", "00OF48",1,20,1), 20);
+    	compRoueVelo.put(new PieceDeBase("pneu", "00BD41",12.5,60,2), 1);
+    	compRoueVelo.put(new PieceDeBase("disque de jante", "00DJ42",5.5,36,2), 1);
     	
-    	ArrayList<PieceDeBase> compAmpoule = new ArrayList<>();
-    	compAmpoule.add(new PieceDeBase("verre", "00KF48",2,24,1));
-    	compAmpoule.add(new PieceDeBase("filament", "00FF92",5,24,1));
+    	Map<PieceDeBase, Integer> compAmpoule = new HashMap<>();
+    	compAmpoule.put(new PieceDeBase("verre", "00KF48",2,24,1), 1);
+    	compAmpoule.put(new PieceDeBase("filament", "00FF92",5,24,1), 1);
     	
-    	ArrayList<PieceDeBase> compPommeauDouche = new ArrayList<>();
-    	compPommeauDouche.add(new PieceDeBase("jet", "00JT24", 3, 24, 3));
-    	compPommeauDouche.add(new PieceDeBase("joint", "00JN28", 0.5, 24, 1));
-    	compPommeauDouche.add(new PieceDeBase("molette", "00ML02", 2, 24, 2));
+    	Map<PieceDeBase, Integer> compPommeauDouche = new HashMap<>();
+    	compPommeauDouche.put(new PieceDeBase("jet", "00JT24", 3, 24, 3), 1);
+    	compPommeauDouche.put(new PieceDeBase("joint", "00JN28", 0.5, 24, 1), 1);
+    	compPommeauDouche.put(new PieceDeBase("molette", "00ML02", 2, 24, 2), 1);
     	
     	Set<Piece> listePieces = new HashSet<Piece>();
     	listePieces.add(new PieceDeBase("pneu", "00PN01",12.5,60,2));

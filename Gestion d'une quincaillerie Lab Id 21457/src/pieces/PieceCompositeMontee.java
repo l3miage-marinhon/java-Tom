@@ -1,6 +1,7 @@
 package pieces;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 // TODO Question 13: écrire la classe PieceCompositeEnMontee.
@@ -15,7 +16,7 @@ public class PieceCompositeMontee extends PieceComposite{
 	private int dureeMontage;
 	private double prixMontage;
 	
-	public PieceCompositeMontee(String nom, String ref, ArrayList<PieceDeBase> composants, int dureeMontage, double prixMontage) {
+	public PieceCompositeMontee(String nom, String ref, Map<PieceDeBase, Integer> composants, int dureeMontage, double prixMontage) {
 		super(nom, composants);
 		setRef(ref);
 		setDureeMontage(dureeMontage);
@@ -43,8 +44,8 @@ public class PieceCompositeMontee extends PieceComposite{
 	@Override
 	public double prix() {
 		double s = 0;
-		for(PieceDeBase p : super.getComposants()) {
-			s += p.prix();
+		for(PieceDeBase p : super.getComposants().keySet()) {
+			s += p.prix() * super.getComposants().get(p);
 		}
 		return s + getPrixMontage();
 	}
