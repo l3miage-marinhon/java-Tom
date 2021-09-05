@@ -1,6 +1,5 @@
 package pieces;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -52,14 +51,14 @@ public class PieceCompositeEnKit extends PieceComposite{
 	public String toString() {
 		return super.toString() 
 				+ "\nTemps de montage : " + getTempsMontage() + (getTempsMontage()>1 ? " heure" : " heure")
-				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro")
+				+ "\nPrix : " + String.format("%.2f", prix()) + (prix()>1 ? " euros" : " euro")
 				+ "\nDurée garantie : " + dureeGarantie() + " mois";
 	}
 	
 	public String toStringHTML() {
 		return super.toStringHTML() 
 				+ "\nTemps de montage : " + getTempsMontage() + (getTempsMontage()>1 ? " heures" : " heure") + "<br>"
-				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro") + "<br>"
+				+ "\nPrix : " + String.format("%.2f", prix()) + (prix()>1 ? " euros" : " euro") + "<br>"
 				+ "\nDurée garantie : " + dureeGarantie() + " mois" + "<br>";
 	}
 	

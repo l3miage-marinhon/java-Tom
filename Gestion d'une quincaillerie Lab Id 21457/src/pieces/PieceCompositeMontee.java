@@ -1,6 +1,5 @@
 package pieces;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -65,7 +64,7 @@ public class PieceCompositeMontee extends PieceComposite{
 		return super.toString() 
 				+ "\nDurée de montage : " + getDureeMontage() + (getDureeMontage()>1 ? " heures" : " heure")
 				+ "\nPrix de montage : " + getPrixMontage() + (getPrixMontage()>1 ? " euros" : " euro")
-				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro")
+				+ "\nPrix : " + String.format("%.2f", prix()) + (prix()>1 ? " euros" : " euro")
 				+ "\nDurée garantie : " + dureeGarantie() + " mois";
 	}
 	
@@ -73,7 +72,7 @@ public class PieceCompositeMontee extends PieceComposite{
 		return super.toStringHTML() 
 				+ "\nDurée de montage : " + getDureeMontage() + (getDureeMontage()>1 ? " heures" : " heure") + "<br>"
 				+ "\nPrix de montage : " + getPrixMontage() + (getPrixMontage()>1 ? " euros" : " euro") + "<br>"
-				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro") + "<br>"
+				+ "\nPrix : " + String.format("%.2f", prix()) + (prix()>1 ? " euros" : " euro") + "<br>"
 				+ "\nDurée garantie : " + dureeGarantie() + " mois" + "<br>";
 	}
 	

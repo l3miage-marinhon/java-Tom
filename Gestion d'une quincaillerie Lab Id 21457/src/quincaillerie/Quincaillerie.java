@@ -8,6 +8,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import clients.Client;
 import clients.Particulier;
 import commandes.Commande;
@@ -202,6 +204,7 @@ public class Quincaillerie {
 		while(it.hasNext() && stockSuff) {
 			Piece p = it.next();
 			if(stocks.stocksPiece(p) < listeArticles.get(p)) stockSuff = false;
+			
 		}
 		return stockSuff;
 	}
@@ -211,9 +214,7 @@ public class Quincaillerie {
 	 * @param client {@link Client} le client à ajouter
 	 */
 	public void ajouterClient(Client client) {
-		if(listeClientsCommandes.putIfAbsent(client, new LinkedHashSet<>()) != null){
-			System.out.println("Client déjà connu");
-		}
+		listeClientsCommandes.putIfAbsent(client, new LinkedHashSet<>());
 	}
 	
 	/**
@@ -223,7 +224,18 @@ public class Quincaillerie {
 	 * @param commande {@link Commande} la commande à ajouter au client
 	 */
 	public void ajouterCommandeClient(Client client, Commande commande) {
-		listeClientsCommandes.get(client).add(commande);
+		if(listeClientsCommandes.get(client).size() == 0) {
+			LinkedHashSet<Commande> lp = new LinkedHashSet<>();
+			lp.add(commande);
+			listeClientsCommandes.get(client).addAll(lp);
+		}else {
+			listeClientsCommandes.get(client).add(commande);
+		}
+		
+	}
+	
+	public LinkedHashSet<Commande> getCommandesClient(Client c){
+		return listeClientsCommandes.get(c);
 	}
 	
 	/**
@@ -245,27 +257,6 @@ public class Quincaillerie {
 	}
 	
 	/**
-	 * Annule une commade d'un client suivant son numéro de commande, c'est à dire qu'elle est supprimée de la liste des clients et commandes de la quincaillerie
-	 * @param client {@link Client} le client dont on souhaite cherche la commande
-	 * @param numCommande {@link Integer} le numéro de la commande recherchée
-	 * @return {@link Boolean} true si la commande a été annulée, false sinon
-	 */
-	public boolean annulerCommande(Client client, int numCommande) {
-		boolean annule = false;
-		Commande commande = rechercheCommandeClient(client, numCommande);
-		if(commande == null) {
-			System.out.println("Commande introuvable");
-		}else if(!commande.estAnnulable()) {
-			System.out.println("Vous ne pouvez plus annuler votre commande");
-		}else {
-			listeClientsCommandes.get(client).remove(commande);
-			System.out.println("Commande annulée");
-			annule = true;
-		}
-		return annule;
-	}
-	
-	/**
 	 * Crée une commande pour un client. Une commande ne peut être passée que sous 3 conditions:<br>
 	 * &emsp; * le client est connu de la quincaillerie<br>
 	 * &emsp; * la quincaillerie possède suffisement de stocks pour couvrir la commande<br>
@@ -279,15 +270,25 @@ public class Quincaillerie {
 		double prixCommande = calculPrixCommande(listePiecesExemplaires);
 		prixCommande *= (client instanceof Particulier && ((Particulier) client).isFidelite() ? 0.9 : 1); 
 		if(!clientConnu(client)) {
-			System.out.println("Vous devez vous enregistrer avant de passer commande");
+			JOptionPane.showMessageDialog(null, "Client inconnu");
 		}else if(!stocksSuffisants(listePiecesExemplaires)) {
-			System.out.println("Stocks insuffisants");
+			JOptionPane.showMessageDialog(null, "Stocks insuffisants");
 		}else if(ServiceBancaire.prelevementCreditClient(client, prixCommande)) {
-			commande = new Commande(numCommande(), this.getNom(), client, new Date(), listePiecesExemplaires, prixCommande);
+			Map<Piece, Integer> lpe = copieListePieces(listePiecesExemplaires);
+			commande = new Commande(numCommande(), this.getNom(), client, new Date(), lpe, prixCommande);
 			ajouterCommandeClient(client, commande);
 			ServiceBancaire.approvisionneTresorerieQuincaillerie(this, prixCommande);
+			
 		}
 		return commande;
+	}
+	
+	private Map<Piece, Integer> copieListePieces(Map<Piece, Integer> map){
+		Map<Piece, Integer> lpe = new HashMap<>();
+		for(Piece p : map.keySet()) {
+			lpe.put(p, map.get(p));
+		}
+		return lpe;	
 	}
 	
 	public void afficheClients() {

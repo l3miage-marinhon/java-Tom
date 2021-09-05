@@ -53,7 +53,7 @@ public class Catalogue{
 				if(affichePiece) System.out.println("\nPiece nom \"" + nom + "\", ref \"" + ref + "\" : \n" + piece + "\n");;
 			}
 		}
-		if(!f) System.out.println("\nLa piece de nom \"" + nom + "\" et de ref \"" + ref + "\" n'est pas dans le catalogue\n");
+		if(!f && affichePiece) System.out.println("\nLa piece de nom \"" + nom + "\" et de ref \"" + ref + "\" n'est pas dans le catalogue\n");
 		return piece;
 	}
 	

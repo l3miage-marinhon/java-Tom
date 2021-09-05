@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pieces.Piece;
-import pieces.PieceDeBase;
 
 public class Panier {
 

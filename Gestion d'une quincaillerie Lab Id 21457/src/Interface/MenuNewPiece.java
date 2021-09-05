@@ -147,9 +147,9 @@ public class MenuNewPiece implements Runnable {
 		spnExemplairesPiece = new JSpinner(model);
 				
 		labelsBase.add(new JLabel("Nom : "));
-		labelsBase.add(new JLabel("Prix : "));
-		labelsBase.add(new JLabel("Durée fabrication : "));
-		labelsBase.add(new JLabel("Durée garantie : "));
+		labelsBase.add(new JLabel("Prix (€): "));
+		labelsBase.add(new JLabel("Durée fabrication (heures): "));
+		labelsBase.add(new JLabel("Durée garantie (mois) : "));
 		labelsBase.add(new JLabel("Exemplaires : "));
 		
 		fieldsBase.add(new JTextField(13));
@@ -162,7 +162,7 @@ public class MenuNewPiece implements Runnable {
 		labelsComp.add(new JLabel("Nom : "));
 		labelsComp.add(new JLabel("Composants : "));
 		labelsComp.add(new JLabel());
-		labelsComp.add(new JLabel("Temps assemblage : "));
+		labelsComp.add(new JLabel("Temps assemblage (heures) : "));
 		labelsComp.add(new JLabel("Exemplaires : "));
 		labelsComp.add(new JLabel("Montable : "));
 		
@@ -191,7 +191,6 @@ public class MenuNewPiece implements Runnable {
 		ckbMontable = new JCheckBox();
 		ckbMontable.addActionListener(ev->{
 			if(ckbMontable.isSelected()) {
-				System.out.println("checkbox clicked");
 				fieldsComp.addAll(fieldsMontable);
 				labelsComp.addAll(labelsMontable);
 				refreshFrame(false, true);
@@ -199,15 +198,14 @@ public class MenuNewPiece implements Runnable {
 				labelsComp.removeAll(labelsMontable);
 				fieldsComp.removeAll(fieldsMontable);
 				refreshFrame(false, true);
-				System.out.println("checkbox unclicked");
 			}
 			
 			
 		});
 		
 		fieldsComp.add(ckbMontable);
-		labelsMontable.add(new JLabel("Prix montage : "));
-		labelsMontable.add(new JLabel("Durée montage : "));
+		labelsMontable.add(new JLabel("Prix montage (€) : "));
+		labelsMontable.add(new JLabel("Durée montage (heures) : "));
 		
 		fieldsMontable.add(new JTextField(13));
 		fieldsMontable.add(new JTextField(13));
@@ -330,7 +328,8 @@ public class MenuNewPiece implements Runnable {
 		content.add(pnlInfoPieceBaseComposant, BorderLayout.CENTER);
 		content.add(createPanelValiderAnnuler(labelsBase, fieldsBase, true, 2), BorderLayout.SOUTH);
 		
-		dlgNewPieceBaseComp.setSize(new Dimension(300, 300));
+		dlgNewPieceBaseComp.setSize(new Dimension(400, 300));
+		dlgNewPieceBaseComp.setResizable(false);
 		dlgNewPieceBaseComp.setLocationRelativeTo(null);
 		dlgNewPieceBaseComp.setVisible(true);
 		//return dlgNewPieceBaseComp;
@@ -402,13 +401,11 @@ public class MenuNewPiece implements Runnable {
 		JRadioButton b1 = new JRadioButton("Pièce de base");
 		b1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		b1.addActionListener(ev->{
-			System.out.println("base");
 			refreshFrame(true, false);
 		});
 		JRadioButton b2 = new JRadioButton("Pièce composite");
 		b2.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		b2.addActionListener(ev->{
-			System.out.println("composite");
 			refreshFrame(false, false);
 		});
 		(isTypeBase ? b1 : b2).setSelected(true);
@@ -473,7 +470,7 @@ public class MenuNewPiece implements Runnable {
 		
 		btnValider = createBtnValider(isTypeBase, toCatOrComp);
 		
-		btnAnnuler = createBtnAnnuler();
+		btnAnnuler = createBtnAnnuler(toCatOrComp);
 		pnlBtnsValAnn.add(btnAnnuler);
 		pnlBtnsValAnn.add(btnValider);
 		
@@ -486,7 +483,6 @@ public class MenuNewPiece implements Runnable {
 		if(isTypeBase) {
 			if(toCatOrComp == 1) {
 				btnValider.addActionListener(ev->{
-					System.out.println("valider base");
 					PieceDeBase pb = FormValidation.validerNouvellePieceBase(fieldsBase);
 					if(pb != null) {
 						int n = ((Integer) ((JSpinner) fieldsBase.get(4)).getValue());
@@ -497,7 +493,6 @@ public class MenuNewPiece implements Runnable {
 				});
 			}else if(toCatOrComp == 2){
 				btnValider.addActionListener(ev->{
-					System.out.println("valider base comp");
 					PieceDeBase pb = FormValidation.validerNouvellePieceBase(fieldsBase);
 					if(pb != null) {
 						int n = ((Integer) ((JSpinner) fieldsBase.get(4)).getValue());
@@ -509,21 +504,18 @@ public class MenuNewPiece implements Runnable {
 			}
 		}else {
 			btnValider.addActionListener(ev->{
-				System.out.println("valider comp");
 				if(listeComposants.keySet().size() < 2) {
 					JOptionPane.showMessageDialog(frmNewPiece, "La pièce composite doit comporter 2 composants ou plus");
 				}else {
 					ArrayList<Piece> piecesOk = FormValidation.validerNouvellePieceCompositeKit(fieldsComp, listeComposants);
 					if(piecesOk.size() > 0) {
 						PieceCompositeEnKit pck = (PieceCompositeEnKit) piecesOk.get(0);
-						System.out.println("ajout pck succès");
 						Integer n = ((Integer) ((JSpinner) fieldsComp.get(4)).getValue());
 						Application.quincaillerie.getCatalogue().ajoutePiece(pck);
 						Application.quincaillerie.getStocks().nouvellePieceStocks(pck, n);
 						
 						if(piecesOk.size() == 2) {
 							PieceCompositeMontee pcm = (PieceCompositeMontee) piecesOk.get(1);
-							System.out.println("ajout pcm succès");
 							n = ((Integer) ((JSpinner) fieldsComp.get(4)).getValue());
 							Application.quincaillerie.getCatalogue().ajoutePiece(pcm);
 							Application.quincaillerie.getStocks().nouvellePieceStocks(pcm, n);
@@ -536,14 +528,23 @@ public class MenuNewPiece implements Runnable {
 		return btnValider;
 	}
 	
-	private JButton createBtnAnnuler() {
+	private JButton createBtnAnnuler(int toCatOrComp) {
 		JButton btnAnnuler = new JButton("Annuler");
-		btnAnnuler.addActionListener(ev->{
-			int clickedButton = JOptionPane.showConfirmDialog(frmNewPiece, "Annuler l'ajout d'une nouvelle pièce ?", "Quitter", JOptionPane.YES_NO_OPTION);
-			if(clickedButton == JOptionPane.YES_OPTION) {
-				MenuQuincailleriePieces.demarrer(frmNewPiece);
-			}
-		});
+		if(toCatOrComp == 1) {
+			btnAnnuler.addActionListener(ev->{
+				int clickedButton = JOptionPane.showConfirmDialog(frmNewPiece, "Annuler l'ajout d'une nouvelle pièce ?", "Quitter", JOptionPane.YES_NO_OPTION);
+				if(clickedButton == JOptionPane.YES_OPTION) {
+					MenuQuincailleriePieces.demarrer(frmNewPiece);
+				}
+			});
+		}else {
+			btnAnnuler.addActionListener(ev->{
+				int clickedButton = JOptionPane.showConfirmDialog(frmNewPiece, "Annuler l'ajout du nouveau composant ?", "Quitter", JOptionPane.YES_NO_OPTION);
+				if(clickedButton == JOptionPane.YES_OPTION) {
+					dlgNewPieceBaseComp.dispose();
+				}
+			});
+		}
 		
 		return btnAnnuler;
 	}

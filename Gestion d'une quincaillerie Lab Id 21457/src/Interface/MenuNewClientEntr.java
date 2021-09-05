@@ -7,11 +7,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -30,7 +27,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
-import clients.CategorieEntreprise;
 import clients.Entreprise;
 import main.Application;
 
@@ -138,8 +134,6 @@ public static final String PATH_TO_ICONS = "src/icons/";
 					Application.quincaillerie.afficheClients();
 					JOptionPane.showMessageDialog(null, "Enregistrement réussi !");
 					MenuClientConnexion.demarrer(frmNewClientEntr);
-				}else {
-					System.out.println("Erreur saisie");
 				}
 		});
 		

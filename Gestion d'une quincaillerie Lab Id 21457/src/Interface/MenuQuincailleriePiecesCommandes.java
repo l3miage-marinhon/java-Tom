@@ -25,7 +25,7 @@ import main.Application;
 
 public class MenuQuincailleriePiecesCommandes implements Runnable {
 
-public static final String PATH_TO_ICONS = "src/icons/";
+	public static final String PATH_TO_ICONS = "src/icons/";
 	
 	JFrame frmQuincPiecesCommandes;
 	JButton btnReturn;
@@ -91,14 +91,14 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		gbc.insets = new Insets(0, 0, 4, 0);
 		btnPieces = new JButton("Pièces");
 		btnPieces.setPreferredSize(new Dimension(150, 50));
-		btnPieces.addActionListener(ev->{System.out.println("pieces");MenuQuincailleriePieces.demarrer(frmQuincPiecesCommandes);});
+		btnPieces.addActionListener(ev->{MenuQuincailleriePieces.demarrer(frmQuincPiecesCommandes);});
 		menu.add(btnPieces, gbc);
 		
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		btnCommandes = new JButton("Commandes");
 		btnCommandes.setPreferredSize(new Dimension(150, 50));
-		btnCommandes.addActionListener(ev->{System.out.println("commandes");;});
+		btnCommandes.addActionListener(ev->{MenuQuincaillerieCommandes.demarrer(frmQuincPiecesCommandes);});
 		menu.add(btnCommandes, gbc);
 
 		return menu;

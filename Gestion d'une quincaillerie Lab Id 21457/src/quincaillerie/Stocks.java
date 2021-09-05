@@ -2,11 +2,12 @@ package quincaillerie;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import pieces.Piece;
 import pieces.PieceCompositeEnKit;
-import pieces.PieceDeBase;
+import pieces.PieceCompositeMontee;
 
 /**
  * 
@@ -27,7 +28,7 @@ public class Stocks {
 	}
 	private void setStocks(Collection<Piece> l) {
 		for(Piece p : l) {
-			if(p instanceof PieceDeBase || p instanceof PieceCompositeEnKit) stocks.put(p, 20);
+			/*if(p instanceof PieceDeBase || p instanceof PieceCompositeEnKit)*/ stocks.put(p, 20);
 		}
 	}
 	
@@ -59,6 +60,32 @@ public class Stocks {
 		}
 	}
 	
+	public PieceCompositeMontee pieceMonteeFromKit(PieceCompositeEnKit piece) {	
+		PieceCompositeMontee pcm = null;
+		
+		Iterator<Piece> it = stocks.keySet().iterator();
+		while(it.hasNext() && pcm == null) {
+			Piece p = it.next();
+			if(p instanceof PieceCompositeMontee && piece.getNom().equals(p.getNom()) && piece.getRef().equals(("01" + p.getRef().substring(2)) )){
+				pcm = (PieceCompositeMontee) p;
+			}
+		}
+		return pcm;
+	}
+	
+	public PieceCompositeEnKit pieceKitFromMontee(PieceCompositeMontee piece) {	
+		PieceCompositeEnKit pck = null;
+		
+		Iterator<Piece> it = stocks.keySet().iterator();
+		while(it.hasNext() && pck == null) {
+			Piece p = it.next();
+			if(p instanceof PieceCompositeEnKit && piece.getNom().equals(p.getNom()) && piece.getRef().equals(("02" + p.getRef().substring(2)) )){
+				pck = (PieceCompositeEnKit) p;
+			}
+		}
+		return pck;
+	}
+	
 	/**
 	 * Réduit les stocks d'une pièce seulement si cette dernière est déjà présente dans les stocks
 	 * @param p {@link Piece} la pièce dont on veut augmenter les stocks
@@ -67,7 +94,21 @@ public class Stocks {
 	public void supprimeStocksPiece(Piece p, int n) {
 		if(pieceExiste(p, false)) {
 			int stock = stocks.get(p);
+			
+			if(p instanceof PieceCompositeEnKit) {
+				PieceCompositeMontee pcm = pieceMonteeFromKit((PieceCompositeEnKit) p);
+				if(pcm != null) stocks.replace(  pcm  , (stock - n > 0 ? stock-n : 0) );
+			}else if(p instanceof PieceCompositeMontee) {
+				PieceCompositeEnKit pck = pieceKitFromMontee((PieceCompositeMontee) p);
+				if(pck != null) stocks.replace(  pck  , (stock - n > 0 ? stock-n : 0) );
+			}
 			stocks.replace(p, (stock - n > 0 ? stock-n : 0) );
+		}
+	}
+	
+	public void supprimeStocksPieces(Map<Piece, Integer> map) {
+		for(Piece p : map.keySet()) {
+			supprimeStocksPiece(p, map.get(p));
 		}
 	}
 	
@@ -111,6 +152,8 @@ public class Stocks {
 		Integer n = stocksPiece(p);
 		return ( (n == null ? 0 : n) > 0 ? true : false );
 	}
+	
+	
 
 	@Override
 	public String toString() {

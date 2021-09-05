@@ -1,7 +1,6 @@
 
 package pieces;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 // TODO Question 4: écrire la classe PieceComposite.

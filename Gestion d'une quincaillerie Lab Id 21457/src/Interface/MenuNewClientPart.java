@@ -7,11 +7,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -28,11 +25,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
-import javax.swing.event.DocumentListener;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
-import clients.Civilite;
-import clients.Entreprise;
 import clients.Particulier;
 import main.Application;
 
@@ -134,14 +128,12 @@ public class MenuNewClientPart implements Runnable{
 		p.add(btnValider);
 		btnValider.addActionListener(ev->{
 				
-			Object part = FormValidation.validerInfosEntreprise(labels, fields, true);
+			Object part = FormValidation.validerInfosParticulier(labels, fields, true);
 			if(part instanceof Particulier && part != null) {
 				Application.quincaillerie.ajouterClient((Particulier) part);
 				Application.quincaillerie.afficheClients();
 				JOptionPane.showMessageDialog(null, "Enregistrement réussi !");
 				MenuClientConnexion.demarrer(frmNewClientPart);
-			}else {
-				System.out.println("Erreur saisie");
 			}
 		});
 		

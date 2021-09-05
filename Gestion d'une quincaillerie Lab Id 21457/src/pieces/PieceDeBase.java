@@ -67,14 +67,14 @@ public class PieceDeBase extends Piece{
 	@Override
 	public String toString() {
 		return super.toString()
-				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro")
+				+ "\nPrix : " + String.format("%.2f", prix()) + (prix()>1 ? " euros" : " euro")
 				+ "\nDurée garantie : " + dureeGarantie() + " mois"
 				+ "\nDurée fabrication : " + dureeFabrication() + (dureeFabrication()>1 ? " heures" : " heure");
 	}
 	
 	public String toStringHTML() {
 		return super.toStringHTML()
-				+ "\nPrix : " + prix() + (prix()>1 ? " euros" : " euro") + "<br>"
+				+ "\nPrix : " + String.format("%.2f", prix()) + (prix()>1 ? " euros" : " euro") + "<br>"
 				+ "\nDurée garantie : " + dureeGarantie() + " mois" + "<br>"
 				+ "\nDurée fabrication : " + dureeFabrication() + (dureeFabrication()>1 ? " heures" : " heure") + "<br>";
 	}

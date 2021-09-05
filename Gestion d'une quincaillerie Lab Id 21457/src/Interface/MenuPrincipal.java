@@ -91,7 +91,7 @@ public class MenuPrincipal implements Runnable{
 		gbc.gridy = 0;
 		btnQuinc = new JButton("QUINCAILLERIE");
 		btnQuinc.setPreferredSize(new Dimension(150, 50));
-		btnQuinc.addActionListener(ev->{System.out.println("quincaillerie");MenuQuincailleriePiecesCommandes.demarrer(frmMenuPrinc);});
+		btnQuinc.addActionListener(ev->{MenuQuincailleriePiecesCommandes.demarrer(frmMenuPrinc);});
 		menu.add(btnQuinc, gbc);
 
 		return menu;
