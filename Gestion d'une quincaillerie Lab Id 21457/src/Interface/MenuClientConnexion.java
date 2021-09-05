@@ -38,16 +38,11 @@ public class MenuClientConnexion implements Runnable{
 	JButton btnReturn;
 	JButton btnValider;
 			
-	public MenuClientConnexion(JFrame previousFrm) {
+	public MenuClientConnexion() {
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
-		SwingUtilities.invokeLater(new MenuClientConnexion(previousFrm));
-		previousFrm.dispose();
-	}
-	
-	public static void demarrer(JFrame frmClientConn, JFrame previousFrm) {
-		frmClientConn.setVisible(true);
+		SwingUtilities.invokeLater(new MenuClientConnexion());
 		previousFrm.dispose();
 	}
 	

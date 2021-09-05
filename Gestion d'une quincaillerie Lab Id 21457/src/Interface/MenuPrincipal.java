@@ -37,12 +37,6 @@ public class MenuPrincipal implements Runnable{
 	public static void demarrer(JFrame frmPrevious) {
 		frmPrevious.dispose();
 		MenuPrincipal.demarrer();
-		
-	}
-	
-	public static void demarrer(JFrame frmMenuPrinc, JFrame previousFrm) {
-		frmMenuPrinc.setVisible(true);
-		previousFrm.dispose();
 	}
 	
 	@Override

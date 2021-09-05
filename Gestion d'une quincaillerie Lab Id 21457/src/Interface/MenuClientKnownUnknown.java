@@ -33,16 +33,11 @@ public class MenuClientKnownUnknown implements Runnable{
 	JButton btnNewClient;
 	JButton btnExistingClient;
 			
-	public MenuClientKnownUnknown(JFrame previousFrm) {
+	public MenuClientKnownUnknown() {
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
-		SwingUtilities.invokeLater(new MenuClientKnownUnknown(previousFrm));
-		previousFrm.dispose();
-	}
-	
-	public static void demarrer(JFrame frmClientKnUk, JFrame previousFrm) {
-		frmClientKnUk.setVisible(true);
+		SwingUtilities.invokeLater(new MenuClientKnownUnknown());
 		previousFrm.dispose();
 	}
 	

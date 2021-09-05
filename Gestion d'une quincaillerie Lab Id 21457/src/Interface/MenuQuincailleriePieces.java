@@ -63,16 +63,11 @@ public class MenuQuincailleriePieces implements Runnable {
     }
 	
 	
-	public MenuQuincailleriePieces(JFrame previousFrm) {
+	public MenuQuincailleriePieces() {
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
-		SwingUtilities.invokeLater(new MenuQuincailleriePieces(previousFrm));
-		previousFrm.dispose();
-	}
-	
-	public static void demarrer(JFrame frmQuincailleriePieces, JFrame previousFrm) {
-		frmQuincailleriePieces.setVisible(true);
+		SwingUtilities.invokeLater(new MenuQuincailleriePieces());
 		previousFrm.dispose();
 	}
 	
@@ -295,6 +290,8 @@ public class MenuQuincailleriePieces implements Runnable {
 			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "ampoule.jpeg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}else if(p.getNom().equals("pommeau de douche")) {
 			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "pommeau_douche.png").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
+		}else {
+			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "no_image.png").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}
 
 		panel.add(image);

@@ -1,9 +1,11 @@
 package Interface;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -12,10 +14,13 @@ import javax.swing.JTextField;
 
 import clients.CategorieEntreprise;
 import clients.Civilite;
-import clients.Client;
 import clients.Entreprise;
 import clients.Particulier;
 import main.Application;
+import pieces.Piece;
+import pieces.PieceCompositeEnKit;
+import pieces.PieceCompositeMontee;
+import pieces.PieceDeBase;
 
 public final class FormValidation{
 	
@@ -190,6 +195,92 @@ public final class FormValidation{
 		
 		return e;
 	}	
+	
+	protected static PieceDeBase validerNouvellePieceBase(ArrayList<JComponent> fields) {
+		PieceDeBase pb = null;
+		
+		String nom = ((JTextField) fields.get(0)).getText();
+		
+		Double prix = null;
+		try {
+			prix = Double.parseDouble(((JTextField) fields.get(1)).getText());
+		} catch(NumberFormatException e) {
+			System.out.println("Erreur format prix");
+		}
+		
+		Integer dFab = null;
+		try {
+			dFab = Integer.parseInt(((JTextField) fields.get(2)).getText());
+		} catch(NumberFormatException e) {
+			System.out.println("Erreur format durée fabrication");
+		}
+		
+		Integer dGar = null;
+		try {
+			dGar = Integer.parseInt(((JTextField) fields
+					
+					.get(3)).getText());
+		} catch(NumberFormatException e) {
+			System.out.println("Erreur format durée garantie");
+		}
+		
+		if(!nom.isBlank() && prix != null && dFab != null && dGar != null) {
+			System.out.println( nom + " " + prix + " " + dFab + " " + dGar);
+			String ref = Application.quincaillerie.refNewPiece(nom, 0);
+			pb = new PieceDeBase(nom, ref, prix, dGar, dFab);
+		}
+		
+		return pb;
+	}
+	
+	protected static ArrayList<Piece> validerNouvellePieceCompositeKit(ArrayList<JComponent> fields, Map<PieceDeBase, Integer> composants) {
+		ArrayList<Piece> piecesOk = new ArrayList<>();
+		
+		PieceCompositeEnKit pck = null;
+		PieceCompositeMontee pcm = null;
+		
+		String nom = ((JTextField) fields.get(0)).getText();		
+		Integer tpsAssemblage = null;
+		try {
+			tpsAssemblage = Integer.parseInt(((JTextField) fields.get(3)).getText());
+		} catch(NumberFormatException e) {
+			System.out.println("Erreur format temps d'assemblage");
+		}
+		
+		Boolean versionMontable = ((JCheckBox) fields.get(5)).isSelected();
+		
+		if(!nom.isBlank() && composants != null && tpsAssemblage != null) {
+			System.out.println( nom + " " + composants.size() + " " + tpsAssemblage + " ");
+			String ref = Application.quincaillerie.refNewPiece(nom, 1);
+			pck = new PieceCompositeEnKit(nom, ref, composants, tpsAssemblage);
+			piecesOk.add(pck);
+			
+			if(versionMontable) {
+				Double prixMontage = null;
+				try {
+					prixMontage = Double.parseDouble(((JTextField) fields.get(6)).getText());
+				} catch(NumberFormatException e) {
+					System.out.println("Erreur format prix montage");
+				}
+				
+				Integer tempsMontage = null;
+				try {
+					tempsMontage = Integer.parseInt(((JTextField) fields.get(7)).getText());
+				} catch(NumberFormatException e) {
+					System.out.println("Erreur format temps montage");
+				}
+				
+				if(prixMontage != null && tempsMontage != null) {
+					ref = Application.quincaillerie.refNewPiece(nom, 2);
+					pcm = new PieceCompositeMontee(nom, ref, composants, tempsMontage, prixMontage);
+					piecesOk.add(pcm);
+				}
+			}
+			
+		}
+		
+		return piecesOk;
+	}
 	
 	
 }

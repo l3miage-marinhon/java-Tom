@@ -101,6 +101,38 @@ public class Quincaillerie {
 		return id;
 	}
 	
+	public String refNewPiece(String nom, int typePiece) {
+
+		String ref = "";		
+		if(typePiece == 0) {
+			ref += "00";
+		}else if(typePiece == 1){
+			ref += "01";
+		}else {
+			ref += "02";
+		}
+		
+		String[] partiesNom = nom.split(" ");	
+		if(partiesNom.length == 1) {
+			ref += partiesNom[0].substring(0, 2).toUpperCase();
+		}else {
+			ref += partiesNom[0].substring(0, 1).toUpperCase();
+			ref += partiesNom[partiesNom.length-1].substring(0, 1).toUpperCase();
+		} 
+
+		ref += String.format("%02d", countPieceRef(ref)+1);
+		
+		return ref;
+	}
+	
+	private int countPieceRef(String partialRef) {
+		int c = 0;
+		for(Piece p : catalogue.catalogue) {
+			if( partialRef.equals( p.getRef().substring(0, 4))) c++;
+		}
+		return c;
+	}
+	
 	/**
 	 * Vérifie si un email est connu par la quincaillerie, i.e. si un client l'utilise déjà
 	 * @param mail {@linkplain String} le mail à vérifier

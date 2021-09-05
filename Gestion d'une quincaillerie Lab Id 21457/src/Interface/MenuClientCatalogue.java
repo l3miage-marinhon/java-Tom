@@ -76,16 +76,11 @@ public class MenuClientCatalogue implements Runnable{
         ToolTipManager.sharedInstance().setDismissDelay(60000);
     }
 	
-	public MenuClientCatalogue(JFrame previousFrm) {
+	public MenuClientCatalogue() {
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
-		SwingUtilities.invokeLater(new MenuClientCatalogue(previousFrm));
-		previousFrm.dispose();
-	}
-	
-	public static void demarrer(JFrame frmClientCatalogue, JFrame previousFrm) {
-		frmClientCatalogue.setVisible(true);
+		SwingUtilities.invokeLater(new MenuClientCatalogue());
 		previousFrm.dispose();
 	}
 	
@@ -263,6 +258,8 @@ public class MenuClientCatalogue implements Runnable{
 			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "ampoule.jpeg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}else if(p.getNom().equals("pommeau de douche")) {
 			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "pommeau_douche.png").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
+		}else {
+			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "no_image.png").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}
 
 		panel.add(image);
@@ -809,7 +806,7 @@ public class MenuClientCatalogue implements Runnable{
 		btnPanier = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "cart_icon.png").getImage().getScaledInstance(30, 22, Image.SCALE_SMOOTH)));
 		btnPanier.addActionListener(ev->{
 			System.out.println(Application.panier);
-			JDialog detailPanier = detailPanier();
+			detailPanier = detailPanier();
 			detailPanier.setSize(600, 400);
 			detailPanier.setLocationRelativeTo(null);
 			detailPanier.setVisible(true);

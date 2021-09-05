@@ -31,14 +31,14 @@ public class Main {
 	 Question 14: Afficher les fiches caractéristiques des 2 piièces composites jantes montée et brouette montée décrites dans l'énoncé.
 	 Question 27: Ajouter un client particulier et une entreprise et afficher le résultat.*/
 	    	//tu peut ici remplacer avec des Collections si tu trouve ça plus simple 
-	    	ArrayList<PieceDeBase> compRoueVelo = new ArrayList<>();
-	    	compRoueVelo.add(new PieceDeBase("rayon", "00OF48",1,20,1));
-	    	compRoueVelo.add(new PieceDeBase("pneu", "00BD41",12.5,60,2));
-	    	compRoueVelo.add(new PieceDeBase("disque de jante", "00DJ42",5.5,36,2));
+			Map<PieceDeBase, Integer> compRoueVelo = new HashMap<>();
+	    	compRoueVelo.put(new PieceDeBase("rayon", "00OF48",1,20,1), 20);
+	    	compRoueVelo.put(new PieceDeBase("pneu", "00BD41",12.5,60,2), 1);
+	    	compRoueVelo.put(new PieceDeBase("disque de jante", "00DJ42",5.5,36,2), 1);
 	    	
-	    	ArrayList<PieceDeBase> compAmpoule = new ArrayList<>();
-	    	compAmpoule.add(new PieceDeBase("verre", "00KF48",2,24,1));
-	    	compAmpoule.add(new PieceDeBase("filament", "00FF92",5,24,1));
+	    	Map<PieceDeBase, Integer> compAmpoule = new HashMap<>();
+	    	compAmpoule.put(new PieceDeBase("verre", "00KF48",2,24,1), 1);
+	    	compAmpoule.put(new PieceDeBase("filament", "00FF92",5,24,1), 1);
 	    	
 	    	Set<Piece> listePieces = new HashSet<Piece>();
 	    	listePieces.add(new PieceDeBase("pneu", "00BD41",12.5,60,2));

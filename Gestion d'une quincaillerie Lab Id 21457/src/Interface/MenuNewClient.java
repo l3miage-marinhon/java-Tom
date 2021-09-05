@@ -33,13 +33,12 @@ public class MenuNewClient implements Runnable{
 	JButton btnNewClient;
 	JButton btnExistingClient;
 			
-	public MenuNewClient(JFrame previousFrm) {
+	public MenuNewClient() {
 	}
 	
 	public static void demarrer(JFrame previousFrm) {
+		SwingUtilities.invokeLater(new MenuNewClient());
 		previousFrm.dispose();
-		SwingUtilities.invokeLater(new MenuNewClient(previousFrm));
-		
 	}
 	
 	public static void demarrer(JFrame frmNewClient, JFrame previousFrm) {
