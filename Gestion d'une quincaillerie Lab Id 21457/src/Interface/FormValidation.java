@@ -60,14 +60,13 @@ public final class FormValidation{
 					}
 				}else if(labels[i].getText().equals("Email :")) {
 					if(Application.quincaillerie.mailConnu(value)) {
-						System.out.println(value);
 						if(!newClient && Application.clientCourant.getEmail().equals(value)) {
 							email = value;
 						}else {
 							correct = false;
 							JOptionPane.showMessageDialog(null, "Email indisponible");
 						}
-					}else if(!Pattern.matches("[\\w_.-]+@[a-z]+.(fr|com)", value)) {
+					}else if(!Pattern.matches("[\\w_.-]+@[a-z]+\\.(fr|com)", value)) {
 						correct = false;
 						JOptionPane.showMessageDialog(null, "Email incorrect");
 					}else {
@@ -146,14 +145,13 @@ public final class FormValidation{
 					}
 				}else if(labels[i].getText().equals("Email :")) {
 					if(Application.quincaillerie.mailConnu(value)) {
-						System.out.println(value);
 						if(!newClient && Application.clientCourant.getEmail().equals(value)) {
 							email = value;
 						}else {
 							correct = false;
 							JOptionPane.showMessageDialog(null, "Email indisponible");
 						}
-					}else if(!Pattern.matches("[\\w_.-]+@[a-z]+.(fr|com)", value)) {
+					}else if(!Pattern.matches("[\\w_.-]+@[a-z]+\\.(fr|com)", value)) {
 						correct = false;
 						JOptionPane.showMessageDialog(null, "Email incorrect");
 					}else {
@@ -225,7 +223,6 @@ public final class FormValidation{
 		}
 		
 		if(!nom.isBlank() && prix != null && dFab != null && dGar != null) {
-			System.out.println( nom + " " + prix + " " + dFab + " " + dGar);
 			String ref = Application.quincaillerie.refNewPiece(nom, 0);
 			pb = new PieceDeBase(nom, ref, prix, dGar, dFab);
 		}
@@ -250,7 +247,6 @@ public final class FormValidation{
 		Boolean versionMontable = ((JCheckBox) fields.get(5)).isSelected();
 		
 		if(!nom.isBlank() && composants != null && tpsAssemblage != null) {
-			System.out.println( nom + " " + composants.size() + " " + tpsAssemblage + " ");
 			String ref = Application.quincaillerie.refNewPiece(nom, 1);
 			pck = new PieceCompositeEnKit(nom, ref, composants, tpsAssemblage);
 			piecesOk.add(pck);

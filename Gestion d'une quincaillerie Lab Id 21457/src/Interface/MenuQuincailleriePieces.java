@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
@@ -17,7 +16,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -25,7 +23,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
@@ -41,7 +38,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import main.Application;
-import pieces.*;
+import pieces.Piece;
+import pieces.PieceCompositeEnKit;
+import pieces.PieceCompositeMontee;
+import pieces.PieceDeBase;
 
 public class MenuQuincailleriePieces implements Runnable {
 	
@@ -116,7 +116,6 @@ public class MenuQuincailleriePieces implements Runnable {
 				int numOnLine = width / 200;
 				int res = (width - (numOnLine)*20 - 20) / 200 ;	// 20 correction scrollbar's width
 				if(res != nbOnLineScrollPane) {
-					System.out.println("resize");
 					content.remove(centerMenu);
 					centerMenu = piecesMenu();
 					content.add(centerMenu, BorderLayout.CENTER);
@@ -247,7 +246,6 @@ public class MenuQuincailleriePieces implements Runnable {
 		JButton ajoutStocks = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "addcart_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
 		ajoutStocks.addActionListener(ev->{
 			int nb = (int) spNb.getValue();
-			System.out.println("Ajout de " + nb);
 			int clickedButton = JOptionPane.showConfirmDialog(frmQuincailleriePieces, "Ajouter " + nb + " pièces ?", "", JOptionPane.YES_NO_OPTION);
 			if(clickedButton == JOptionPane.YES_OPTION) {
 				Application.quincaillerie.getStocks().augmenteStocksPiece(piece, (int) spNb.getValue());

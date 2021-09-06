@@ -72,6 +72,11 @@ public abstract class Client{
 		piecesPossedees = new HashMap<>();
 	}
 	
+	public void ajoutePiecePossedees(Map<Piece, Integer> map) {
+		for(Piece p : map.keySet()) {
+			piecesPossedees.put(p, map.get(p));
+		}
+	}
 	
 	public double getCredit() {
 		return credit;

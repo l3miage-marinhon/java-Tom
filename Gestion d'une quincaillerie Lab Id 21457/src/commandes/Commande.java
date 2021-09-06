@@ -108,6 +108,7 @@ public class Commande {
 			break;
 		case Livraison:
 			etat = EtatCommande.Terminee;
+			this.client.ajoutePiecePossedees(this.listePieces);
 			break;
 		default:
 			break;
@@ -122,23 +123,42 @@ public class Commande {
 		return getEtat() == EtatCommande.Acceptation || getEtat() == EtatCommande.Preparation;
 	}
 	
+	/**
+	 * Annule une commade d'un client suivant son numéro de commande, c'est à dire qu'elle est supprimée de la liste des clients et commandes de la quincaillerie
+	 * @param client {@link Client} le client dont on souhaite cherche la commande
+	 * @param numCommande {@link Integer} le numéro de la commande recherchée
+	 * @return {@link Boolean} true si la commande a été annulée, false sinon
+	 */
+	public boolean annulerCommande() {
+		boolean annule = false;
+		if(!this.estAnnulable()) {
+			System.out.println("Vous ne pouvez plus annuler votre commande");
+		}else {
+			System.out.println("Commande annulée");
+			this.etat = EtatCommande.Annulee;
+			annule = true;
+		}
+		return annule;
+	}
+	
 	@Override
 	public String toString() {
 		String s = "";
-		s += 	"\nNuméro commande : " + getNum()
-				+ "\nFacture : " + getFacture().getNum()
-				+ "\nMagasin : " + getNomQuincaillerie()
-				+ "\nDate : " + getDate()
-				+ "\nClient : " + 	(getClient() instanceof Particulier ? 
-									"Particulier, " + ((Particulier) getClient()).getNom() + ", " + ((Particulier) getClient()).getPrenom() :
-									"Entreprise, " + ((Entreprise) getClient()).getNomCommercial() )
-				+ "\nPièces :";
+		s += 	"\nNuméro commande : " + getNum();
+		if(getEtat() == EtatCommande.Livraison || getEtat() == EtatCommande.Terminee) s += "\nFacture : " + getFacture().getNum();
+				
+		s += "\nMagasin : " + getNomQuincaillerie()
+			+ "\nDate : " + getDate()
+			+ "\nClient : " + 	(getClient() instanceof Particulier ? 
+								"Particulier, " + ((Particulier) getClient()).getNom() + ", " + ((Particulier) getClient()).getPrenom() :
+								"Entreprise, " + ((Entreprise) getClient()).getNomCommercial() )
+			+ "\nPièces :";
 		
 		for(Piece p : getListePieces().keySet()) {
 			s += "\n   * \"" + p.getNom() + "\", \"" + p.getRef() + "\" : " + listePieces.get(p);
 		}
 		
-		s += "\nPrix : " + (getPrix()>1 ? getPrix() + " euros" : getPrix() + " euro") 
+		s += "\nPrix : " + String.format("%.2f", getPrix()) + (getPrix()>1 ? " euros" : " euro") 
 			+ "\nEtat commande : " + getEtat();
 		return s;
 	}

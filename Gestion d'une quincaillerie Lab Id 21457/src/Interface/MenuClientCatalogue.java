@@ -17,6 +17,7 @@ import java.util.Vector;
 import java.util.stream.IntStream;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -46,6 +47,7 @@ import clients.Civilite;
 import clients.Client;
 import clients.Entreprise;
 import clients.Particulier;
+import commandes.Commande;
 import main.Application;
 import pieces.*;
 
@@ -62,11 +64,13 @@ public class MenuClientCatalogue implements Runnable{
 	JButton btnCommandes;
 	JDialog detailPanier;
 	JDialog modifInfos;
+	JDialog mesCommandes;
 	JButton btnPanier;
 	JPanel listePieces;
+	JPanel pnlCreditClient = new JPanel();
 	JScrollPane jsp;
 	JPanel westMenu;
-	JPanel centerMenu;
+	JPanel centerMenu = new JPanel();
 	JPanel pnlBtnCart;
 	int nbOnLineScrollPane;
 	JButton btnValider;
@@ -92,7 +96,6 @@ public class MenuClientCatalogue implements Runnable{
 		} catch (UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
-		System.out.println(Application.clientCourant);
 		initUI();
 		frmClientCatalogue = new JFrame();
 		frmClientCatalogue.setSize(new Dimension(1200, 800));
@@ -125,7 +128,7 @@ public class MenuClientCatalogue implements Runnable{
 		JPanel southMenu = Application.version();
 		content.add(southMenu, BorderLayout.SOUTH);
 		
-		centerMenu = catalogueMenu();
+		centerMenu.add(catalogueMenu());
 		content.add(centerMenu, BorderLayout.CENTER);
 		
 		frmClientCatalogue.addComponentListener(new ComponentAdapter() {
@@ -134,7 +137,6 @@ public class MenuClientCatalogue implements Runnable{
 				int numOnLine = width / 180;
 				int res = (width - (numOnLine)*10 - 20) / 180 ;	// 20 correction scrollbar's width
 				if(res != nbOnLineScrollPane) {
-					System.out.println("resize");
 					content.remove(centerMenu);
 					centerMenu = catalogueMenu();
 					content.add(centerMenu, BorderLayout.CENTER);
@@ -176,7 +178,11 @@ public class MenuClientCatalogue implements Runnable{
 
 		JPanel panelPiece = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		panelPiece.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		if(Application.quincaillerie.getStocks().stocksPiece(piece) == 0) {
+			panelPiece.setBorder(BorderFactory.createTitledBorder(null, "INDISPONIBLE", TitledBorder.CENTER, TitledBorder.TOP));
+		}else {
+			panelPiece.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		}
 		panelPiece.setPreferredSize(new Dimension(180, 200));
 		panelPiece.setMinimumSize(new Dimension(180, 200));
 		panelPiece.setMaximumSize(new Dimension(180, 200));
@@ -198,32 +204,40 @@ public class MenuClientCatalogue implements Runnable{
 		gbc.gridy = 3;
 		JPanel pnlAddInfos = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		JPanel pnlAdd = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		Vector<Integer> nbs1 = new Vector<>(){{for(int i : IntStream.range(1,Application.quincaillerie.getStocks().stocksPiece(piece)+1).toArray()) add(i);}};
+		Vector<Integer> nbs1 = new Vector<>(){{for(int i : IntStream.range(1,31).toArray()) add(i);}};
 		JComboBox<Integer> nbValues = new JComboBox<>(nbs1);
 		nbValues.setSelectedIndex(0);
 		pnlAdd.add(nbValues);
 		
 		JButton ajoutPanier = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "addcart_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
 		ajoutPanier.addActionListener(ev->{
-			System.out.println("Ajout de " + (nbValues.getSelectedIndex()+1));
-			PieceCompositeMontee pcm = null;
-			if(piece instanceof PieceCompositeEnKit) {
-				pcm = Application.quincaillerie.getCatalogue().pieceMonteeFromKit((PieceCompositeEnKit) piece);
-				if(pcm != null) {
-					int clickedButton = JOptionPane.showConfirmDialog(frmClientCatalogue, "Acheter la version montée ?\nPrix montage : "+pcm.getPrixMontage()+" €\nDurée montage : "+pcm.getDureeMontage()+" heure(s)", "", JOptionPane.YES_NO_OPTION);
-					if(clickedButton == JOptionPane.YES_OPTION) {
-						Application.panier.ajoutPiecePanier(pcm, nbValues.getSelectedIndex()+1);
+			int nbEx = nbValues.getSelectedIndex()+1;
+			int nbPiecePanier = 0;
+			if(Application.panier.getPanier().containsKey(piece)) nbPiecePanier = Application.panier.getPanier().get(piece);
+			if(nbPiecePanier + nbEx > Application.quincaillerie.getStocks().stocksPiece(piece)) {
+				JOptionPane.showMessageDialog(frmClientCatalogue, "Plus assez de stocks");
+			}else {
+				PieceCompositeMontee pcm = null;
+				if(piece instanceof PieceCompositeEnKit) {
+					pcm = Application.quincaillerie.getCatalogue().pieceMonteeFromKit((PieceCompositeEnKit) piece);
+					if(pcm != null) {
+						int clickedButton = JOptionPane.showConfirmDialog(frmClientCatalogue, "Voulez-vous la version montée ?\nPrix montage : "+pcm.getPrixMontage()+" €\nDurée montage : "+pcm.getDureeMontage()+" heure(s)", "", JOptionPane.YES_NO_CANCEL_OPTION);
+						if(clickedButton == JOptionPane.YES_OPTION) {
+							Application.panier.ajoutPiecePanier(pcm, nbValues.getSelectedIndex()+1);
+						}else if(clickedButton == JOptionPane.NO_OPTION){
+							Application.panier.ajoutPiecePanier(piece, nbValues.getSelectedIndex()+1);
+						}
 					}else {
 						Application.panier.ajoutPiecePanier(piece, nbValues.getSelectedIndex()+1);
 					}
 				}else {
 					Application.panier.ajoutPiecePanier(piece, nbValues.getSelectedIndex()+1);
 				}
-			}else {
-				Application.panier.ajoutPiecePanier(piece, nbValues.getSelectedIndex()+1);
+				nbValues.revalidate();
+				refreshPanier(false);	
 			}
-			refreshPanier(false);		
 		});
+		
 		pnlAdd.add(ajoutPanier);
 		
 		JPanel pnlInfos = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -312,6 +326,7 @@ public class MenuClientCatalogue implements Runnable{
 			btnSuppr.addActionListener(ev->{
 				int clickedButton = JOptionPane.showConfirmDialog(detailPanier, "Supprimer l'article ?", "", JOptionPane.YES_NO_OPTION);
 				if(clickedButton == JOptionPane.YES_OPTION) Application.panier.supprimePiecePanier(p);
+				
 				refreshPanier(true);
 			});
 			
@@ -390,7 +405,23 @@ public class MenuClientCatalogue implements Runnable{
 		JButton btnCommander = new JButton("Commander");
 		if(Application.panier.nbArticles() == 0) btnCommander.setEnabled(false);
 		btnCommander.addActionListener(ev->{
-			System.out.println("Passer la commande");
+			Commande commande = Application.quincaillerie.creationCommande(Application.clientCourant, Application.panier.getPanier());
+			if(commande != null) {
+				Application.quincaillerie.getStocks().supprimeStocksPieces(commande.getListePieces());
+				JOptionPane.showMessageDialog(detailPanier, "Commande acceptée !");
+				centerMenu.removeAll();
+				centerMenu.add(catalogueMenu());
+				centerMenu.revalidate();
+				pnlCreditClient.removeAll();
+				pnlCreditClient.add(new JLabel("Crédit : " + String.format("%.2f", Application.clientCourant.getCredit()) + "€  "));
+				pnlCreditClient.revalidate();
+				pnlCreditClient.repaint();
+				Application.panier.viderPanier();
+				detailPanier.dispose();
+				refreshPanier(false);
+			}else {
+				JOptionPane.showMessageDialog(detailPanier, "Commande refusée");
+			}
 		});
 		pComm.add(btnCommander, BorderLayout.EAST);
 		
@@ -412,6 +443,9 @@ public class MenuClientCatalogue implements Runnable{
 		leftPanel.add(createBtnReturn());
 		
 		JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pnlCreditClient.add(new JLabel("Crédit : " + String.format("%.2f", Application.clientCourant.getCredit()) + "€  "));
+		rightPanel.add(pnlCreditClient);
+		rightPanel.add(createBtnMyParts());
 		rightPanel.add(createBtnInfo());
 		rightPanel.add(createBtnOrder());
 		rightPanel.add(createBtnCart());
@@ -491,7 +525,6 @@ public class MenuClientCatalogue implements Runnable{
 		JPanel pnlBtnVA = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		btnValider.addActionListener(ev->{
-			System.out.println("valider");
 			Object b = 	Application.clientCourant instanceof Particulier ? 
 						FormValidation.validerInfosParticulier(labels, fields, false) : 
 						FormValidation.validerInfosEntreprise(labels, fields, false);
@@ -505,7 +538,6 @@ public class MenuClientCatalogue implements Runnable{
 		});
 		
 		btnAnnuler.addActionListener(ev->{
-			System.out.println("annuler");
 			modifInfos.dispose();
 		});
 		
@@ -775,7 +807,6 @@ public class MenuClientCatalogue implements Runnable{
 		JPanel pnlBtnInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnInfos = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "info_icon.png").getImage().getScaledInstance(30, 22, Image.SCALE_SMOOTH)));
 		btnInfos.addActionListener(ev->{
-			System.out.println("Informations");
 			if(Application.clientCourant instanceof Particulier) {
 				modifInfos = modifInfosPart();
 				modifInfos.setSize(new Dimension(500, 500));
@@ -796,16 +827,77 @@ public class MenuClientCatalogue implements Runnable{
 	private JPanel createBtnOrder() {
 		JPanel pnlBtnOrder = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnCommandes = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "order_icon.png").getImage().getScaledInstance(30, 22, Image.SCALE_SMOOTH)));
-		btnCommandes.addActionListener(ev->{ System.out.println("Commandes"); });
+		btnCommandes.addActionListener(ev->{ 
+			mesCommandes = new JDialog(frmClientCatalogue, "Mes commandes");
+			JPanel content = (JPanel) mesCommandes.getContentPane();
+			content.setLayout(new BorderLayout());
+			JPanel pnlCommandes = new JPanel();
+			pnlCommandes.setLayout(new BoxLayout(pnlCommandes, BoxLayout.Y_AXIS));			
+			
+			
+			for(Commande commande : Application.quincaillerie.getCommandesClient(Application.clientCourant)) {
+				JPanel pnl = createPanelCommande(commande);
+				pnl.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				pnlCommandes.add(pnl);
+			}
+			
+			jsp = new JScrollPane(pnlCommandes, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			jsp.getVerticalScrollBar().setUnitIncrement(10);
+			content.add(jsp, BorderLayout.CENTER);
+			
+			mesCommandes.setSize(new Dimension(400, 400));
+			mesCommandes.setLocationRelativeTo(null);
+			mesCommandes.setVisible(true);
+		});
 		pnlBtnOrder.add(btnCommandes);
+		
 		return pnlBtnOrder;
+	}
+	
+	private JPanel createPanelCommande(Commande commande) {
+		JPanel pnl = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		pnl.add(new JLabel("Numéro commande : " + commande.getNum()), gbc);
+		gbc.gridy = 1;
+		pnl.add(new JLabel("Date : " + commande.getDate()), gbc);
+		gbc.gridy = 2;
+		JPanel pnlListePieces = new JPanel();
+		pnlListePieces.setLayout(new BoxLayout(pnlListePieces, BoxLayout.Y_AXIS));
+		for(Piece p : commande.getListePieces().keySet()) {
+			pnlListePieces.add(new JLabel(p.getRef() + "; " + p.getNom() + ";  x" + commande.getListePieces().get(p) 
+												+ " : " + ( String.format("%.2f", p.prix()*commande.getListePieces().get(p)) + " €" )));
+		}
+		pnl.add(pnlListePieces, gbc);
+		gbc.gridy = 3;
+		pnl.add(new JLabel("Etat de la commande : " + commande.getEtat()), gbc);
+		
+		return pnl;
+	}
+	
+	private JDialog piecesPossedeesClient() {
+		JDialog j = new JDialog(frmClientCatalogue, "Mes pièces");
+		JPanel content = (JPanel) j.getContentPane();
+		content.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		int n = 0;
+		for(Piece piece : Application.clientCourant.getPiecesPossedees().keySet()) {
+			gbc.gridx = 0;
+			gbc.gridy = n;
+			content.add(new JLabel(piece.getRef() + " : " + piece.getNom()), gbc);
+			gbc.gridx = 1;
+			content.add(new JLabel("  x" +  Application.clientCourant.getPiecesPossedees().get(piece)), gbc);
+		}
+		
+		return j;
 	}
 	
 	private JPanel createBtnCart() {
 		pnlBtnCart = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnPanier = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "cart_icon.png").getImage().getScaledInstance(30, 22, Image.SCALE_SMOOTH)));
 		btnPanier.addActionListener(ev->{
-			System.out.println(Application.panier);
 			detailPanier = detailPanier();
 			detailPanier.setSize(600, 400);
 			detailPanier.setLocationRelativeTo(null);
@@ -816,6 +908,19 @@ public class MenuClientCatalogue implements Runnable{
 		pnlBtnCart.setBorder(BorderFactory.createTitledBorder(null, s, TitledBorder.CENTER, TitledBorder.TOP));
 		pnlBtnCart.add(btnPanier);
 		return pnlBtnCart;
+	}
+	
+	private JPanel createBtnMyParts() {
+		JPanel pnl = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JButton btnParts = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "my_parts.png").getImage().getScaledInstance(30, 22, Image.SCALE_SMOOTH)));
+		btnParts.addActionListener(ev->{
+			JDialog dlgMyParts = piecesPossedeesClient();
+			dlgMyParts.setSize(600, 400);
+			dlgMyParts.setLocationRelativeTo(null);
+			dlgMyParts.setVisible(true);
+		});
+		pnl.add(btnParts);
+		return pnl;
 	}
 	
 	private JPanel createBtnReturn() {
