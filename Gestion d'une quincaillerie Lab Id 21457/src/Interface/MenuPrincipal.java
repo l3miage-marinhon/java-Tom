@@ -22,7 +22,7 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import main.Application;
 
-public class MenuPrincipal implements Runnable{
+public class MenuPrincipal implements Runnable {
 
 	static JFrame frmMenuPrinc;
 	JButton btnClient;
