@@ -51,8 +51,11 @@ import commandes.Commande;
 import main.Application;
 import pieces.*;
 
-public class MenuClientCatalogue implements Runnable{
 
+//BUG cette fenetre ne charge pas toutes ces info quand on la deplace un peut rapidement ou en pleine ecran
+//BUG la page refait trop de chose , les maj sont mal gerer .... 
+public class MenuClientCatalogue implements Runnable{
+	//FIXIT redéfini encore une fois de trop 
 	public static final String PATH_TO_ICONS = "src/icons/";
 	
 	JFrame frmClientCatalogue;
@@ -138,6 +141,7 @@ public class MenuClientCatalogue implements Runnable{
 				int res = (width - (numOnLine)*10 - 20) / 180 ;	// 20 correction scrollbar's width
 				if(res != nbOnLineScrollPane) {
 					content.remove(centerMenu);
+					//FIX trop lour ici car tu refait tous a chaque mouvement 
 					centerMenu = catalogueMenu();
 					content.add(centerMenu, BorderLayout.CENTER);
 				}
@@ -158,6 +162,7 @@ public class MenuClientCatalogue implements Runnable{
 		nbOnLineScrollPane = res;
 		
 		for(Piece piece : Application.quincaillerie.getCatalogue().getCatalogue()) {
+			//FIXIT ici a quoi sert cette condition ? 
 			if(piece instanceof PieceDeBase || piece instanceof PieceCompositeEnKit) {
 				JPanel panelPiece = panelPiece(piece);
 				gbc.gridx = n % res;
@@ -178,11 +183,15 @@ public class MenuClientCatalogue implements Runnable{
 
 		JPanel panelPiece = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
+		//FIXIT ici pourrait etre mis dans une fonction annexe pour pouvoir maj le panel de la pieces a chaque changement ... 
+		//----------------------------------------------------------------//
 		if(Application.quincaillerie.getStocks().stocksPiece(piece) == 0) {
 			panelPiece.setBorder(BorderFactory.createTitledBorder(null, "INDISPONIBLE", TitledBorder.CENTER, TitledBorder.TOP));
 		}else {
 			panelPiece.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		}
+
+		//----------------------------------------------------------------//
 		panelPiece.setPreferredSize(new Dimension(180, 200));
 		panelPiece.setMinimumSize(new Dimension(180, 200));
 		panelPiece.setMaximumSize(new Dimension(180, 200));
@@ -225,7 +234,9 @@ public class MenuClientCatalogue implements Runnable{
 						if(clickedButton == JOptionPane.YES_OPTION) {
 							Application.panier.ajoutPiecePanier(pcm, nbValues.getSelectedIndex()+1);
 						}else if(clickedButton == JOptionPane.NO_OPTION){
-							Application.panier.ajoutPiecePanier(piece, nbValues.getSelectedIndex()+1);
+							//FIX ici il faut utiliser ```(int)nbValues.getSelectedItem();``` et non ```nbValues.getSelectedIndex()+1```
+							Application.panier.ajoutPiecePanier(piece,nbValues.getSelectedIndex()+1 );
+							
 						}
 					}else {
 						Application.panier.ajoutPiecePanier(piece, nbValues.getSelectedIndex()+1);
@@ -252,6 +263,8 @@ public class MenuClientCatalogue implements Runnable{
 		return panelPiece;
 	}
 	
+
+	//FIX mieux a faire (map avec le nom et l'image par exemple .... ) car la si il faut en rajouter c'est pas ouf
 	private JPanel imagePiece(Piece p) {
 		JPanel panel = new JPanel();
 		JLabel image = null;
@@ -330,7 +343,7 @@ public class MenuClientCatalogue implements Runnable{
 				refreshPanier(true);
 			});
 			
-			
+			//FIX ici tu avais l'exemple de spinner bien ecrit avec les stocks
 			Vector<Integer> nbs1 = null;
 			if(p instanceof PieceCompositeMontee) {
 				nbs1 = new Vector<>(){{for(int i : IntStream.range(0,Application.quincaillerie.getStocks().stocksPiece(Application.quincaillerie.getCatalogue().pieceKitFromMontee((PieceCompositeMontee) p))+1).toArray()) add(i);}};
@@ -407,6 +420,7 @@ public class MenuClientCatalogue implements Runnable{
 		btnCommander.addActionListener(ev->{
 			Commande commande = Application.quincaillerie.creationCommande(Application.clientCourant, Application.panier.getPanier());
 			if(commande != null) {
+				//FIX ICI C'ET TROp lourd de tous refaire ... 
 				Application.quincaillerie.getStocks().supprimeStocksPieces(commande.getListePieces());
 				JOptionPane.showMessageDialog(detailPanier, "Commande acceptée !");
 				centerMenu.removeAll();
@@ -923,6 +937,7 @@ public class MenuClientCatalogue implements Runnable{
 		return pnl;
 	}
 	
+	//FIX pas a redéfinir !! 
 	private JPanel createBtnReturn() {
 		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));

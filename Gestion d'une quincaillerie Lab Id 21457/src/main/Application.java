@@ -30,6 +30,7 @@ public class Application {
 	
 	public static Quincaillerie quincaillerie = initialize();
 	public static Client clientCourant = null;
+	//FIXME pourquoi ici avoir mis le Panier en static ....
 	public static Panier panier = new Panier();
 	
 	public static void main(String[] args) {
@@ -40,6 +41,10 @@ public class Application {
 		initialize();
 	}
 	
+	/**
+	 * initialisation de l'état de la quincaillerie ! 
+	 * @return
+	 */
 	private static Quincaillerie initialize() {
 		Map<PieceDeBase, Integer> compRoueVelo = new HashMap<>();
     	compRoueVelo.put(new PieceDeBase("rayon", "00OF48",1,20,1), 20);
@@ -87,4 +92,5 @@ public class Application {
 		version.add(new JLabel("Version : Alpha-1")); 
 		return version;
 	}
+
 }

@@ -118,6 +118,7 @@ public class MenuClientConnexion implements Runnable{
 		return panel;
 	}
 	
+	//FIXIT le tableau de label ne sert a rien ici
 	private JPanel valider(JLabel[] labels, JComponent[] fields) {
 		FlowLayout layout = new FlowLayout(FlowLayout.CENTER);
 		layout.setVgap(30);
@@ -125,7 +126,7 @@ public class MenuClientConnexion implements Runnable{
 		btnValider = new JButton("Valider");
 		p.add(btnValider);
 		btnValider.addActionListener(new ActionListener() {
-			
+			//FIXIT forme contracter disponible ! 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 								
@@ -163,6 +164,7 @@ public class MenuClientConnexion implements Runnable{
 		return p;
 	}
 	
+	//FIXIT idem , a l'application
 	private JPanel inputField(String s) {
 		JPanel field = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JTextField t = null;
@@ -171,11 +173,12 @@ public class MenuClientConnexion implements Runnable{
 		}else if(s.equals("MotDePasse")) {
 			t = new JPasswordField(20);
 		}
-		
+
 		field.add(t);
 		return field;
 	}
 	
+	//FIXIT appartient a l'application ....
 	private JPanel createBtnReturn() {
 		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));

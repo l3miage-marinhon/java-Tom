@@ -25,7 +25,7 @@ import main.Application;
 
 
 public class MenuClientKnownUnknown implements Runnable{
-
+	//FIXIT pourquoi ? ici une fois et dans l'application , pas ici x
 	public static final String PATH_TO_ICONS = "src/icons/";
 	
 	JFrame frmClientKnUk;
