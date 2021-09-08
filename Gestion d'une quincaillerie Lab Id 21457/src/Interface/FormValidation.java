@@ -24,6 +24,7 @@ import pieces.PieceDeBase;
 
 public final class FormValidation{
 	
+	//FIX ici ça uarai été mieux avec une MAp et non faire les comparaison avec les label
 	protected static Object validerInfosParticulier(JLabel[] labels, JComponent[] fields, Boolean newClient) {
 		int size = fields.length;
 		int i=0;

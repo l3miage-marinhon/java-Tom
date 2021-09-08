@@ -19,6 +19,7 @@ import java.util.stream.IntStream;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -135,6 +136,8 @@ public class MenuClientCatalogue implements Runnable{
 		content.add(centerMenu, BorderLayout.CENTER);
 		
 		frmClientCatalogue.addComponentListener(new ComponentAdapter() {
+			
+			@Override
 			public void componentResized(ComponentEvent componentEvent) {
 				int width = (int) (frmClientCatalogue.getSize().getWidth() - westMenu.getWidth());
 				int numOnLine = width / 180;
@@ -346,10 +349,12 @@ public class MenuClientCatalogue implements Runnable{
 			//FIX ici tu avais l'exemple de spinner bien ecrit avec les stocks
 			Vector<Integer> nbs1 = null;
 			if(p instanceof PieceCompositeMontee) {
+				//donc tu aurai du utiliser cette ligne pour faire les psinner de base
 				nbs1 = new Vector<>(){{for(int i : IntStream.range(0,Application.quincaillerie.getStocks().stocksPiece(Application.quincaillerie.getCatalogue().pieceKitFromMontee((PieceCompositeMontee) p))+1).toArray()) add(i);}};
 			}else {
 				nbs1 = new Vector<>(){{for(int i : IntStream.range(0, Application.quincaillerie.getStocks().stocksPiece(p)+1).toArray()) add(i);}};
 			}
+			
 			
 			JComboBox<Integer> nbValues = new JComboBox<>(nbs1);
 			nbValues.setSelectedIndex(Application.panier.getPanier().get(p));
@@ -369,7 +374,6 @@ public class MenuClientCatalogue implements Runnable{
 			piece.add(pB, BorderLayout.EAST);
 			
 			listeArticles.add(piece, gbc);
-			
 			n++;
 		}
 		
@@ -434,6 +438,7 @@ public class MenuClientCatalogue implements Runnable{
 				detailPanier.dispose();
 				refreshPanier(false);
 			}else {
+				//FIX ici le message n'est pas clair !! 
 				JOptionPane.showMessageDialog(detailPanier, "Commande refusée");
 			}
 		});
@@ -907,6 +912,7 @@ public class MenuClientCatalogue implements Runnable{
 		
 		return j;
 	}
+	
 	
 	private JPanel createBtnCart() {
 		pnlBtnCart = new JPanel(new FlowLayout(FlowLayout.LEFT));

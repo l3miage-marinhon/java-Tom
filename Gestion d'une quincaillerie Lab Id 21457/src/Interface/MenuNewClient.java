@@ -99,7 +99,7 @@ public class MenuNewClient implements Runnable{
 		menuInfo.add(btnEn, gbc);
 		return menuInfo;
 	}
-	
+	//FIX ça sert rien 
 	private JPanel createBtnReturn() {
 		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));

@@ -6,14 +6,18 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -93,6 +97,9 @@ public class MenuPrincipal implements Runnable {
 		btnQuinc.setPreferredSize(new Dimension(150, 50));
 		btnQuinc.addActionListener(ev->{MenuQuincailleriePiecesCommandes.demarrer(frmMenuPrinc);});
 		menu.add(btnQuinc, gbc);
+
+		btnQuinc.setRequestFocusEnabled(true);
+
 
 		return menu;
 	}

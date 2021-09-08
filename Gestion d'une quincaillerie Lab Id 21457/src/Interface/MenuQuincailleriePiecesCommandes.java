@@ -24,7 +24,7 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import main.Application;
 
 public class MenuQuincailleriePiecesCommandes implements Runnable {
-
+	//FIX redéfini pour rien .... 
 	public static final String PATH_TO_ICONS = "src/icons/";
 	
 	JFrame frmQuincPiecesCommandes;
@@ -74,6 +74,7 @@ public class MenuQuincailleriePiecesCommandes implements Runnable {
 		content.add(Application.version(), BorderLayout.SOUTH);
 	}
 	
+	//FIX redéfini pour rien ... 
 	private JPanel createBtnReturn() {
 		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
@@ -81,6 +82,8 @@ public class MenuQuincailleriePiecesCommandes implements Runnable {
 		pnlBtnReturn.add(btnReturn);
 		return pnlBtnReturn;
 	}
+	
+
 	
 	private JPanel createMenu() {
 		JPanel menu = new JPanel(new GridBagLayout());

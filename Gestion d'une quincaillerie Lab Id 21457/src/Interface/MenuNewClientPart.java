@@ -31,7 +31,7 @@ import clients.Particulier;
 import main.Application;
 
 public class MenuNewClientPart implements Runnable{
-	
+	//FIX ça sert a iren ici 
 	public static final String PATH_TO_ICONS = "src/icons/";
 	
 	JFrame frmNewClientPart;
@@ -140,6 +140,7 @@ public class MenuNewClientPart implements Runnable{
 		return p;
 	}
 	
+	//FIX ça sert a rien 
 	private JPanel createBtnReturn() {
 		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
@@ -148,6 +149,7 @@ public class MenuNewClientPart implements Runnable{
 		return pnlBtnReturn;
 	}
 	
+	//FIX ça sert rien
 	private JPanel inputField(String s) {
 		JPanel field = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JTextField t = null;

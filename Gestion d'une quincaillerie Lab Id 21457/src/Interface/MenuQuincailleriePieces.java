@@ -43,8 +43,9 @@ import pieces.PieceCompositeEnKit;
 import pieces.PieceCompositeMontee;
 import pieces.PieceDeBase;
 
+//BUG ic comme dans le catalogue client , tous recreer n'ets vraiment pas optimal ....  
 public class MenuQuincailleriePieces implements Runnable {
-	
+	//FIX reféfini pour rien
 	public static final String PATH_TO_ICONS = "src/icons/";
 
 	JFrame frmQuincailleriePieces;
@@ -56,7 +57,8 @@ public class MenuQuincailleriePieces implements Runnable {
 	JDialog modifPiece;
 	JDialog newPiece;
 	int nbOnLineScrollPane;
-
+	
+	//FIX ici elle pouvais etre défini dans l'application dirrectement et non redéfini z chaque fois que tu en a besoin 
 	protected static void initUI() {
         ToolTipManager.sharedInstance().setInitialDelay(500);
         ToolTipManager.sharedInstance().setDismissDelay(60000);
@@ -268,6 +270,7 @@ public class MenuQuincailleriePieces implements Runnable {
 		return panelPiece;
 	}
 	
+	//FIX peut etre defini dans l'application directement
 	private JPanel imagePiece(Piece p) {
 		JPanel panel = new JPanel();
 		JLabel image = null;
@@ -296,6 +299,7 @@ public class MenuQuincailleriePieces implements Runnable {
 		return panel;
 	}
 	
+	//FIX pourquoi l'avoir réécris .. 
 	private JPanel createBtnReturn() {
 		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));

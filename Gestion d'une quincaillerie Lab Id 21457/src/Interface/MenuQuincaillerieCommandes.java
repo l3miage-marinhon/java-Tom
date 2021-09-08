@@ -35,7 +35,7 @@ public class MenuQuincaillerieCommandes implements Runnable {
 	
 	JFrame frmMenuQuincaillerieCommandes;
 	JPanel pnlListeClientsCommandes;
-
+	//FIX inutile (dans application)
 	public static final String PATH_TO_ICONS = "src/icons/";
 	
 	public MenuQuincaillerieCommandes() {
@@ -150,6 +150,7 @@ public class MenuQuincaillerieCommandes implements Runnable {
 		pnl.add(new JLabel("Etat de la commande : " + commande.getEtat()), gbc);
 		gbc.gridx = 1;
 		JButton btnAvancerEtatCommande = new JButton("Avancer");
+		//FIX t'es bouton devrai évoluer selon le status
 		btnAvancerEtatCommande.addActionListener(ev->{
 			int clickedButton = JOptionPane.showConfirmDialog(frmMenuQuincaillerieCommandes, "Avancer l'état de la commande ?", "Quitter", JOptionPane.YES_NO_OPTION);
 			if(clickedButton == JOptionPane.YES_OPTION) {
@@ -183,7 +184,7 @@ public class MenuQuincaillerieCommandes implements Runnable {
 		
 		return pnl;
 	}
-	
+	//FIX sert a rien .... 
 	private JPanel createBtnReturn() {
 		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
