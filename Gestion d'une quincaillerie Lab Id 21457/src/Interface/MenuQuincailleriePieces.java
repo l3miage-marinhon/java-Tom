@@ -30,7 +30,6 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -45,8 +44,6 @@ import pieces.PieceDeBase;
 
 public class MenuQuincailleriePieces implements Runnable {
 	
-	public static final String PATH_TO_ICONS = "src/icons/";
-
 	JFrame frmQuincailleriePieces;
 	JFrame frmRachatStocks;
 	JPanel centerMenu;
@@ -56,12 +53,6 @@ public class MenuQuincailleriePieces implements Runnable {
 	JDialog modifPiece;
 	JDialog newPiece;
 	int nbOnLineScrollPane;
-
-	protected static void initUI() {
-        ToolTipManager.sharedInstance().setInitialDelay(500);
-        ToolTipManager.sharedInstance().setDismissDelay(60000);
-    }
-	
 	
 	public MenuQuincailleriePieces() {
 	}
@@ -80,7 +71,6 @@ public class MenuQuincailleriePieces implements Runnable {
 			e.printStackTrace();
 		}
 		
-		initUI();
 		frmQuincailleriePieces = new JFrame();
 		frmQuincailleriePieces.setSize(new Dimension(1200, 800));
 		frmQuincailleriePieces.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -126,14 +116,10 @@ public class MenuQuincailleriePieces implements Runnable {
 	
 	private JPanel northPanelClient() {
 		JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		leftPanel.add(createBtnReturn());
+		leftPanel.add(Application.createBtnReturn(frmQuincailleriePieces, MenuQuincailleriePiecesCommandes.class));
 		
 		JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		/*
-		rightPanel.add(createBtnInfo());
 		
-		rightPanel.add(createBtnCart());
-		*/
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(leftPanel, BorderLayout.WEST);
 		panel.add(rightPanel, BorderLayout.EAST);
@@ -157,18 +143,11 @@ public class MenuQuincailleriePieces implements Runnable {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount() == 1) {
-					//JOptionPane.showConfirmDialog(frmQuincailleriePieces, "double clic pour nouvelle pièce réussi !", "", JOptionPane.YES_NO_OPTION);
-					/*
-					JDialog newPiece = nouvellePiece();
-					newPiece.setSize(new Dimension(500, 700));
-					newPiece.setLocationRelativeTo(null);
-					newPiece.setVisible(true);
-					*/
 					MenuNewPiece.demarrer(frmQuincailleriePieces);
 				}
 			}
 		});
-		JLabel labelPlus = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "plus_icon2.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+		JLabel labelPlus = new JLabel(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "plus_icon2.png").getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
 		panelPlus.add(labelPlus);
 		listePieces.add(panelPlus, gbc);
 		
@@ -243,7 +222,7 @@ public class MenuQuincailleriePieces implements Runnable {
 		JSpinner spNb = new JSpinner(model);
 		pnlAdd.add(spNb);
 		
-		JButton ajoutStocks = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "addcart_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
+		JButton ajoutStocks = new JButton(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "addcart_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
 		ajoutStocks.addActionListener(ev->{
 			int nb = (int) spNb.getValue();
 			int clickedButton = JOptionPane.showConfirmDialog(frmQuincailleriePieces, "Ajouter " + nb + " pièces ?", "", JOptionPane.YES_NO_OPTION);
@@ -258,7 +237,7 @@ public class MenuQuincailleriePieces implements Runnable {
 		JPanel pnlInfos = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		pnlInfos.setToolTipText("<html>"+ piece.toStringHTML() +"</html>");
 
-		pnlInfos.add(new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "detail_icon.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH))));
+		pnlInfos.add(new JLabel(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "detail_icon.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH))));
 		
 		pnlAddInfos.add(pnlAdd);
 		pnlAddInfos.add(pnlInfos);
@@ -273,34 +252,27 @@ public class MenuQuincailleriePieces implements Runnable {
 		JLabel image = null;
 		
 		if(p.getNom().equals("vis")) {
-			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "vis.jpeg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
+			image = new JLabel(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "vis.jpeg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}else if(p.getNom().equals("rayon")) {
-			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "rayon_velo.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
+			image = new JLabel(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "rayon_velo.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}else if(p.getNom().equals("roue de vélo")) {
-			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "roue_velo.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
+			image = new JLabel(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "roue_velo.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}else if(p.getNom().equals("disque de jante")) {
-			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "disque_jante.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
+			image = new JLabel(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "disque_jante.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}else if(p.getNom().equals("chambre à air")) {
-			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "chambre_air.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
+			image = new JLabel(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "chambre_air.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}else if(p.getNom().equals("pneu")) {
-			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "pneu_velo.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
+			image = new JLabel(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "pneu_velo.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}else if(p.getNom().equals("ampoule")) {
-			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "ampoule.jpeg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
+			image = new JLabel(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "ampoule.jpeg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}else if(p.getNom().equals("pommeau de douche")) {
-			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "pommeau_douche.png").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
+			image = new JLabel(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "pommeau_douche.png").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}else {
-			image = new JLabel(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "no_image.png").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
+			image = new JLabel(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "no_image.png").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH)));
 		}
 
 		panel.add(image);
 		return panel;
 	}
 	
-	private JPanel createBtnReturn() {
-		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
-		btnReturn.addActionListener(ev->{MenuQuincailleriePiecesCommandes.demarrer(frmQuincailleriePieces);});
-		pnlBtnReturn.add(btnReturn);
-		return pnlBtnReturn;
-	}
 }

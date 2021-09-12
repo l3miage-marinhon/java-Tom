@@ -140,7 +140,7 @@ public class Stocks {
 	 * @return {@link Integer} le nombre d'exemplaires de la pièce en stocks
 	 */
 	public Integer stocksPiece(Piece p) {
-		return stocks.get(p);
+		return (stocks.containsKey(p) ? stocks.get(p) : 0);
 	}
 	
 	/**

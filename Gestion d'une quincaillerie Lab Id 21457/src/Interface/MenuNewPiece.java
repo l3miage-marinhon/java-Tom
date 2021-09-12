@@ -35,7 +35,6 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -84,14 +83,7 @@ public class MenuNewPiece implements Runnable {
 	Map<PieceDeBase, JPanel> mapPBCatButtons;
 	
 	PieceDeBase pieceBaseCatalogueToComposant;
-		
-	public static final String PATH_TO_ICONS = "src/icons/";
-	
-	protected static void initUI() {
-        ToolTipManager.sharedInstance().setInitialDelay(500);
-        ToolTipManager.sharedInstance().setDismissDelay(60000);
-    }
-	
+			
 	public MenuNewPiece() {
 	}
 	
@@ -108,7 +100,6 @@ public class MenuNewPiece implements Runnable {
 		} catch (UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
-		initUI();
 		initLabelsFields();
 		initMapPbButtons();
 		
@@ -348,7 +339,7 @@ public class MenuNewPiece implements Runnable {
 			recapComposant.add(new JLabel(p.getRef() + " : x" + listeComposants.get(p) + " "), g);
 			recapComposant.setToolTipText("<html>"+p.toStringHTML()+"</html>");
 			g.gridx = 1;
-			JButton suppr = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "delete_icon.png").getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH)));
+			JButton suppr = new JButton(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "delete_icon.png").getImage().getScaledInstance(10, 10, Image.SCALE_SMOOTH)));
 			recapComposant.add(suppr, g);
 			suppr.addActionListener(ev2->{
 				listeComposants.remove(p);

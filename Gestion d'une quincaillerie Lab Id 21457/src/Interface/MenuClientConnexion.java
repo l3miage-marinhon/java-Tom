@@ -5,14 +5,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -30,9 +28,7 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import main.Application;
 
 public class MenuClientConnexion implements Runnable{
-	
-	public static final String PATH_TO_ICONS = "src/icons/";
-	
+		
 	JFrame frmClientConn;
 	JButton btnReturn;
 	JButton btnValider;
@@ -82,10 +78,9 @@ public class MenuClientConnexion implements Runnable{
 		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 		
 		menu.add(connMenu(labels, fields));
-		menu.add(valider(labels, fields));
+		menu.add(valider(fields));
 		
-		content.add(createBtnReturn(), BorderLayout.NORTH);
-		content.add(Application.version(), BorderLayout.SOUTH);
+		content.add(Application.createBtnReturn(frmClientConn, MenuClientKnownUnknown.class), BorderLayout.NORTH);
 		content.add(menu, BorderLayout.CENTER);
 	}
 	
@@ -118,7 +113,7 @@ public class MenuClientConnexion implements Runnable{
 		return panel;
 	}
 	
-	private JPanel valider(JLabel[] labels, JComponent[] fields) {
+	private JPanel valider(JComponent[] fields) {
 		FlowLayout layout = new FlowLayout(FlowLayout.CENTER);
 		layout.setVgap(30);
 		JPanel p = new JPanel(layout);
@@ -176,11 +171,4 @@ public class MenuClientConnexion implements Runnable{
 		return field;
 	}
 	
-	private JPanel createBtnReturn() {
-		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
-		btnReturn.addActionListener(ev->{MenuClientKnownUnknown.demarrer(frmClientConn);});
-		pnlBtnReturn.add(btnReturn);
-		return pnlBtnReturn;
-	}
 }

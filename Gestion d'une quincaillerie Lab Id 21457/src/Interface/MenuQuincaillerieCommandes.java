@@ -3,17 +3,14 @@ package Interface;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,8 +32,6 @@ public class MenuQuincaillerieCommandes implements Runnable {
 	
 	JFrame frmMenuQuincaillerieCommandes;
 	JPanel pnlListeClientsCommandes;
-
-	public static final String PATH_TO_ICONS = "src/icons/";
 	
 	public MenuQuincaillerieCommandes() {
 	}
@@ -75,11 +70,10 @@ public class MenuQuincaillerieCommandes implements Runnable {
 		JPanel content = (JPanel) frmMenuQuincaillerieCommandes.getContentPane();
 		
 		content.setLayout(new BorderLayout());
-		content.add(createBtnReturn(), BorderLayout.NORTH);
+		content.add(Application.createBtnReturn(frmMenuQuincaillerieCommandes, MenuQuincailleriePiecesCommandes.class), BorderLayout.NORTH);
 		pnlListeClientsCommandes = new JPanel();
 		pnlListeClientsCommandes = createMenu();
 		content.add(pnlListeClientsCommandes, BorderLayout.CENTER);
-		content.add(Application.version(), BorderLayout.SOUTH);
 	}
 	
 	private JPanel createMenu() {
@@ -182,14 +176,6 @@ public class MenuQuincaillerieCommandes implements Runnable {
 		
 		
 		return pnl;
-	}
-	
-	private JPanel createBtnReturn() {
-		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JButton btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
-		btnReturn.addActionListener(ev->{MenuQuincailleriePiecesCommandes.demarrer(frmMenuQuincaillerieCommandes);});
-		pnlBtnReturn.add(btnReturn);
-		return pnlBtnReturn;
 	}
 	
 }

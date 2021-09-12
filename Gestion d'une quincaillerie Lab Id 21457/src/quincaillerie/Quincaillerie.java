@@ -11,6 +11,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import clients.Client;
+import clients.Entreprise;
 import clients.Particulier;
 import commandes.Commande;
 import commandes.Facture;
@@ -275,7 +276,13 @@ public class Quincaillerie {
 			JOptionPane.showMessageDialog(null, "Stocks insuffisants");
 		}else if(ServiceBancaire.prelevementCreditClient(client, prixCommande)) {
 			Map<Piece, Integer> lpe = copieListePieces(listePiecesExemplaires);
-			commande = new Commande(numCommande(), this.getNom(), client, new Date(), lpe, prixCommande);
+			
+			if(client instanceof Particulier) {
+				commande = new Commande(numCommande(), getNom(), copieClientParticulier((Particulier) client), new Date(), lpe, prixCommande);
+			}else {
+				commande = new Commande(numCommande(), getNom(), copieClientEntreprise((Entreprise) client), new Date(), lpe, prixCommande);
+			}
+			
 			ajouterCommandeClient(client, commande);
 			ServiceBancaire.approvisionneTresorerieQuincaillerie(this, prixCommande);
 			
@@ -289,6 +296,18 @@ public class Quincaillerie {
 			lpe.put(p, map.get(p));
 		}
 		return lpe;	
+	}
+	
+	private Particulier copieClientParticulier(Particulier particulier) {
+		return new Particulier(particulier.getId(), particulier.getAdresse(), particulier.getTel(), particulier.getEmail(), 
+								particulier.getCredit(), ((Particulier)particulier).getCivilite(), ((Particulier)particulier).getNom(), 
+								((Particulier)particulier).getPrenom(), ((Particulier)particulier).isFidelite());
+	}
+	
+	private Entreprise copieClientEntreprise(Entreprise entreprise) {
+		return new Entreprise(entreprise.getId(), entreprise.getAdresse(), entreprise.getTel(), entreprise.getEmail(), 
+				entreprise.getCredit(), ((Entreprise)entreprise).getSiegeSocial(), ((Entreprise)entreprise).getNomCommercial(), 
+				((Entreprise)entreprise).getCategorie());
 	}
 	
 	public void afficheClients() {

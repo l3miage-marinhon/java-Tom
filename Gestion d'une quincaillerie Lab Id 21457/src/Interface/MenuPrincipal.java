@@ -71,7 +71,6 @@ public class MenuPrincipal implements Runnable{
 		nomQuinc.add(new JLabel(Application.quincaillerie.getNom()));
 		content.add(nomQuinc, BorderLayout.NORTH);
 		content.add(createMenu(), BorderLayout.CENTER);
-		content.add(Application.version(), BorderLayout.SOUTH);
 	}
 	
 	
