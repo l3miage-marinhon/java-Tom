@@ -42,6 +42,10 @@ public class Panier {
 		panier.replace(p, n);
 	}
 	
+	public int getNbPiece(Piece p) {
+		return (panier.containsKey(p) ? panier.get(p) : 0);
+	}
+	
 	public void viderPanier() {
 		panier.clear();
 	}

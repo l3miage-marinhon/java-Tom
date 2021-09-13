@@ -1,5 +1,6 @@
 package commandes;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -50,8 +51,9 @@ public class Commande {
 		this.client = client;
 	}
 
-	public Date getDate() {
-		return date;
+	public String getDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		return sdf.format(this.date);
 	}
 	public void setDate(Date date) {
 		this.date = date;

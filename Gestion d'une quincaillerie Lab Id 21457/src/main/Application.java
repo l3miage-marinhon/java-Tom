@@ -2,13 +2,18 @@ package main;
 
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Image;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.ToolTipManager;
 
 import Interface.MenuPrincipal;
 import clients.CategorieEntreprise;
@@ -32,6 +37,8 @@ public class Application {
 	public static Client clientCourant = null;
 	//FIXME pourquoi ici avoir mis le Panier en static ....
 	public static Panier panier = new Panier();
+	public static final String PATH_TO_ICONS = "src/icons/";
+	public static Map<String, Image> mapImagesPieces;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new MenuPrincipal());
@@ -84,13 +91,40 @@ public class Application {
     	quinc.ajouterClient(p);
     	quinc.ajouterClient(e);
     	
+    	mapImagesPieces = new HashMap<>();
+    	mapImagesPieces.put("vis", new ImageIcon(Application.PATH_TO_ICONS + "vis.jpeg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH));
+    	mapImagesPieces.put("rayon", new ImageIcon(Application.PATH_TO_ICONS + "rayon_velo.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH));
+    	mapImagesPieces.put("roue de vélo", new ImageIcon(Application.PATH_TO_ICONS + "roue_velo.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH));
+    	mapImagesPieces.put("disque de jante", new ImageIcon(Application.PATH_TO_ICONS + "disque_jante.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH));
+    	mapImagesPieces.put("chambre à air", new ImageIcon(Application.PATH_TO_ICONS + "chambre_air.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH));
+    	mapImagesPieces.put("pneu", new ImageIcon(Application.PATH_TO_ICONS + "pneu_velo.jpg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH));
+    	mapImagesPieces.put("ampoule", new ImageIcon(Application.PATH_TO_ICONS + "ampoule.jpeg").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH));
+    	mapImagesPieces.put("pommeau de douche", new ImageIcon(Application.PATH_TO_ICONS + "pommeau_douche.png").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH));
+    	mapImagesPieces.put("no_image", new ImageIcon(Application.PATH_TO_ICONS + "no_image.png").getImage().getScaledInstance(110, 110, Image.SCALE_SMOOTH));
+    	 
+        ToolTipManager.sharedInstance().setDismissDelay(60000);
+    	
     	return quinc;
 	}
 	
-	public static JPanel version() {
-		JPanel version = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		version.add(new JLabel("Version : Alpha-1")); 
-		return version;
-	}
+	@SuppressWarnings("unchecked")
+	public static JPanel createBtnReturn(JFrame frmDispose, @SuppressWarnings("rawtypes") Class menu) {
+		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JButton btnReturn = new JButton(new ImageIcon(new ImageIcon(Application.PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
+		btnReturn.addActionListener(ev->{ 
+			try {
+				menu.getMethod("demarrer", JFrame.class).invoke(null, frmDispose);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+					| SecurityException e) {
+				e.printStackTrace();
+			} catch(NoSuchMethodException nsme) {
+				nsme.printStackTrace();
+			}
+		});
+		
 
+		pnlBtnReturn.add(btnReturn);
+		return pnlBtnReturn;
+	}
+	
 }

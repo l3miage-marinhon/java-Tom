@@ -6,13 +6,11 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -31,8 +29,6 @@ import clients.Entreprise;
 import main.Application;
 
 public class MenuNewClientEntr implements Runnable{
-
-public static final String PATH_TO_ICONS = "src/icons/";
 	
 	JFrame frmNewClientEntr;
 	JButton btnReturn;
@@ -73,8 +69,7 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		frmNewClientEntr.setTitle("Entreprise");
 		JPanel content = (JPanel) frmNewClientEntr.getContentPane();
 		content.setLayout(new BorderLayout());
-		content.add(createBtnReturn(), BorderLayout.NORTH);
-		content.add(Application.version(), BorderLayout.SOUTH);
+		content.add(Application.createBtnReturn(frmNewClientEntr, MenuNewClient.class), BorderLayout.NORTH);
 		
 		
 		JLabel[] labels = {	new JLabel("Siège social :"), new JLabel("Nom commercial :"), new JLabel("Catégorie :"), new JLabel("Adresse :"), 
@@ -138,14 +133,6 @@ public static final String PATH_TO_ICONS = "src/icons/";
 		});
 		
 		return p;
-	}
-	
-	private JPanel createBtnReturn() {
-		JPanel pnlBtnReturn = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		btnReturn = new JButton(new ImageIcon(new ImageIcon(PATH_TO_ICONS + "return_icon.png").getImage().getScaledInstance(20, 15, Image.SCALE_SMOOTH)));
-		btnReturn.addActionListener(ev->{MenuNewClient.demarrer(frmNewClientEntr);});
-		pnlBtnReturn.add(btnReturn);
-		return pnlBtnReturn;
 	}
 	
 	private JPanel inputField(String s) {
