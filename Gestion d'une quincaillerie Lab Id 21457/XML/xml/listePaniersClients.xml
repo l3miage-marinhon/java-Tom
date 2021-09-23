@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<listePaniersClients
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://quincaillerie'
+    xsi:schemaLocation='http://quincaillerie listePaniersClients.xsd'>
+
+    <panierClient emailClient="tom.frances97@yahoo.fr">
+        <piece reference="01UU76">21</piece>
+        <piece reference="00UZ76">2</piece>
+    </panierClient>
+    
+    <panierClient emailClient="nicomarinho@icloud.com">
+        <piece reference="02AZ90">8</piece>
+        <piece reference="02JJ02">1</piece>
+    </panierClient>
+    
+</listePaniersClients>

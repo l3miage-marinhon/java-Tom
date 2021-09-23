@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema  version="1.0"
+            targetNamespace="http://quincaillerie"
+            xmlns="http://quincaillerie"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified">
+    <xs:include schemaLocation="piece.xsd"/>
+    <xs:include schemaLocation="clients.xsd"/>
+    
+    <xs:element name="commande" type="Commande"/>
+    
+    <xs:complexType name="Commande">
+        <xs:sequence>
+            <xs:element name="num" type="xs:int"/>
+            <xs:element name="quincaillerie" type="xs:string"/>
+            <xs:element name="emailClient" type="Email"/>
+            <xs:element name="date" type="xs:date"/>
+            <xs:element name="listePieces" type="ListePieces"/>
+            <xs:element name="prix" type="Prix"/>
+            <xs:element name="facture" type="Facture" minOccurs="0"/>
+            <xs:element name="etat" type="EtatCommande"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="Facture">
+        <xs:sequence>
+            <xs:element name="numero" type="xs:int"/>
+            <xs:element name="quincaillerie" type="xs:string"/>
+            <xs:element name="emailClient" type="Email"/>
+            <xs:element name="date" type="xs:date"/>
+             <xs:element name="listePieces" type="ListePieces"/>
+            <xs:element name="prix" type="Prix"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="ListePieces">
+        <xs:sequence>
+            <xs:element name="piece" type="PieceNombreExemplaire" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="EtatCommande">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Acceptation"/>
+            <xs:enumeration value="Préparation"/>
+            <xs:enumeration value="Livraison"/>
+            <xs:enumeration value="Terminée"/>
+            <xs:enumeration value="Annulée"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

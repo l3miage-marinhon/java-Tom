@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema targetNamespace="http://quincaillerie"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://quincaillerie"
+           elementFormDefault="qualified">
+    
+    <xs:complexType name="PieceDeBase">
+        <xs:sequence>
+            <xs:element name="nom" type="xs:string"/>
+            <xs:element name="prix" type="Prix"/>
+            <xs:element name="dureeGarantieBase" type="DureeGarantieBase"/>
+            <xs:element name="dureeGarantie" type="DureeGarantie"/>
+            <xs:element name="dureeFabrication" type="DureeFabrication"/>
+        </xs:sequence>
+        <xs:attribute name="ref" type="RefPieceBase"/>
+    </xs:complexType>
+    
+    <xs:simpleType name="RefPieceBase">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="00[A-Z]{2}\d{2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <!-- _________________________________________________________ -->
+    
+    <xs:complexType name="PieceCompositeEnKit">
+        <xs:sequence>
+            <xs:element name="nom" type="xs:string"/>
+            <xs:element name="composants" type="Composants"/>
+            <xs:element name="prix" type="Prix"/>
+            <xs:element name="dureeGarantieBase" type="DureeGarantieBase"/>
+            <xs:element name="dureeGarantie" type="DureeGarantie"/>
+            <xs:element name="dureeFabrication" type="DureeFabrication"/>
+            
+            <xs:element name="tempsMontage" type="TempsMontage"/>
+        </xs:sequence>
+        <xs:attribute name="ref" type="RefPieceCompKit"/>
+    </xs:complexType>
+    
+    <xs:simpleType name="RefPieceCompKit">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="01[A-Z]{2}\d{2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <!-- _________________________________________________________ -->
+    
+    <xs:complexType name="PieceCompositeMontee">
+        <xs:sequence>
+            <xs:element name="nom" type="xs:string"/>
+            <xs:element name="composants" type="Composants"/>
+            <xs:element name="prix" type="Prix"/>
+            <xs:element name="dureeGarantieBase" type="DureeGarantieBase"/>
+            <xs:element name="dureeGarantie" type="DureeGarantie"/>
+            <xs:element name="dureeFabrication" type="DureeFabrication"/>
+            <xs:element name="tempsMontage" type="DureeMontage"/>
+            <xs:element name="prixMontage" type="Prix"/>
+        </xs:sequence>
+        <xs:attribute name="ref" type="RefPieceCompMontee"/>
+    </xs:complexType>
+    
+    <xs:simpleType name="RefPieceCompMontee">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="02[A-Z]{2}\d{2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <!-- _________________________________________________________ -->
+    
+    <xs:complexType name="Composants">
+        <xs:sequence>
+            <xs:element name="composant" type="Composant" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <!-- _________________________________________________________ -->
+    
+    <xs:complexType name="Composant">
+        <xs:sequence>
+            <xs:element name="pieceDeBase" type="PieceDeBase"/>
+            <xs:element name="nbExemplaire" type="NbExemplaire"/>              
+        </xs:sequence>
+    </xs:complexType>
+    
+    <!-- _________________________________________________________ -->
+    
+    <xs:complexType name="PieceNombreExemplaire">
+        <xs:simpleContent>
+            <xs:extension base="NbExemplaire">
+                <xs:attribute name="reference" type="ReferencePiece"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    
+    <!-- _________________________________________________________ -->
+    
+    <xs:complexType name="PieceNombreStock">
+        <xs:simpleContent>
+            <xs:extension base="NbStock">
+                <xs:attribute name="reference" type="ReferencePiece"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    
+    <!-- _________________________________________________________ -->
+
+    <xs:simpleType name="ReferencePiece">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="0(0|1|2)[A-Z]{2}\d{2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="Prix">
+        <xs:restriction base="xs:double">
+            <xs:minExclusive value="0.0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="DureeGarantieBase">
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="DureeGarantie">
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="DureeFabrication">
+        <xs:restriction base="xs:int">
+            <xs:minExclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TempsMontage">
+        <xs:restriction base="xs:int">
+            <xs:minExclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="DureeMontage">
+        <xs:restriction base="xs:int">
+            <xs:minExclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="NbExemplaire">
+        <xs:restriction base="xs:int">
+            <xs:minExclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="NbStock">
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
