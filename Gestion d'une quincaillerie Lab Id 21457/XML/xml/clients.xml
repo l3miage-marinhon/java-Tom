@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<listeClients
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://quincaillerie'
+    xsi:schemaLocation='http://quincaillerie clients.xsd'>
+    
+    <particulier>
+        <id>0001PA34</id>
+        <adresse>moullle</adresse>
+        <tel>0897865644</tel>
+        <email>tom@yahoo.fr</email>
+        <credit>23.9</credit>
+        <civilite>M</civilite>
+        <nom>Frances</nom>
+        <prenom>Tom</prenom>
+        <fidelite>true</fidelite>
+    </particulier>
+    
+    <entreprise>
+        <id>0002EN34</id>
+        <adresse>moullle</adresse>
+        <tel>0897865644</tel>
+        <email>tomdsd@yahoo.fr</email>
+        <credit>23.9</credit>
+        <siegeSocial>Paris</siegeSocial>
+        <nomCommercial>Le béret de francis</nomCommercial>
+        <categorie>GE</categorie>
+    </entreprise>
+
+</listeClients>

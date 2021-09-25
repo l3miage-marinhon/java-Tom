@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           targetNamespace="http://quincaillerie"
+           xmlns="http://quincaillerie" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+    <xs:include schemaLocation="piece.xsd"/>
+    
+    <xs:element name="catalogue" type="Catalogue"/>
+    
+    <xs:complexType name="Catalogue">
+        <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="pieceDeBase" type="PieceDeBase"/>
+                <xs:element name="pieceCompositeEnKit" type="PieceCompositeEnKit"/>
+                <xs:element name="pieceCompositeMontee" type="PieceCompositeMontee"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType> 
+    
+
+</xs:schema>

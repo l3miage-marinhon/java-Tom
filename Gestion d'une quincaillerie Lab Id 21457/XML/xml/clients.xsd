@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           targetNamespace="http://quincaillerie"
+           xmlns="http://quincaillerie"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:element name="listeClients" type="ListeClients"/>
+    
+    <xs:complexType name="ListeClients">
+        <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="particulier" type="Particulier"/>
+                <xs:element name="entreprise" type="Entreprise"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+           
+    <xs:complexType name="Particulier">
+        <xs:sequence>
+            <xs:element name="id" type="IdParticulier"/>
+            <xs:element name="adresse" type="xs:string"/>
+            <xs:element name="tel" type="Tel"/>
+            <xs:element name="email" type="Email"/>
+            <xs:element name="credit" type="Credit"/>
+            <xs:element name="civilite" type="Civilite"/>
+            <xs:element name="nom" type="xs:string"/>
+            <xs:element name="prenom" type="xs:string"/>
+            <xs:element name="fidelite" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+           
+    <xs:complexType name="Entreprise">
+        <xs:sequence>
+            <xs:element name="id" type="IdEntreprise"/>
+            <xs:element name="adresse" type="xs:string"/>
+            <xs:element name="tel" type="Tel"/>
+            <xs:element name="email" type="Email"/>
+            <xs:element name="credit" type="Credit"/>
+            <xs:element name="siegeSocial" type="xs:string"/>
+            <xs:element name="nomCommercial" type="xs:string"/>
+            <xs:element name="categorie" type="Categorie"/>
+        </xs:sequence>
+    </xs:complexType>
+           
+    <xs:simpleType name="IdParticulier">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{4}PA\d{2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+           
+    <xs:simpleType name="IdEntreprise">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{4}EN\d{2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+           
+    <xs:simpleType name="Tel">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="0\d{9}"/>
+        </xs:restriction>
+    </xs:simpleType>
+           
+    <xs:simpleType name="Email">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[\w_.-]+@[a-z]+.(fr|com)"/>
+        </xs:restriction>
+    </xs:simpleType>
+           
+    <xs:simpleType name="Credit">
+        <xs:restriction base="xs:double">
+            <xs:minInclusive value="0.0"/>
+        </xs:restriction>
+    </xs:simpleType>
+           
+    <xs:simpleType name="Civilite">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="M"/>
+            <xs:enumeration value="Mme"/>
+        </xs:restriction>
+    </xs:simpleType>
+           
+    <xs:simpleType name="Categorie">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="GE"/>
+            <xs:enumeration value="ETI"/>
+            <xs:enumeration value="PME"/>
+            <xs:enumeration value="TPE"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

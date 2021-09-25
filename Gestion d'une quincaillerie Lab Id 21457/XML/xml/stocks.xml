@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<stocks
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://quincaillerie'
+    xsi:schemaLocation='http://quincaillerie stocks.xsd'>
+    
+    <stockPiece reference="00GH67">20</stockPiece>
+    <stockPiece reference="01GS07">1</stockPiece>
+    <stockPiece reference="00DD09">19</stockPiece>
+    <stockPiece reference="00GH67">20</stockPiece>
+    <stockPiece reference="02AA56">20</stockPiece>
+    <stockPiece reference="02GL60">0</stockPiece>
+    <stockPiece reference="01KL22">78</stockPiece>
+
+</stocks>

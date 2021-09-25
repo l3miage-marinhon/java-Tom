@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema  version="1.0"
+            targetNamespace="http://quincaillerie"
+            xmlns="http://quincaillerie"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified">
+    
+    <xs:include schemaLocation="clients.xsd"/>
+    <xs:include schemaLocation="commande.xsd"/>
+    
+    
+    <xs:element name="listeClientsCommandes" type="ListeClientsCommandes"/>
+    
+    <xs:complexType name="ListeClientsCommandes">
+        <xs:sequence>
+            <xs:element name="clientCommandes" type="ClientCommandes" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="ClientCommandes">
+        <xs:sequence>
+            <xs:element name="commande" type="Commande" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="emailClient" type="Email"/>
+    </xs:complexType>
+    
+</xs:schema>

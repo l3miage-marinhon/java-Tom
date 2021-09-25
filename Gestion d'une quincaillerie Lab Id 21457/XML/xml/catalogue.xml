@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<catalogue
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://quincaillerie"
+    xsi:schemaLocation="http://quincaillerie catalogue.xsd">
+    
+    <pieceDeBase ref="00VS23">
+        <nom>Vis</nom>
+        <prix>12.4</prix>
+        <dureeGarantieBase>12</dureeGarantieBase>
+        <dureeGarantie>12</dureeGarantie>
+        <dureeFabrication>1</dureeFabrication>
+    </pieceDeBase>
+    <pieceCompositeEnKit ref="01JK93">
+        <nom>Boulon</nom>
+        <composants>
+            <composant>
+                <pieceDeBase ref="00AE23">
+                    <nom>Vis</nom>
+                    <prix>12.4</prix>
+                    <dureeGarantieBase>12</dureeGarantieBase>
+                    <dureeGarantie>12</dureeGarantie>
+                    <dureeFabrication>1</dureeFabrication>
+                </pieceDeBase>
+                <nbExemplaire>3</nbExemplaire>
+            </composant>             
+        </composants>
+        <prix>1.4</prix>
+        <dureeGarantieBase>12</dureeGarantieBase>
+        <dureeGarantie>24</dureeGarantie>
+        <dureeFabrication>1</dureeFabrication>
+        <tempsMontage>2</tempsMontage>
+    </pieceCompositeEnKit>
+    
+    <pieceCompositeMontee ref="02AZ22">
+        <nom>Roue de velo</nom>
+        <composants>
+            <composant>
+                <pieceDeBase ref="00TT22">
+                    <nom>Rayon</nom>
+                    <prix>0.5</prix>
+                    <dureeGarantieBase>24</dureeGarantieBase>
+                    <dureeGarantie>24</dureeGarantie>
+                    <dureeFabrication>2</dureeFabrication>
+                </pieceDeBase>
+                <nbExemplaire>20</nbExemplaire>
+            </composant>
+            <composant>
+                <pieceDeBase ref="00PN88">
+                    <nom>Pneu</nom>
+                    <prix>8.5</prix>
+                    <dureeGarantieBase>24</dureeGarantieBase>
+                    <dureeGarantie>24</dureeGarantie>
+                    <dureeFabrication>2</dureeFabrication>
+                </pieceDeBase>
+                <nbExemplaire>1</nbExemplaire>
+            </composant>
+        </composants>
+        <prix>1.0</prix>
+        <dureeGarantieBase>12</dureeGarantieBase>
+        <dureeGarantie>24</dureeGarantie>
+        <dureeFabrication>1</dureeFabrication>
+        <tempsMontage>2</tempsMontage>
+        <prixMontage>2</prixMontage>
+    </pieceCompositeMontee>
+</catalogue>
